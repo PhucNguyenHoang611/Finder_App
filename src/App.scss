@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+// https://colorpalettes.net/color-palette-2936/
+
+// #10375d xanh duong dam
+// #05647a xanh la dam
+// #6db8bb xanh la nhat
+// #e0e2d5 trang dut
+// #869684 dut quy
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -32,7 +40,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 9999px;
   }
 
   .dark {

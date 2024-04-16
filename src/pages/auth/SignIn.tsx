@@ -126,7 +126,7 @@ const SignIn = () => {
         <div className="relative hidden md:block">
           <div className="flex justify-center items-center">
             <img
-              className="object-cover h-[600px] w-[700px] mt-6"
+              className="object-cover h-[600px] w-[700px] mt-2"
               src="https://i.pinimg.com/736x/af/b4/15/afb41504edbfa15a3ba46d9f1b5f3fe1.jpg"
               alt="bg-image"
             />

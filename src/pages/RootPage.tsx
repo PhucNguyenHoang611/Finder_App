@@ -1,9 +1,11 @@
-import React from "react";
+import NavBar from "@/components/nav/NavBar";
 
 const RootPage = () => {
   return (
-    <div>Root Page</div>
-  )
-}
+    <div>
+      <NavBar />
+    </div>
+  );
+};
 
 export default RootPage;

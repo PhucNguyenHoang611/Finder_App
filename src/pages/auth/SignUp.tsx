@@ -232,7 +232,7 @@ const SignUp = () => {
               >
                 Login
               </Button>
-              <p className="mt-6 text-xs text-slate-400">
+              <p className="mt-6 mb-8 text-xs text-slate-400">
                 Are you have an account? &nbsp;
                 <Link
                   className="text-indigo-600 hover:cursor-pointer"

@@ -10,9 +10,11 @@ import {
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
 import { RiGoogleFill } from "@remixicon/react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z
@@ -42,14 +44,18 @@ const SignIn = () => {
     },
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () =>
+    setShowPassword((prev: boolean) => !prev);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("login", values);
   }
 
   return (
-    <main className="bg-[#26313c] h-screen flex items-center justify-center p-10">
+    <main className="dark:bg-[#26313c] h-screen flex items-center justify-center p-10">
       <div className="grid w-full h-full grid-cols-1 bg-white box-border md:grid-cols-2">
-        <div className="bg-[#16202a] text-white flex items-center justify-center flex-col">
+        <div className="dark:bg-[#092635] flex items-center justify-center flex-col">
           <div className="my-4">
             <h1 className="text-3xl font-semibold ">Login</h1>
           </div>
@@ -74,7 +80,7 @@ const SignIn = () => {
                     <FormLabel>Email*</FormLabel>
                     <FormControl>
                       <Input
-                        className="mt-2 mb-4 bg-transparent rounded-full"
+                        className="min-w-[384px]"
                         placeholder="Email"
                         {...field}
                       />
@@ -92,29 +98,53 @@ const SignIn = () => {
                   <FormItem className="mt-2">
                     <FormLabel>Password*</FormLabel>
                     <FormControl>
-                      <Input
-                        className="mt-2 mb-4 bg-transparent rounded-full"
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                      />
+                      <div className="relative min-w-[384px]">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Password"
+                          {...field}
+                        />
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
+                          {showPassword ? (
+                            <EyeIcon
+                              className="h-6 w-6"
+                              onClick={togglePasswordVisibility}
+                            />
+                          ) : (
+                            <EyeOffIcon
+                              className="h-6 w-6"
+                              onClick={togglePasswordVisibility}
+                            />
+                          )}
+                        </div>
+                      </div>
                     </FormControl>
-                    {/* <FormDescription>Give me your password.</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              <p className="mt-2 text-xs dark:text-slate-400">
+                Forgot password? &nbsp;
+                <Link
+                  className="text-green-1 hover:cursor-pointer font-bold"
+                  to={"/reset-password"}
+                >
+                  Reset Password
+                </Link>
+              </p>
+
               <Button
                 type="submit"
-                className="w-full mt-6 bg-indigo-600 rounded-full hover:bg-indigo-700"
+                className="w-full mt-6 bg-green-1 rounded-full hover:bg-green-2"
               >
                 Login
               </Button>
-              <p className="mt-6 text-xs text-slate-400">
+
+              <p className="mt-6 text-xs dark:text-slate-400">
                 Don't have an account? &nbsp;
                 <Link
-                  className="text-indigo-600 hover:cursor-pointer"
+                  className="text-green-1 hover:cursor-pointer font-bold"
                   to={"/sign-up"}
                 >
                   Sign Up
@@ -123,12 +153,12 @@ const SignIn = () => {
             </form>
           </Form>
         </div>
-        <div className="relative hidden md:block">
-          <div className="flex justify-center items-center">
+        <div className="relative hidden md:block p-1">
+          <div className="flex justify-center items-center h-full">
             <img
-              className="object-cover h-[600px] w-[700px] mt-2"
-              src="https://i.pinimg.com/736x/af/b4/15/afb41504edbfa15a3ba46d9f1b5f3fe1.jpg"
-              alt="bg-image"
+              className="object-cover"
+              src="https://demo.alert.ind.in/public//login_assets/images/error/auth-img-7.png"
+              alt="loginImage"
             />
           </div>
         </div>

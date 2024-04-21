@@ -1,11 +1,12 @@
 /** @type {import('tailwindcss').Config} */
+// eslint-disable-next-line no-undef
 module.exports = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -18,6 +19,20 @@ module.exports = {
     },
     extend: {
       colors: {
+        green: {
+          1: "#5C8374",
+          2: "#4C7363",
+        },
+        apptext: {
+          1: "rgba(60, 60, 67)",
+          2: "rgba(60, 60, 67, 0.78)",
+          3: "rgba(60, 60, 67, 0.56)",
+        },
+        appbg: {
+          1: "#f4f6f9",
+          2: "#939596",
+          3: "#f4f6f9",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,5 +88,6 @@ module.exports = {
       },
     },
   },
+  // eslint-disable-next-line no-undef
   plugins: [require("tailwindcss-animate")],
-}
+};

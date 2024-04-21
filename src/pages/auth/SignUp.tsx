@@ -9,10 +9,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
-import { RiGoogleFill } from "@remixicon/react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { RiGoogleFill } from "@remixicon/react";
 
 const formSchema = z
   .object({
@@ -72,7 +74,7 @@ const formSchema = z
       }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
+    message: "Passwords not match",
     path: ["confirmPassword"],
   });
 
@@ -85,14 +87,22 @@ const SignUp = () => {
     },
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () =>
+    setShowPassword((prev: boolean) => !prev);
+
+  const [showCoPassword, setShowCoPassword] = useState(false);
+  const toggleCoPasswordVisibility = () =>
+    setShowCoPassword((prev: boolean) => !prev);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("sign up: ", values);
   }
 
   return (
-    <main className="bg-[#26313c] h-screen flex items-center justify-center p-10">
-      <div className="grid w-full h-full grid-cols-1 bg-white box-border">
-        <div className="bg-[#16202a] text-white flex items-center justify-center flex-col">
+    <main className="dark:bg-[#26313c] h-screen flex items-center justify-center p-10">
+      <div className="grid w-full h-full grid-cols-1 box-border">
+        <div className="dark:bg-[#092635] bg-white flex items-center justify-center flex-col">
           <div className="my-4">
             <h1 className="text-3xl font-semibold ">Sign up</h1>
           </div>
@@ -110,6 +120,10 @@ const SignUp = () => {
                 Sign up with Google
               </Button>
 
+              <div>
+                <br />
+              </div>
+
               <div className="flex items-center justify-center w-full gap-4 max-w-sm">
                 <FormField
                   control={form.control}
@@ -118,11 +132,7 @@ const SignUp = () => {
                     <FormItem>
                       <FormLabel>First Name*</FormLabel>
                       <FormControl>
-                        <Input
-                          className="mt-2 mb-4 bg-transparent rounded-full"
-                          placeholder="First Name"
-                          {...field}
-                        />
+                        <Input placeholder="First Name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -136,11 +146,7 @@ const SignUp = () => {
                     <FormItem>
                       <FormLabel>Last Name*</FormLabel>
                       <FormControl>
-                        <Input
-                          className="mt-2 mb-4 bg-transparent rounded-full"
-                          placeholder="Last Name"
-                          {...field}
-                        />
+                        <Input placeholder="Last Name" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -155,11 +161,7 @@ const SignUp = () => {
                   <FormItem className="mt-2">
                     <FormLabel>Email*</FormLabel>
                     <FormControl>
-                      <Input
-                        className="mt-2 mb-4 bg-transparent rounded-full"
-                        placeholder="Email"
-                        {...field}
-                      />
+                      <Input placeholder="Email" {...field} />
                     </FormControl>
                     {/* <FormDescription>Give me your email.</FormDescription> */}
                     <FormMessage />
@@ -174,11 +176,7 @@ const SignUp = () => {
                   <FormItem className="mt-2">
                     <FormLabel>Phone*</FormLabel>
                     <FormControl>
-                      <Input
-                        className="mt-2 mb-4 bg-transparent rounded-full"
-                        placeholder="Phone"
-                        {...field}
-                      />
+                      <Input placeholder="Phone" {...field} />
                     </FormControl>
                     {/* <FormDescription>Give me your phone.</FormDescription> */}
                     <FormMessage />
@@ -193,12 +191,26 @@ const SignUp = () => {
                   <FormItem className="mt-2">
                     <FormLabel>Password*</FormLabel>
                     <FormControl>
-                      <Input
-                        className="mt-2 mb-4 bg-transparent rounded-full"
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="Password"
+                          {...field}
+                        />
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
+                          {showPassword ? (
+                            <EyeIcon
+                              className="h-6 w-6"
+                              onClick={togglePasswordVisibility}
+                            />
+                          ) : (
+                            <EyeOffIcon
+                              className="h-6 w-6"
+                              onClick={togglePasswordVisibility}
+                            />
+                          )}
+                        </div>
+                      </div>
                     </FormControl>
                     {/* <FormDescription>Give me your password.</FormDescription> */}
                     <FormMessage />
@@ -213,12 +225,26 @@ const SignUp = () => {
                   <FormItem className="mt-2">
                     <FormLabel>Confirm Password*</FormLabel>
                     <FormControl>
-                      <Input
-                        className="mt-2 mb-4 bg-transparent rounded-full"
-                        type="password"
-                        placeholder="Confirm Password"
-                        {...field}
-                      />
+                      <div className="relative">
+                        <Input
+                          type={showCoPassword ? "text" : "password"}
+                          placeholder="Confirm Password"
+                          {...field}
+                        />
+                        <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
+                          {showCoPassword ? (
+                            <EyeIcon
+                              className="h-6 w-6"
+                              onClick={toggleCoPasswordVisibility}
+                            />
+                          ) : (
+                            <EyeOffIcon
+                              className="h-6 w-6"
+                              onClick={toggleCoPasswordVisibility}
+                            />
+                          )}
+                        </div>
+                      </div>
                     </FormControl>
                     {/* <FormDescription>Give me your password.</FormDescription> */}
                     <FormMessage />
@@ -228,14 +254,15 @@ const SignUp = () => {
 
               <Button
                 type="submit"
-                className="w-full mt-6 bg-indigo-600 rounded-full hover:bg-indigo-700"
+                className="w-full mt-6 bg-green-1 rounded-full hover:bg-green-2"
               >
-                Login
+                Sign Up
               </Button>
-              <p className="mt-6 mb-8 text-xs text-slate-400">
+
+              <p className="mt-6 mb-8 text-xs dark:text-slate-400">
                 Are you have an account? &nbsp;
                 <Link
-                  className="text-indigo-600 hover:cursor-pointer"
+                  className="text-green-1 font-bold hover:cursor-pointer"
                   to={"/sign-in"}
                 >
                   Sign In

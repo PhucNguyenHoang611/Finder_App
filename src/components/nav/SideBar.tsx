@@ -1,62 +1,131 @@
 import {
+  Bell,
+  Bug,
   Dog,
   HandHeart,
   PersonStanding,
   PhoneOff,
+  SquareUser,
   TextSearch,
   Upload,
+  UsersRound,
 } from "lucide-react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
+import { Button } from "../ui/button";
 
 const SideBar = () => {
   return (
-    <main className="flex justify-start items-start pt-4">
-      <section className="flex justify-center items-center gap-4 w-2/12">
-        <ul className="text-apptext-1">
-          <li>
+    <div className="flex justify-center items-center gap-4 w-full">
+      <ul className="text-apptext-1 w-full">
+        <li className="w-full">
+          <h1 className="font-bold text-2xl text-center">
+            <Link to={"/"}>Finder</Link>
+          </h1>
+        </li>
+
+        <li className="w-full py-4">
+          <SearchBar />
+        </li>
+
+        <hr className="text-black border my-2" />
+
+        <li>
+          <Link to={"/post"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <Upload className="text-apptext-3" />
-              <Link to={"/post"} className="">
-                Đăng tin
-              </Link>
+              Đăng tin
             </div>
-          </li>
-          <li>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/Tincantim"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <TextSearch className="text-apptext-3" />
-              <Link to={"/Tincantim"}>Tin cần tìm</Link>
+              Tin cần tìm
             </div>
-          </li>
-          <li>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/Tinnhatduoc"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <HandHeart className="text-apptext-3" />
-              <Link to={"/Tinnhatduoc"}>Tin nhặt được</Link>
+              Tin nhặt được
             </div>
-          </li>
-          <li>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/Timthucung"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <Dog className="text-apptext-3" />
-              <Link to={"/Timthucung"}>Tìm thú cưng</Link>
+              Tìm thú cưng
             </div>
-          </li>
-          <li>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/Timnguoi"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <PersonStanding className="text-apptext-3" />
-              <Link to={"/Timnguoi"}>Tìm người</Link>
+              Tìm người
             </div>
-          </li>
-          <li>
+          </Link>
+        </li>
+        <hr className="text-black border my-2" />
+        <li>
+          <Link to={"/Luadao"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <PhoneOff className="text-apptext-3" />
-              <Link to={"/Luadao"}>Cảnh báo lừa đảo</Link>
+              Cảnh báo lừa đảo
             </div>
-          </li>
-        </ul>
-      </section>
-      <section className="w-10/12 px-12">
-        <Outlet />
-      </section>
-    </main>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/Aboutus"}>
+            <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
+              <UsersRound className="text-apptext-3" />
+              Liên hệ chúng tôi
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/Contact"}>
+            <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
+              <Bug className="text-apptext-3" />
+              Báo lỗi
+            </div>
+          </Link>
+        </li>
+
+        <hr className="text-black border my-2" />
+
+        <li>
+          <Link to={"/Contact"}>
+            <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
+              <Bell className="text-apptext-3" />
+              Thông báo
+            </div>
+          </Link>
+        </li>
+        <li className="flex justify-start gap-4 pt-4">
+          <Link to={"/sign-in"}>
+            <Button className="w-30">Đăng nhập</Button>
+          </Link>
+          <Link to={"/sign-in"}>
+            <Button className=" bg-transparent border border-black text-black w-30">
+              Đăng ký
+            </Button>
+          </Link>
+        </li>
+        {/* <li>
+          <Link to={"/Contact"}>
+            <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
+              <SquareUser className="text-apptext-3" />
+              Tài khoản
+            </div>
+          </Link>
+        </li> */}
+      </ul>
+    </div>
   );
 };
 

@@ -252,17 +252,14 @@ const SignUp = () => {
                 )}
               />
 
-              <Button
-                type="submit"
-                className="w-full mt-6 bg-green-1 rounded-full hover:bg-green-2"
-              >
+              <Button type="submit" className="w-full mt-6 rounded-full">
                 Sign Up
               </Button>
 
               <p className="mt-6 mb-8 text-xs dark:text-slate-400">
                 Are you have an account? &nbsp;
                 <Link
-                  className="text-green-1 font-bold hover:cursor-pointer"
+                  className="font-bold hover:cursor-pointer"
                   to={"/sign-in"}
                 >
                   Sign In

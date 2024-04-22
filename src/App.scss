@@ -41,10 +41,6 @@
     --border: 214.3 21.8% 41.4%;
     --input: 214.3 21.8% 41.4%;
     --ring: 222.2 84% 4.9%;
-
-    --radius: 0px;
-
-    box-sizing: border-box;
   }
 
   .dark {
@@ -78,15 +74,17 @@
   }
 }
 
-// @layer base {
-//   * {
-//     @apply border-border;
-//   }
-//   body {
-//     @apply bg-background text-foreground;
-//   }
-// }
-
-.hello-scss {
-  color: green;
+@layer base {
+  :root {
+    background: var(--background);
+  }
+  body {
+    box-sizing: border-box;
+    background-color: var(--background);
+    @apply bg-background text-foreground;
+  }
 }
+
+// .hello-scss {
+//   color: green;
+// }

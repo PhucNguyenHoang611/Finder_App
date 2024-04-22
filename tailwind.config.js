@@ -30,7 +30,7 @@ module.exports = {
         },
         appbg: {
           1: "#f4f6f9",
-          2: "#939596",
+          2: "#bfbfbf",
           3: "#f4f6f9",
         },
         border: "hsl(var(--border))",
@@ -66,11 +66,6 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {

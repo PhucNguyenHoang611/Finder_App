@@ -127,24 +127,21 @@ const SignIn = () => {
               <p className="mt-2 text-xs dark:text-slate-400">
                 Forgot password? &nbsp;
                 <Link
-                  className="text-green-1 hover:cursor-pointer font-bold"
+                  className="hover:cursor-pointer font-bold"
                   to={"/reset-password"}
                 >
                   Reset Password
                 </Link>
               </p>
 
-              <Button
-                type="submit"
-                className="w-full mt-6 bg-green-1 rounded-full hover:bg-green-2"
-              >
+              <Button type="submit" className="w-full mt-6 rounded-full">
                 Login
               </Button>
 
               <p className="mt-6 text-xs dark:text-slate-400">
                 Don't have an account? &nbsp;
                 <Link
-                  className="text-green-1 hover:cursor-pointer font-bold"
+                  className="hover:cursor-pointer font-bold"
                   to={"/sign-up"}
                 >
                   Sign Up

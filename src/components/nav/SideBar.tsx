@@ -5,7 +5,6 @@ import {
   HandHeart,
   PersonStanding,
   PhoneOff,
-  SquareUser,
   TextSearch,
   Upload,
   UsersRound,
@@ -16,10 +15,10 @@ import { Button } from "../ui/button";
 
 const SideBar = () => {
   return (
-    <div className="flex justify-center items-center gap-4 w-full">
+    <div className="flex justify-center items-start gap-4 w-full h-full">
       <ul className="text-apptext-1 w-full">
         <li className="w-full">
-          <h1 className="font-bold text-2xl text-center">
+          <h1 className="font-bold text-2xl text-center mt-4">
             <Link to={"/"}>Finder</Link>
           </h1>
         </li>
@@ -39,7 +38,7 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/Tincantim"}>
+          <Link to={`/filter/find`}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <TextSearch className="text-apptext-3" />
               Tin cần tìm
@@ -47,7 +46,7 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/Tinnhatduoc"}>
+          <Link to={"/filter/pick"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <HandHeart className="text-apptext-3" />
               Tin nhặt được
@@ -55,7 +54,7 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/Timthucung"}>
+          <Link to={"/filter/animal"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <Dog className="text-apptext-3" />
               Tìm thú cưng
@@ -63,7 +62,7 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/Timnguoi"}>
+          <Link to={"/filter/people"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <PersonStanding className="text-apptext-3" />
               Tìm người
@@ -72,7 +71,7 @@ const SideBar = () => {
         </li>
         <hr className="text-black border my-2" />
         <li>
-          <Link to={"/Luadao"}>
+          <Link to={"/scam"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <PhoneOff className="text-apptext-3" />
               Cảnh báo lừa đảo
@@ -80,18 +79,18 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/Aboutus"}>
+          <Link to={"/aboutus"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <UsersRound className="text-apptext-3" />
-              Liên hệ chúng tôi
+              Giới thiệu
             </div>
           </Link>
         </li>
         <li>
-          <Link to={"/Contact"}>
+          <Link to={"/contact"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <Bug className="text-apptext-3" />
-              Báo lỗi
+              Liên hệ chúng tôi
             </div>
           </Link>
         </li>
@@ -99,14 +98,14 @@ const SideBar = () => {
         <hr className="text-black border my-2" />
 
         <li>
-          <Link to={"/Contact"}>
+          <Link to={"/notify"}>
             <div className="p-2 font-bold flex gap-2 w-full hover:bg-appbg-2 border border-transparent	 rounded-xl">
               <Bell className="text-apptext-3" />
               Thông báo
             </div>
           </Link>
         </li>
-        <li className="flex justify-start gap-4 pt-4">
+        <li className="flex justify-start gap-2 absolute bottom-4">
           <Link to={"/sign-in"}>
             <Button className="w-30">Đăng nhập</Button>
           </Link>

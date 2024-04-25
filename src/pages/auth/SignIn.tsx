@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
 import { RiGoogleFill } from "@remixicon/react";
-import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { EyeIcon, EyeOffIcon, Undo2 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -54,6 +54,11 @@ const SignIn = () => {
 
   return (
     <main className="dark:bg-[#26313c] h-screen flex items-center justify-center p-10">
+      <Link to={"/"}>
+        <button className="absolute left-20 top-20">
+          <Undo2 className="w-8 h-8" />
+        </button>
+      </Link>
       <div className="grid w-full h-full grid-cols-1 bg-white box-border md:grid-cols-2">
         <div className="dark:bg-[#092635] flex items-center justify-center flex-col">
           <div className="my-4">

@@ -9,3 +9,8 @@ interface ImageCardProps {
   location: string;
   type: string;
 }
+
+interface Position {
+  latitude: number | null;
+  longitude: number | null;
+}

@@ -8,6 +8,7 @@ import ErrorPage from "@/pages/ErrorPage";
 import ResetPassword from "./pages/auth/ResetPassword";
 import PostPage from "./pages/PostPage";
 import Home from "./pages/Home";
+import FindPage from "./pages/FindPage";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
       {
         path: "/post",
         element: <PostPage />,
+      },
+      {
+        path: `/filter`,
+        element: <FindPage />,
       },
     ],
   },

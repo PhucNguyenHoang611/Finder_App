@@ -9,16 +9,22 @@ export default defineConfig({
     vue(),
     federation({
       name: "auth",
-      filename: "remoteEntry.js",
+      filename: "auth.js",
       exposes: {
-        
+        "./Auth": "./src/App.vue",
       },
-      shared: ["vue"]
-    })
+      shared: ["vue"],
+    }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
-  }
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    modulePreload: false,
+    target: "esnext",
+    minify: false,
+    cssCodeSplit: true,
+  },
 });

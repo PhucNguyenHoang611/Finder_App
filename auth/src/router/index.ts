@@ -7,25 +7,25 @@ import ForgetPassword from "@/pages/ForgetPassword.vue";
 const routes = [
   {
     path: "/",
-    component: Home
+    component: Home,
   },
   {
-    path: "/sign-in",
-    component: SignIn
+    path: "/auth/sign-in",
+    component: SignIn,
   },
   {
-    path: "/sign-up",
-    component: SignUp
+    path: "/auth/sign-up",
+    component: SignUp,
   },
   {
-    path: "/forget-password",
-    component: ForgetPassword
-  }
+    path: "/auth/forget-password",
+    component: ForgetPassword,
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
 });
 
 export default router;

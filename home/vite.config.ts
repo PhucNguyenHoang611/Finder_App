@@ -9,16 +9,28 @@ export default defineConfig({
     react(),
     federation({
       name: "home",
-      filename: "remoteEntry.js",
+      filename: "home.js",
       exposes: {
-        
+        "./Home": "./src/App.tsx",
       },
-      shared: ["react", "react-dom"]
-    })
+      shared: ["react", "react-dom"],
+    }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname,"./src")
-    }
-  }
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    modulePreload: false,
+    target: "esnext",
+    minify: false,
+    cssCodeSplit: true,
+  },
+  // build: {
+  //   target: "es2022", // Set your target environment here
+  //   outDir: "dist", // The output directory for the build
+  //   assetsDir: "assets", // The directory to nest generated assets under
+  //   sourcemap: true, // Generate source maps
+  // },
 });

@@ -10,14 +10,21 @@ export default defineConfig({
     federation({
       name: "app-shell",
       remotes: {
-
+        homeApp: "http://localhost:5001/assets/home.js",
+        // authApp: "http://localhost:5001/assets/auth.js",
       },
-      shared: ["react", "react-dom"]
-    })
+      shared: ["react", "react-dom"],
+    }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
-  }
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  build: {
+    modulePreload: false,
+    target: "esnext",
+    minify: false,
+    cssCodeSplit: true,
+  },
 });

@@ -11,9 +11,9 @@ export default defineConfig({
       name: "app-shell",
       remotes: {
         homeApp: "http://localhost:5001/assets/home.js",
-        // authApp: "http://localhost:5001/assets/auth.js",
+        authApp: "http://localhost:5002/assets/auth.js",
       },
-      shared: ["react", "react-dom"],
+      shared: ["react", "react-dom", "vue"],
     }),
   ],
   resolve: {
@@ -22,9 +22,7 @@ export default defineConfig({
     },
   },
   build: {
-    modulePreload: false,
     target: "esnext",
-    minify: false,
-    cssCodeSplit: true,
+    minify: true,
   },
 });

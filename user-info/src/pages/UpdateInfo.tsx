@@ -1,16 +1,11 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
@@ -32,52 +27,49 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from "react-router-dom";
- 
+
 const formSchema = z.object({
   firstName: z
     .string({
-      required_error: "Tên không được để trống"
+      required_error: "Tên không được để trống",
     })
     .min(2, {
       message: "Tên không được ngắn hơn 2 ký tự",
     })
     .max(50, {
-      message: "Tên không được dài quá 50 ký tự"
+      message: "Tên không được dài quá 50 ký tự",
     }),
   lastName: z
     .string({
-      required_error: "Họ không được để trống"
+      required_error: "Họ không được để trống",
     })
     .min(2, {
       message: "Họ không được ngắn hơn 2 ký tự",
     })
     .max(50, {
-      message: "Họ không được dài quá 50 ký tự"
+      message: "Họ không được dài quá 50 ký tự",
     }),
   phoneNumber: z
     .string({
-      required_error: "Số điện thoại không được để trống"
+      required_error: "Số điện thoại không được để trống",
     })
     .regex(/(84|0[3|5|7|8|9])+([0-9]{8})\b/, {
-      message: "Số điện thoại không hợp lệ"
+      message: "Số điện thoại không hợp lệ",
     }),
-  gender: z
-    .enum(["Nam", "Nữ", "Khác"], {
-      required_error: "Giới tính không được để trống"
-    }),
-  yearOfBirth: z
-    .string({
-      required_error: "Năm sinh không được để trống"
-    }),
-  address: z
-    .string({
-      required_error: "Địa chỉ không được để trống"
-    })
+  gender: z.enum(["Nam", "Nữ", "Khác"], {
+    required_error: "Giới tính không được để trống",
+  }),
+  yearOfBirth: z.string({
+    required_error: "Năm sinh không được để trống",
+  }),
+  address: z.string({
+    required_error: "Địa chỉ không được để trống",
+  }),
 });
 
 const UpdateInfo = () => {
   const navigate = useNavigate();
-      
+
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,8 +77,8 @@ const UpdateInfo = () => {
       firstName: "",
       lastName: "",
       phoneNumber: "",
-      address: ""
-    }
+      address: "",
+    },
   });
 
   // Submit handler
@@ -94,7 +86,7 @@ const UpdateInfo = () => {
     console.log(values);
 
     toast.success("Cập nhật thông tin thành công");
-    navigate("/user-info");
+    navigate("/user/user-info");
   }
 
   return (
@@ -107,7 +99,10 @@ const UpdateInfo = () => {
       {/* Card Content */}
       <CardContent className={cn("flex justify-center items-center")}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-[80%] lg:w-[50%] flex flex-col gap-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-[80%] lg:w-[50%] flex flex-col gap-4"
+          >
             <FormField
               control={form.control}
               name="lastName"
@@ -181,25 +176,19 @@ const UpdateInfo = () => {
                         <FormControl>
                           <RadioGroupItem value="Nam" />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Nam
-                        </FormLabel>
+                        <FormLabel className="font-normal">Nam</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
                           <RadioGroupItem value="Nữ" />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Nữ
-                        </FormLabel>
+                        <FormLabel className="font-normal">Nữ</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
                           <RadioGroupItem value="Khác" />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          Khác
-                        </FormLabel>
+                        <FormLabel className="font-normal">Khác</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -214,16 +203,25 @@ const UpdateInfo = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Năm sinh</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
-                      <SelectTrigger className={cn("rounded-xl border-slate-300")}>
+                      <SelectTrigger
+                        className={cn("rounded-xl border-slate-300")}
+                      >
                         <SelectValue placeholder="Chọn năm sinh" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {[...Array(2009 - 1944).keys()].map((index) => {
                         const year = 2008 - index;
-                        return <SelectItem key={year} value={year.toString()}>{year}</SelectItem>;
+                        return (
+                          <SelectItem key={year} value={year.toString()}>
+                            {year}
+                          </SelectItem>
+                        );
                       })}
                     </SelectContent>
                   </Select>
@@ -250,7 +248,7 @@ const UpdateInfo = () => {
                 </FormItem>
               )}
             />
-            
+
             <Button type="submit" className={cn("rounded-xl my-2")}>
               <SaveOutlinedIcon className="mr-2" /> Lưu
             </Button>

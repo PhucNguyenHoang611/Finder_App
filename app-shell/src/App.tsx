@@ -1,5 +1,6 @@
 // import "./App.css";
 import Home from "homeApp/Home";
+import UserInfo from "userInfo/UserInfo";
 // import Auth from "authApp/Auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootPage from "./pages/RootPage";
@@ -15,10 +16,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Home />,
       },
-      // {
-      //   path: "/auth",
-      //   element: <Auth />,
-      // },
+      {
+        path: "/user/*",
+        element: <UserInfo />,
+      },
     ],
   },
 ]);

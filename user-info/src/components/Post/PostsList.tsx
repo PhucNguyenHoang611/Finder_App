@@ -4,7 +4,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import PostItemCard from "./PostItemCard";
-import { useState } from "react";
+// import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const temp: number[] = [1, 2, 3, 4, 5];
@@ -21,17 +21,16 @@ const EmptyPostsList = () => {
 
 const PostsList = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  
+  // const [isLoading, setIsLoading] = useState(false);
+  const isLoading = false;
+
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
-      {(temp.length > 0 && !isLoading) && temp.map((_item, index) => (
-        <PostItemCard key={index} />
-      ))}
+      {temp.length > 0 &&
+        !isLoading &&
+        temp.map((_item, index) => <PostItemCard key={index} />)}
 
-      {(temp.length === 0 && !isLoading) && (
-        <EmptyPostsList />
-      )}
+      {temp.length === 0 && !isLoading && <EmptyPostsList />}
 
       {isLoading && (
         <div className="w-full flex flex-col justify-center items-center space-y-3">
@@ -46,12 +45,19 @@ const PostsList = () => {
       )}
 
       <div className="w-full flex sm:flex-row flex-col justify-center items-center gap-4">
-        <Button className="rounded-xl sm:w-[25%] w-[60%]" onClick={() => navigate("/")}>
+        <Button
+          className="rounded-xl sm:w-[25%] w-[60%]"
+          onClick={() => navigate("/")}
+        >
           <HomeOutlinedIcon className="mr-2" />
           Trang chủ
         </Button>
-        
-        <Button className="rounded-xl sm:w-[25%] w-[60%]" variant="outline" onClick={() => navigate("/add-post")}>
+
+        <Button
+          className="rounded-xl sm:w-[25%] w-[60%]"
+          variant="outline"
+          onClick={() => navigate("/add-post")}
+        >
           <BorderColorOutlinedIcon className="mr-2" />
           Thêm bài viết
         </Button>

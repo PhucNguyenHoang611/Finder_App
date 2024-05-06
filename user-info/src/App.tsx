@@ -10,32 +10,32 @@ import "@/App.scss";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "user",
     element: <RootPage />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/user-info",
-        element: <UserInfo />
+        path: "user-info",
+        element: <UserInfo />,
       },
       {
-        path: "/my-posts",
-        element: <MyPosts />
+        path: "my-posts",
+        element: <MyPosts />,
       },
       {
-        path: "/update-info",
-        element: <UpdateInfo />
+        path: "update-info",
+        element: <UpdateInfo />,
       },
       {
-        path: "/register-newsletter",
-        element: <RegisterNewsletter />
+        path: "register-newsletter",
+        element: <RegisterNewsletter />,
       },
       {
-        path: "/change-password",
-        element: <ChangePassword />
-      }
-    ]
-  }
+        path: "change-password",
+        element: <ChangePassword />,
+      },
+    ],
+  },
 ]);
 
 function App() {

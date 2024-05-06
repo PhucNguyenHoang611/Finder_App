@@ -1,11 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,7 +19,9 @@ const UserInfo = () => {
       </CardHeader>
 
       {/* Card Content */}
-      <CardContent className={cn("flex flex-col justify-center items-center gap-4")}>
+      <CardContent
+        className={cn("flex flex-col justify-center items-center gap-4")}
+      >
         <div className="grid w-full max-w-sm items-center gap-1.5">
           <Label htmlFor="lastName">Họ</Label>
           <Input
@@ -33,7 +30,8 @@ const UserInfo = () => {
             placeholder="Họ"
             defaultValue="Nguyễn Hoàng"
             className={cn("rounded-xl border-slate-300")}
-            readOnly />
+            readOnly
+          />
         </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -44,7 +42,8 @@ const UserInfo = () => {
             placeholder="Tên"
             defaultValue="Phúc"
             className={cn("rounded-xl border-slate-300")}
-            readOnly />
+            readOnly
+          />
         </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -55,7 +54,8 @@ const UserInfo = () => {
             placeholder="Số điện thoại"
             defaultValue="0933538901"
             className={cn("rounded-xl border-slate-300")}
-            readOnly />
+            readOnly
+          />
         </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -66,7 +66,8 @@ const UserInfo = () => {
             placeholder="Giới tính"
             defaultValue="Nam"
             className={cn("rounded-xl border-slate-300")}
-            readOnly />
+            readOnly
+          />
         </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -77,7 +78,8 @@ const UserInfo = () => {
             placeholder="Năm sinh"
             defaultValue="2002"
             className={cn("rounded-xl border-slate-300")}
-            readOnly />
+            readOnly
+          />
         </div>
 
         <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -88,10 +90,14 @@ const UserInfo = () => {
             placeholder="Địa chỉ"
             defaultValue="123/ABC, XYZ"
             className={cn("rounded-xl border-slate-300")}
-            readOnly />
+            readOnly
+          />
         </div>
 
-        <Button className={cn("rounded-xl")} onClick={() => navigate("/update-info")}>
+        <Button
+          className={cn("rounded-xl")}
+          onClick={() => navigate("/user/update-info")}
+        >
           <Pencil2Icon className="mr-2 w-6 h-6" /> Chỉnh sửa
         </Button>
       </CardContent>

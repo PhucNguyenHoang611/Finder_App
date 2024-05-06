@@ -1,16 +1,11 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -25,27 +20,27 @@ import { z } from "zod";
 
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
- 
+
 const formSchema = z.object({
   passwordForm: z
     .object({
-      currentPassword: z.string()
-        .min(1, {
-          message: "Mật khẩu không được để trống",
-        }),
-      newPassword: z.string()
+      currentPassword: z.string().min(1, {
+        message: "Mật khẩu không được để trống",
+      }),
+      newPassword: z
+        .string()
         .min(6, {
           message: "Mật khẩu mới không được ngắn hơn 6 ký tự",
         })
         .max(14, {
-          message: "Mật khẩu mới không được dài quá 14 ký tự"
+          message: "Mật khẩu mới không được dài quá 14 ký tự",
         }),
-      confirmPassword: z.string()
+      confirmPassword: z.string(),
     })
-    .refine(data => data.newPassword === data.confirmPassword, {
+    .refine((data) => data.newPassword === data.confirmPassword, {
       message: "Mật khẩu xác nhận không khớp",
-      path: ["confirmPassword"]
-    })
+      path: ["confirmPassword"],
+    }),
 });
 
 const ChangePassword = () => {
@@ -58,9 +53,9 @@ const ChangePassword = () => {
       passwordForm: {
         currentPassword: "",
         newPassword: "",
-        confirmPassword: ""
-      }
-    }
+        confirmPassword: "",
+      },
+    },
   });
 
   // Submit handler
@@ -68,7 +63,7 @@ const ChangePassword = () => {
     console.log(values);
 
     toast.success("Đổi mật khẩu thành công");
-    navigate("/user-info");
+    navigate("/user/user-info");
   }
 
   return (
@@ -81,7 +76,10 @@ const ChangePassword = () => {
       {/* Card Content */}
       <CardContent className={cn("flex justify-center items-center")}>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-[80%] lg:w-[50%] flex flex-col gap-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="w-[80%] lg:w-[50%] flex flex-col gap-4"
+          >
             <FormField
               control={form.control}
               name="passwordForm.currentPassword"
@@ -138,7 +136,7 @@ const ChangePassword = () => {
                 </FormItem>
               )}
             />
-            
+
             <Button type="submit" className={cn("rounded-xl my-2")}>
               <KeyOutlinedIcon className="mr-2" /> Đổi mật khẩu
             </Button>

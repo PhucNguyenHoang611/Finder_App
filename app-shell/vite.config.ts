@@ -12,8 +12,9 @@ export default defineConfig({
       remotes: {
         homeApp: "http://localhost:5001/assets/home.js",
         authApp: "http://localhost:5002/assets/auth.js",
+        userInfo: "http://localhost:5003/assets/userInfo.js",
       },
-      shared: ["react", "react-dom", "vue"],
+      shared: ["react", "react-dom"],
     }),
   ],
   resolve: {

@@ -13,18 +13,18 @@ export default defineConfig({
       exposes: {
         "./UserInfo": "./src/App.tsx",
       },
-      shared: ["react", "react-dom"]
-    })
+      shared: ["react", "react-dom"],
+    }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   build: {
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: true
-  }
+    cssCodeSplit: true,
+  },
 });

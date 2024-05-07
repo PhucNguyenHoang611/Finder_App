@@ -14,7 +14,7 @@ export default defineConfig({
         authApp: "http://localhost:5002/assets/auth.js",
         userInfo: "http://localhost:5003/assets/userInfo.js",
       },
-      shared: ["react", "react-dom"],
+      shared: ["react", "react-dom", "react-router-dom"],
     }),
   ],
   resolve: {

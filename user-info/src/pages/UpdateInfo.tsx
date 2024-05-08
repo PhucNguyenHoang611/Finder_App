@@ -86,7 +86,7 @@ const UpdateInfo = () => {
     console.log(values);
 
     toast.success("Cập nhật thông tin thành công");
-    navigate("/user/user-info");
+    navigate("/user-info");
   }
 
   return (

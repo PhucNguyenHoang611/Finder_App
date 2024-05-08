@@ -11,9 +11,9 @@ export default defineConfig({
       name: "user-info",
       filename: "userInfo.js",
       exposes: {
-        "./UserInfo": "./src/App.tsx",
+        "./UserInfo": "./src/Bootstrap.tsx",
       },
-      shared: ["react", "react-dom"],
+      shared: ["react", "react-dom", "react-router-dom"],
     }),
   ],
   resolve: {
@@ -25,6 +25,6 @@ export default defineConfig({
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: true,
+    cssCodeSplit: false,
   },
 });

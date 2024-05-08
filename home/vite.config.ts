@@ -12,6 +12,8 @@ export default defineConfig({
       filename: "home.js",
       exposes: {
         "./Home": "./src/pages/Home.tsx",
+        "./Signin": "./src/pages/auth/Signin.tsx",
+        "./Signup": "./src/pages/auth/Signup.tsx",
         "./Sidebar": "./src/components/nav/Sidebar.tsx",
       },
       shared: ["react", "react-dom", "react-router-dom"],

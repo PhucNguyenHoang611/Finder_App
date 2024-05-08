@@ -63,7 +63,7 @@ const ChangePassword = () => {
     console.log(values);
 
     toast.success("Đổi mật khẩu thành công");
-    navigate("/user/user-info");
+    navigate("/user-info");
   }
 
   return (

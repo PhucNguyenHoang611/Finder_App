@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 
 // shadcn/ui
 import {
@@ -25,6 +25,7 @@ import NewspaperOutlinedIcon from "@mui/icons-material/NewspaperOutlined";
 import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const menuItems: MenuItemProps[] = [
   {
@@ -80,6 +81,14 @@ const MenuItem = (props: MenuItemProps) => {
 const SideNav = () => {
   return (
     <Card className={cn("w-full h-max rounded-xl")}>
+      <aside>
+        <Link to={"/"}>
+          <button className="p-2 m-1 flex justify-start items-center hover:bg-slate-200 hover:border-0 rounded-xl">
+            <ArrowBackIcon />
+            <span>Back to home page</span>
+          </button>
+        </Link>
+      </aside>
       {/* Card Header */}
       <CardHeader
         className={cn("flex flex-col justify-center items-center gap-4")}

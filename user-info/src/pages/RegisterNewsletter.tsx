@@ -50,7 +50,7 @@ const RegisterNewsletter = () => {
 
     if (values.acceptRegister) {
       toast.success("Đăng ký thành công");
-      navigate("/user/user-info");
+      navigate("/user-info");
     }
   }
 

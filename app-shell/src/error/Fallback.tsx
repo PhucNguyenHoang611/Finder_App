@@ -1,5 +1,5 @@
 import "@/assets/loading.css";
 
-const Fallback = () => <p>Finding remote page</p>;
+const Fallback = () => <p>I am finding remote page...</p>;
 
 export default Fallback;

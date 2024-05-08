@@ -1,5 +1,6 @@
 // import "./App.css";
 import Home from "@/pages/Home";
+import Dashboard from "@/pages/Dashboard";
 import UserInfo from "@/pages/UserInfo";
 // import Auth from "authApp/Auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
@@ -14,7 +15,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />,
+        element: <Dashboard />,
+        children: [
+          {
+            path: "/",
+            element: <Home />,
+          },
+        ],
       },
       {
         path: "/user/*",

@@ -11,9 +11,10 @@ export default defineConfig({
       name: "home",
       filename: "home.js",
       exposes: {
-        "./Home": "./src/App.tsx",
+        "./Home": "./src/pages/Home.tsx",
+        "./Sidebar": "./src/components/nav/Sidebar.tsx",
       },
-      shared: ["react", "react-dom"],
+      shared: ["react", "react-dom", "react-router-dom"],
     }),
   ],
   resolve: {
@@ -25,7 +26,7 @@ export default defineConfig({
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: true,
+    cssCodeSplit: false,
   },
   // build: {
   //   target: "es2022", // Set your target environment here

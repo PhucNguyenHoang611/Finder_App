@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 const RootPage = () => {
   return (
-    <main>
+    <main className="p-[20px]">
       <Outlet />
     </main>
   );

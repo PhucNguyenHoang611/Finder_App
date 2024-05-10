@@ -2,9 +2,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
-import PostCard from "@/components/Post/Card/PostCard";
+import NewsList from "@/components/News/NewsList";
 
-const PostDetails = () => {
+const NewsPage = () => {
   return (
     <div className="w-full flex flex-col justify-center items-center">
       <Alert className={cn("rounded-xl bg-red-400 text-white border mb-[20px]")}>
@@ -21,9 +21,9 @@ const PostDetails = () => {
         </div>
       </Alert>
 
-      <PostCard />
+      <NewsList />
     </div>
   );
 };
 
-export default PostDetails;
+export default NewsPage;

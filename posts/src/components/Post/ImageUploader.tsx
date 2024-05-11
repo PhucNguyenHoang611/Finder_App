@@ -26,7 +26,7 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
         onImageUpdate,
         onImageRemove,
         isDragging,
-        dragProps
+        dragProps,
         // onImageRemoveAll
       }) => (
         <div className="w-full h-max flex justify-center items-center my-8">
@@ -35,7 +35,9 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
               type="button"
               onClick={onImageUpload}
               {...dragProps}
-              className={`lg:w-[80%] w-full h-[500px] ${isDragging ? "bg-slate-200" : "bg-white"} border-2 border-slate-200 rounded-xl flex items-center justify-center gap-2`}
+              className={`lg:w-[80%] w-full h-[500px] ${
+                isDragging ? "bg-slate-200" : "bg-white"
+              } border-2 border-slate-200 rounded-xl flex items-center justify-center gap-2`}
             >
               <CloudUploadOutlinedIcon />
               <p className="text-sm font-semibold">
@@ -45,11 +47,30 @@ export function ImageUploader({ images, setImages }: ImageUploaderProps) {
           )}
 
           {imageList.map((image, index) => (
-            <div key={index} className="lg:w-[80%] w-full h-max flex flex-col gap-2">
-              <img src={image.dataURL} alt="postImage" className="w-full h-[500px] border-2 border-slate-200 object-cover rounded-xl" />
+            <div
+              key={index}
+              className="lg:w-[80%] w-full h-max flex flex-col gap-2"
+            >
+              <img
+                src={image.dataURL}
+                alt="postImage"
+                className="w-full h-[500px] border-2 border-slate-200 object-cover rounded-xl"
+              />
               <div className="flex justify-center items-center gap-2">
-                <button type="button" className="w-[20%] h-[40px] rounded-xl font-semibold text-white bg-black" onClick={() => onImageUpdate(index)}>Đổi ảnh</button>
-                <button type="button" className="w-[20%] h-[40px] rounded-xl font-semibold border-2 border-black text-black" onClick={() => onImageRemove(index)}>Xóa</button>
+                <button
+                  type="button"
+                  className="w-[20%] h-[40px] rounded-xl font-semibold text-white bg-black"
+                  onClick={() => onImageUpdate(index)}
+                >
+                  Đổi ảnh
+                </button>
+                <button
+                  type="button"
+                  className="w-[20%] h-[40px] rounded-xl font-semibold border-2 border-black text-black"
+                  onClick={() => onImageRemove(index)}
+                >
+                  Xóa
+                </button>
               </div>
             </div>
           ))}

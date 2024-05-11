@@ -13,8 +13,14 @@ export default defineConfig({
         homeApp: "http://localhost:5001/assets/home.js",
         authApp: "http://localhost:5002/assets/auth.js",
         userInfo: "http://localhost:5003/assets/userInfo.js",
+        posts: "http://localhost:5004/assets/posts.js",
       },
-      shared: ["react", "react-dom", "react-router-dom"],
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "react-images-uploading",
+      ],
     }),
   ],
   resolve: {

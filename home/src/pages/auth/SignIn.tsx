@@ -55,7 +55,7 @@ const SignIn = () => {
   return (
     <main className="dark:bg-[#26313c] h-screen flex items-center justify-center p-10">
       <Link to={"/"}>
-        <button className="absolute left-20 top-20">
+        <button className="absolute left-20 top-[6rem]">
           <Undo2 className="w-8 h-8" />
         </button>
       </Link>

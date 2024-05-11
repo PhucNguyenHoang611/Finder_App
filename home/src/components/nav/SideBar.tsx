@@ -10,16 +10,11 @@ import {
   UsersRound,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import SearchBar from "./SearchBar";
 
 const SideBar = () => {
   return (
     <nav className="flex justify-center items-start gap-4 w-full h-full">
       <ul className="text-apptext-1 w-full">
-        <li className="w-full py-4">
-          <SearchBar />
-        </li>
-
         <hr className="text-black border my-2" />
 
         <li>

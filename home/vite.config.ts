@@ -15,6 +15,7 @@ export default defineConfig({
         "./Signin": "./src/pages/auth/Signin.tsx",
         "./Signup": "./src/pages/auth/Signup.tsx",
         "./Sidebar": "./src/components/nav/Sidebar.tsx",
+        "./Header": "./src/components/nav/Header.tsx",
       },
       shared: ["react", "react-dom", "react-router-dom"],
     }),

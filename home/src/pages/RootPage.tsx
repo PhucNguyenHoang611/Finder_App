@@ -1,41 +1,14 @@
-import SideBar from "@/components/nav/SideBar";
-import { useEffect, useState } from "react";
+import Header from "@/components/nav/Header";
 import { Outlet } from "react-router-dom";
 
 const RootPage = () => {
-  const [position, setPosition] = useState<Position>({
-    latitude: null,
-    longitude: null,
-  });
-
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        setPosition({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-      });
-
-      console.log(
-        `Latitude: ${position.latitude}, Longitude: ${position.longitude}`
-      );
-    } else {
-      console.log("Geolocation is not available in your browser.");
-    }
-  }, []);
-
   return (
-    <main className="flex justify-start items-start px-10">
-      <section className="lg:flex w-64 fixed hidden h-lvh">
-        <SideBar />
-      </section>
-      <section className="lg:pl-64 flex justify-center items-center pt-4">
-        <div className="w-11/12">
-          <Outlet />
-        </div>
-      </section>
-    </main>
+    <div className="flex flex-col justify-start items-start">
+      <div className="pb-10">
+        <Header />
+      </div>
+      <Outlet />
+    </div>
   );
 };
 

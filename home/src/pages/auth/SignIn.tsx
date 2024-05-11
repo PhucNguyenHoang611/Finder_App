@@ -9,7 +9,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Link } from "react-router-dom";
-import { RiGoogleFill } from "@remixicon/react";
+import { RiGoogleFill, RiFacebookFill } from "@remixicon/react";
 import { EyeIcon, EyeOffIcon, Undo2 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -75,7 +75,18 @@ const SignIn = () => {
                   // color="white"
                   className="loginWithGoogle"
                 />
-                Sign in with Google
+                <p className="mr-4">Sign in with Google</p>
+              </Button>
+              <Button
+                className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
+                variant="outline"
+              >
+                <RiFacebookFill
+                  size={24}
+                  // color="white"
+                  className="loginWithFacebook"
+                />
+                <p>Sign in with Facebook</p>
               </Button>
               <FormField
                 control={form.control}

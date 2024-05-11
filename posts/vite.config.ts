@@ -11,20 +11,29 @@ export default defineConfig({
       name: "posts",
       filename: "posts.js",
       exposes: {
-        "./UserInfo": "./src/App.tsx",
+        "./CreatePost": "./src/pages/Post/CreatePost.tsx",
+        "./PostDetails": "./src/pages/Post/PostDetails.tsx",
+        "./PostResultList": "./src/pages/Post/PostResultList.tsx",
+        "./NewsPage": "./src/pages/News/NewsPage.tsx",
+        "./Bootstrap": "./src/Bootstrap.tsx",
       },
-      shared: ["react", "react-dom"]
-    })
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "react-images-uploading",
+      ],
+    }),
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src")
-    }
+      "@": path.resolve(__dirname, "./src"),
+    },
   },
   build: {
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: true
-  }
+    cssCodeSplit: false,
+  },
 });

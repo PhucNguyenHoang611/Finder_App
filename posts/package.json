@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "serve": "vite preview --port 5003 --strictPort"
+    "serve": "vite preview --port 5004 --strictPort"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",

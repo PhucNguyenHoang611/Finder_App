@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom";
 const RootPage = () => {
   return (
     <div className="flex flex-col justify-start items-start">
-      <div className="pb-10">
+      <div className="pb-14">
         <Header />
       </div>
       <Outlet />

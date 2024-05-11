@@ -3,6 +3,7 @@ declare module "homeApp/Home";
 declare module "homeApp/Sidebar";
 declare module "homeApp/Signin";
 declare module "homeApp/Signup";
+declare module "homeApp/Header";
 // auth (not use)
 declare module "authApp/Auth";
 // userInfo

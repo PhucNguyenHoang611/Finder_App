@@ -1,6 +1,7 @@
 import { AlignLeft, SquareUser } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
+import SearchBar from "./SearchBar";
 
 const Header = () => {
   const location = useLocation();
@@ -21,12 +22,20 @@ const Header = () => {
           <Link to={"/"}>Finder</Link>
         </h1>
       </div>
+      <div className="w-full max-w-[300px]">
+        {location.pathname !== "/sign-in" &&
+        location.pathname !== "/sign-up" ? (
+          <button id="toggle-menu">
+            <SearchBar />
+          </button>
+        ) : null}
+      </div>
       <ul>
         <li className="flex justify-start gap-2 bottom-4">
           <Link to={"/sign-in"}>
             <Button className="w-30">Đăng nhập</Button>
           </Link>
-          <Link to={"/sign-in"}>
+          <Link to={"/sign-up"}>
             <Button className=" bg-transparent border border-black text-black w-30">
               Đăng ký
             </Button>

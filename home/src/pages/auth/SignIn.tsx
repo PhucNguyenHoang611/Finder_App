@@ -20,18 +20,18 @@ const formSchema = z.object({
   email: z
     .string()
     .min(4, {
-      message: "Email must be at least 4 characters long",
+      message: "Email phải dài ít nhất 4 ký tự"
     })
     .max(50, {
-      message: "Email must be at most 50 characters long",
+      message: "Email chỉ được dài tối đa 50 ký tự"
     }),
   password: z
     .string()
     .min(6, {
-      message: "Password must be at least 6 characters long",
+      message: "Mật khẩu phải dài ít nhất 6 ký tự"
     })
     .max(100, {
-      message: "Password must be at most 100 characters long",
+      message: "Mật khẩu chỉ được dài tối đa 100 ký tự"
     }),
 });
 
@@ -53,20 +53,21 @@ const SignIn = () => {
   }
 
   return (
-    <main className="dark:bg-[#26313c] h-screen flex items-center justify-center p-10">
+    <main className="dark:bg-[#26313c] w-full h-screen flex items-center justify-center lg:p-10 md:p-6 p-0">
       <Link to={"/"}>
-        <button className="absolute left-20 top-[6rem]">
+        <button className="absolute sm:left-20 left-5 top-[13%]">
           <Undo2 className="w-8 h-8" />
         </button>
       </Link>
-      <div className="grid w-full h-full grid-cols-1 bg-white box-border md:grid-cols-2">
-        <div className="dark:bg-[#092635] flex items-center justify-center flex-col">
+      <div className="grid w-full h-full grid-cols-1 bg-white rounded-xl box-border lg:grid-cols-2">
+        <div className="dark:bg-[#092635] flex items-center justify-center flex-col gap-4">
           <div className="my-4">
-            <h1 className="text-3xl font-semibold ">Login</h1>
+            <h1 className="text-3xl font-semibold">Đăng nhập</h1>
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <Button
+                type="button"
                 className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
                 variant="outline"
               >
@@ -75,9 +76,10 @@ const SignIn = () => {
                   // color="white"
                   className="loginWithGoogle"
                 />
-                <p className="mr-4">Sign in with Google</p>
+                <p className="mr-4">Đăng nhập bằng Google</p>
               </Button>
               <Button
+                type="button"
                 className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
                 variant="outline"
               >
@@ -86,18 +88,17 @@ const SignIn = () => {
                   // color="white"
                   className="loginWithFacebook"
                 />
-                <p>Sign in with Facebook</p>
+                <p>Đăng nhập bằng Facebook</p>
               </Button>
               <FormField
                 control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email*</FormLabel>
+                    <FormLabel>Địa chỉ Email*</FormLabel>
                     <FormControl>
                       <Input
-                        className="min-w-[384px]"
-                        placeholder="Email"
+                        placeholder="Nhập địa chỉ Email"
                         {...field}
                       />
                     </FormControl>
@@ -112,12 +113,12 @@ const SignIn = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="mt-2">
-                    <FormLabel>Password*</FormLabel>
+                    <FormLabel>Mật khẩu*</FormLabel>
                     <FormControl>
-                      <div className="relative min-w-[384px]">
+                      <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Password"
+                          placeholder="Nhập mật khẩu của bạn"
                           {...field}
                         />
                         <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
@@ -141,32 +142,32 @@ const SignIn = () => {
               />
 
               <p className="mt-2 text-xs dark:text-slate-400">
-                Forgot password? &nbsp;
+                Quên mật khẩu? &nbsp;
                 <Link
                   className="hover:cursor-pointer font-bold"
                   to={"/reset-password"}
                 >
-                  Reset Password
+                  Đặt lại mật khẩu
                 </Link>
               </p>
 
               <Button type="submit" className="w-full mt-6 rounded-full">
-                Login
+                Đăng nhập
               </Button>
 
               <p className="mt-6 text-xs dark:text-slate-400">
-                Don't have an account? &nbsp;
+                Chưa có tài khoản? &nbsp;
                 <Link
                   className="hover:cursor-pointer font-bold"
                   to={"/sign-up"}
                 >
-                  Sign Up
+                  Đăng ký ngay
                 </Link>
               </p>
             </form>
           </Form>
         </div>
-        <div className="relative hidden md:block p-1">
+        <div className="relative hidden lg:block p-1">
           <div className="flex justify-center items-center h-full">
             <img
               className="object-cover"

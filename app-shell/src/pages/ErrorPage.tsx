@@ -11,9 +11,9 @@ const ErrorPage = () => {
       className="flex items-center justify-center h-screen bg-gray-100"
     >
       <div className="text-center max-w-md">
-        <h1 className="text-3xl font-bold text-gray-800">Oops!</h1>
+        <h1 className="text-3xl font-bold text-gray-800">Ôi không!</h1>
         <p className="text-gray-600 mt-4">
-          Sorry, an unexpected error has occurred.
+          Xin lỗi, một lỗi không mong muốn đã xảy ra.
         </p>
         <p className="text-gray-400 italic mt-2">
           <i>{error.statusText || error.message}</i>

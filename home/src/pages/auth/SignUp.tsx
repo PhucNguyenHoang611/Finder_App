@@ -100,20 +100,21 @@ const SignUp = () => {
   }
 
   return (
-    <main className="dark:bg-[#26313c] h-screen flex items-center justify-center p-10 w-full">
+    <main className="dark:bg-[#26313c] w-full h-screen flex items-center justify-center lg:p-10 md:p-6 p-0">
       <Link to={"/"}>
-        <button className="absolute left-20 top-[6rem]">
+        <button className="absolute sm:left-20 left-5 sm:top-[13%] top-[10%]">
           <Undo2 className="w-8 h-8" />
         </button>
       </Link>
-      <div className="grid w-full h-full grid-cols-1 box-border">
-        <div className="dark:bg-[#092635] bg-white flex items-center justify-center flex-col">
+      <div className="grid w-full h-full grid-cols-1 box-border bg-white rounded-xl">
+        <div className="dark:bg-[#092635] flex items-center justify-center flex-col gap-4 px-4 py-10">
           <div className="my-4">
-            <h1 className="text-3xl font-semibold ">Sign up</h1>
+            <h1 className="text-3xl font-semibold ">Đăng ký tài khoản</h1>
           </div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <Button
+                type="button"
                 className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
                 variant="outline"
               >
@@ -122,22 +123,22 @@ const SignUp = () => {
                   // color="white"
                   className="loginWithGoogle"
                 />
-                Sign up with Google
+                Đăng ký bằng Google
               </Button>
 
               <div>
                 <br />
               </div>
 
-              <div className="flex items-center justify-center w-full gap-4 max-w-sm">
+              <div className="flex items-center justify-center w-full gap-4">
                 <FormField
                   control={form.control}
                   name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First Name*</FormLabel>
+                      <FormLabel>Tên*</FormLabel>
                       <FormControl>
-                        <Input placeholder="First Name" {...field} />
+                        <Input placeholder="Tên của bạn" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -149,9 +150,9 @@ const SignUp = () => {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last Name*</FormLabel>
+                      <FormLabel>Họ*</FormLabel>
                       <FormControl>
-                        <Input placeholder="Last Name" {...field} />
+                        <Input placeholder="Họ của bạn" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -164,9 +165,9 @@ const SignUp = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem className="mt-2">
-                    <FormLabel>Email*</FormLabel>
+                    <FormLabel>Địa chỉ Email*</FormLabel>
                     <FormControl>
-                      <Input placeholder="Email" {...field} />
+                      <Input placeholder="Nhập địa chỉ Email" {...field} />
                     </FormControl>
                     {/* <FormDescription>Give me your email.</FormDescription> */}
                     <FormMessage />
@@ -179,9 +180,9 @@ const SignUp = () => {
                 name="phone"
                 render={({ field }) => (
                   <FormItem className="mt-2">
-                    <FormLabel>Phone*</FormLabel>
+                    <FormLabel>Số điện thoại*</FormLabel>
                     <FormControl>
-                      <Input placeholder="Phone" {...field} />
+                      <Input placeholder="Nhập SĐT" {...field} />
                     </FormControl>
                     {/* <FormDescription>Give me your phone.</FormDescription> */}
                     <FormMessage />
@@ -194,12 +195,12 @@ const SignUp = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem className="mt-2">
-                    <FormLabel>Password*</FormLabel>
+                    <FormLabel>Mật khẩu*</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Password"
+                          placeholder="Nhập mật khẩu của bạn"
                           {...field}
                         />
                         <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
@@ -228,12 +229,12 @@ const SignUp = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem className="mt-2">
-                    <FormLabel>Confirm Password*</FormLabel>
+                    <FormLabel>Xác nhận mật khẩu*</FormLabel>
                     <FormControl>
                       <div className="relative">
                         <Input
                           type={showCoPassword ? "text" : "password"}
-                          placeholder="Confirm Password"
+                          placeholder="Nhập lại mật khẩu của bạn"
                           {...field}
                         />
                         <div className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 cursor-pointer">
@@ -258,16 +259,16 @@ const SignUp = () => {
               />
 
               <Button type="submit" className="w-full mt-6 rounded-full">
-                Sign Up
+                Đăng ký
               </Button>
 
               <p className="mt-6 mb-8 text-xs dark:text-slate-400">
-                Are you have an account? &nbsp;
+                Đã có tài khoản? &nbsp;
                 <Link
                   className="font-bold hover:cursor-pointer"
                   to={"/sign-in"}
                 >
-                  Sign In
+                  Đăng nhập ngay
                 </Link>
               </p>
             </form>

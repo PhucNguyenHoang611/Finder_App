@@ -85,7 +85,7 @@ const SideNav = () => {
         <Link to={"/"}>
           <button className="p-2 m-1 flex justify-start items-center hover:bg-slate-200 hover:border-0 rounded-xl">
             <ArrowBackIcon />
-            <span>Back to home page</span>
+            <span>Trở về trang chủ</span>
           </button>
         </Link>
       </aside>

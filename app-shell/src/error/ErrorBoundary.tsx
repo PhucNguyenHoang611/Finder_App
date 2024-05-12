@@ -31,7 +31,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <h3>
-          Sorry.. there was an error, try
+          Xin lỗi... đã có lỗi xảy ra. Vui lòng
           <a
             style={{
               padding: "5px",
@@ -41,7 +41,7 @@ class ErrorBoundary extends Component<Props, State> {
             }}
             onClick={this.reloadPage}
           >
-            refresh
+            tải lại trang
           </a>
           !
         </h3>

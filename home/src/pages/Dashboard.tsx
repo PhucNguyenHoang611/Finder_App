@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import SideBar from "@/components/nav/SideBar";
 import { useEffect, useState } from "react";
 import { Outlet } from "react-router-dom";
@@ -26,7 +27,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <main className="flex justify-start items-start px-10">
+    <main className="flex justify-start items-start lg:px-10 md:px-6 sm:px-4 px-2">
       <section className="lg:flex w-64 fixed hidden">
         <SideBar />
       </section>

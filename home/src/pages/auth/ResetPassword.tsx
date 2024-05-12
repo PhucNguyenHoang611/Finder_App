@@ -17,14 +17,14 @@ const formSchema = z.object({
   email: z
     .string()
     .min(4, {
-      message: "Email must be at least 4 characters long",
+      message: "Email phải dài ít nhất 4 ký tự"
     })
     .max(50, {
-      message: "Email must be at most 50 characters long",
+      message: "Email chỉ được dài tối đa 50 ký tự"
     })
     .refine((value) => value.includes("@"), {
-      message: "Email must have @ symbol",
-    }),
+      message: "Email phải chứa ký tự @"
+    })
 });
 
 const ResetPassword = () => {
@@ -40,12 +40,12 @@ const ResetPassword = () => {
   }
 
   return (
-    <main>
-      <div className="flex flex-col h-screen">
-        <div className="flex flex-col justify-center items-center bg-white dark:bg-slate-900">
+    <main className="dark:bg-[#26313c] w-full h-full flex items-center justify-center lg:p-10 md:p-6 p-0">
+      <div className="w-full h-full">
+        <div className="flex flex-col justify-start items-center bg-white h-screen rounded-xl dark:bg-slate-900">
           <div className="w-full max-w-sm p-6">
-            <h1 className="text-3xl font-semibold text-center dark:text-slate-50 pt-12">
-              Reset Password
+            <h1 className="text-3xl font-semibold text-center dark:text-slate-50 py-12">
+              Đặt lại mật khẩu
             </h1>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -54,9 +54,9 @@ const ResetPassword = () => {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email*</FormLabel>
+                      <FormLabel>Nhập địa chỉ Email dùng để đăng ký*</FormLabel>
                       <FormControl>
-                        <Input placeholder="Email" {...field} />
+                        <Input placeholder="Địa chỉ Email" {...field} />
                       </FormControl>
                       {/* <FormDescription>Give me your email.</FormDescription> */}
                       <FormMessage />
@@ -68,16 +68,16 @@ const ResetPassword = () => {
                   type="submit"
                   className="w-full mt-6 bg-green-1 rounded-full hover:bg-green-2"
                 >
-                  Reset Password
+                  Đặt lại mật khẩu
                 </Button>
 
                 <p className="mt-6 mb-8 text-xs dark:text-slate-400">
-                  Return to sign in? &nbsp;
+                  Quay lại đăng nhập? &nbsp;
                   <Link
                     className="text-green-1 font-bold hover:cursor-pointer"
                     to={"/sign-in"}
                   >
-                    Sign In
+                    Đăng nhập
                   </Link>
                 </p>
               </form>

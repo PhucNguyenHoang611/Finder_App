@@ -12,96 +12,98 @@ const UserInfo = () => {
   const navigate = useNavigate();
 
   return (
-    <Card className={cn("w-full h-max rounded-xl")}>
-      {/* Card Header */}
-      <CardHeader className={cn("flex justify-center items-center")}>
-        <CardTitle>Thông tin tài khoản</CardTitle>
-      </CardHeader>
+    <div className="w-full h-max">
+      <Card className={cn("w-full h-max rounded-xl")}>
+        {/* Card Header */}
+        <CardHeader className={cn("flex justify-center items-center")}>
+          <CardTitle>Thông tin tài khoản</CardTitle>
+        </CardHeader>
 
-      {/* Card Content */}
-      <CardContent
-        className={cn("flex flex-col justify-center items-center gap-4")}
-      >
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="lastName">Họ</Label>
-          <Input
-            type="text"
-            id="lastName"
-            placeholder="Họ"
-            defaultValue="Nguyễn Hoàng"
-            className={cn("rounded-xl border-slate-300")}
-            readOnly
-          />
-        </div>
-
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="firstName">Tên</Label>
-          <Input
-            type="text"
-            id="firstName"
-            placeholder="Tên"
-            defaultValue="Phúc"
-            className={cn("rounded-xl border-slate-300")}
-            readOnly
-          />
-        </div>
-
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="phoneNumber">Số điện thoại</Label>
-          <Input
-            type="text"
-            id="phoneNumber"
-            placeholder="Số điện thoại"
-            defaultValue="0933538901"
-            className={cn("rounded-xl border-slate-300")}
-            readOnly
-          />
-        </div>
-
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="gender">Giới tính</Label>
-          <Input
-            type="text"
-            id="gender"
-            placeholder="Giới tính"
-            defaultValue="Nam"
-            className={cn("rounded-xl border-slate-300")}
-            readOnly
-          />
-        </div>
-
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="yearOfBirth">Năm sinh</Label>
-          <Input
-            type="text"
-            id="yearOfBirth"
-            placeholder="Năm sinh"
-            defaultValue="2002"
-            className={cn("rounded-xl border-slate-300")}
-            readOnly
-          />
-        </div>
-
-        <div className="grid w-full max-w-sm items-center gap-1.5">
-          <Label htmlFor="address">Địa chỉ</Label>
-          <Input
-            type="text"
-            id="address"
-            placeholder="Địa chỉ"
-            defaultValue="123/ABC, XYZ"
-            className={cn("rounded-xl border-slate-300")}
-            readOnly
-          />
-        </div>
-
-        <Button
-          className={cn("rounded-xl")}
-          onClick={() => navigate("/user/update-info")}
+        {/* Card Content */}
+        <CardContent
+          className={cn("flex flex-col justify-center items-center gap-4")}
         >
-          <Pencil2Icon className="mr-2 w-6 h-6" /> Chỉnh sửa
-        </Button>
-      </CardContent>
-    </Card>
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="lastName">Họ</Label>
+            <Input
+              type="text"
+              id="lastName"
+              placeholder="Họ"
+              defaultValue="Nguyễn Hoàng"
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="firstName">Tên</Label>
+            <Input
+              type="text"
+              id="firstName"
+              placeholder="Tên"
+              defaultValue="Phúc"
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="phoneNumber">Số điện thoại</Label>
+            <Input
+              type="text"
+              id="phoneNumber"
+              placeholder="Số điện thoại"
+              defaultValue="0933538901"
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="gender">Giới tính</Label>
+            <Input
+              type="text"
+              id="gender"
+              placeholder="Giới tính"
+              defaultValue="Nam"
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="yearOfBirth">Năm sinh</Label>
+            <Input
+              type="text"
+              id="yearOfBirth"
+              placeholder="Năm sinh"
+              defaultValue="2002"
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="address">Địa chỉ</Label>
+            <Input
+              type="text"
+              id="address"
+              placeholder="Địa chỉ"
+              defaultValue="123/ABC, XYZ"
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <Button
+            className={cn("rounded-xl")}
+            onClick={() => navigate("/user/update-info")}
+          >
+            <Pencil2Icon className="mr-2 w-6 h-6" /> Chỉnh sửa
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

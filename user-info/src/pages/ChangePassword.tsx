@@ -67,83 +67,85 @@ const ChangePassword = () => {
   }
 
   return (
-    <Card className={cn("w-full h-max rounded-xl")}>
-      {/* Card Header */}
-      <CardHeader className={cn("flex justify-center items-center")}>
-        <CardTitle>Đổi mật khẩu</CardTitle>
-      </CardHeader>
+    <div className="w-full h-max">
+      <Card className={cn("w-full h-max rounded-xl")}>
+        {/* Card Header */}
+        <CardHeader className={cn("flex justify-center items-center")}>
+          <CardTitle>Đổi mật khẩu</CardTitle>
+        </CardHeader>
 
-      {/* Card Content */}
-      <CardContent className={cn("flex justify-center items-center")}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-[80%] lg:w-[50%] flex flex-col gap-4"
-          >
-            <FormField
-              control={form.control}
-              name="passwordForm.currentPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mật khẩu hiện tại</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Mật khẩu hiện tại"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {/* Card Content */}
+        <CardContent className={cn("flex justify-center items-center")}>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-[80%] lg:w-[50%] flex flex-col gap-4"
+            >
+              <FormField
+                control={form.control}
+                name="passwordForm.currentPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mật khẩu hiện tại</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Mật khẩu hiện tại"
+                        className={cn("rounded-xl border-slate-300")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="passwordForm.newPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Mật khẩu mới</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Mật khẩu mới"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="passwordForm.newPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Mật khẩu mới</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Mật khẩu mới"
+                        className={cn("rounded-xl border-slate-300")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="passwordForm.confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Xác nhận mật khẩu</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Xác nhận mật khẩu"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="passwordForm.confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Xác nhận mật khẩu</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="Xác nhận mật khẩu"
+                        className={cn("rounded-xl border-slate-300")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button type="submit" className={cn("rounded-xl my-2")}>
-              <KeyOutlinedIcon className="mr-2" /> Đổi mật khẩu
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              <Button type="submit" className={cn("rounded-xl my-2")}>
+                <KeyOutlinedIcon className="mr-2" /> Đổi mật khẩu
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

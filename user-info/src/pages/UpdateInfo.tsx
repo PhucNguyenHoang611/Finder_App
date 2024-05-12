@@ -90,172 +90,174 @@ const UpdateInfo = () => {
   }
 
   return (
-    <Card className={cn("w-full h-max rounded-xl")}>
-      {/* Card Header */}
-      <CardHeader className={cn("flex justify-center items-center")}>
-        <CardTitle>Cập nhật thông tin</CardTitle>
-      </CardHeader>
+    <div className="w-full h-max">
+      <Card className={cn("w-full h-max rounded-xl")}>
+        {/* Card Header */}
+        <CardHeader className={cn("flex justify-center items-center")}>
+          <CardTitle>Cập nhật thông tin</CardTitle>
+        </CardHeader>
 
-      {/* Card Content */}
-      <CardContent className={cn("flex justify-center items-center")}>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-[80%] lg:w-[50%] flex flex-col gap-4"
-          >
-            <FormField
-              control={form.control}
-              name="lastName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Họ</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Họ"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        {/* Card Content */}
+        <CardContent className={cn("flex justify-center items-center")}>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-[80%] lg:w-[50%] flex flex-col gap-4"
+            >
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Họ</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Họ"
+                        className={cn("rounded-xl border-slate-300")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="firstName"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tên</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Tên"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="firstName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Tên</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Tên"
+                        className={cn("rounded-xl border-slate-300")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Số điện thoại</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Số điện thoại"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="phoneNumber"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Số điện thoại</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Số điện thoại"
+                        className={cn("rounded-xl border-slate-300")}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem className="space-y-3">
-                  <FormLabel>Giới tính</FormLabel>
-                  <FormControl>
-                    <RadioGroup
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem className="space-y-3">
+                    <FormLabel>Giới tính</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex flex-col space-y-1"
+                      >
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Nam" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Nam</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Nữ" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Nữ</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Khác" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Khác</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="yearOfBirth"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Năm sinh</FormLabel>
+                    <Select
                       onValueChange={field.onChange}
                       defaultValue={field.value}
-                      className="flex flex-col space-y-1"
                     >
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="Nam" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Nam</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="Nữ" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Nữ</FormLabel>
-                      </FormItem>
-                      <FormItem className="flex items-center space-x-3 space-y-0">
-                        <FormControl>
-                          <RadioGroupItem value="Khác" />
-                        </FormControl>
-                        <FormLabel className="font-normal">Khác</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                      <FormControl>
+                        <SelectTrigger
+                          className={cn("rounded-xl border-slate-300")}
+                        >
+                          <SelectValue placeholder="Chọn năm sinh" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {[...Array(2009 - 1944).keys()].map((index) => {
+                          const year = 2008 - index;
+                          return (
+                            <SelectItem key={year} value={year.toString()}>
+                              {year}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="yearOfBirth"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Năm sinh</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Địa chỉ</FormLabel>
                     <FormControl>
-                      <SelectTrigger
+                      <Input
+                        type="text"
+                        placeholder="Địa chỉ"
                         className={cn("rounded-xl border-slate-300")}
-                      >
-                        <SelectValue placeholder="Chọn năm sinh" />
-                      </SelectTrigger>
+                        {...field}
+                      />
                     </FormControl>
-                    <SelectContent>
-                      {[...Array(2009 - 1944).keys()].map((index) => {
-                        const year = 2008 - index;
-                        return (
-                          <SelectItem key={year} value={year.toString()}>
-                            {year}
-                          </SelectItem>
-                        );
-                      })}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Địa chỉ</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Địa chỉ"
-                      className={cn("rounded-xl border-slate-300")}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <Button type="submit" className={cn("rounded-xl my-2")}>
-              <SaveOutlinedIcon className="mr-2" /> Lưu
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+              <Button type="submit" className={cn("rounded-xl my-2")}>
+                <SaveOutlinedIcon className="mr-2" /> Lưu
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

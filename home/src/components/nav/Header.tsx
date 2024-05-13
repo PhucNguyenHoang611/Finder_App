@@ -32,9 +32,7 @@ const Header = () => {
       <div className="w-full flex lg:justify-center justify-end items-center">
         {location.pathname !== "/sign-in" &&
         location.pathname !== "/sign-up" ? (
-          <button id="toggle-menu">
-            <SearchBar />
-          </button>
+          <SearchBar />
         ) : null}
       </div>
       

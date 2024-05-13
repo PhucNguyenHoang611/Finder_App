@@ -17,14 +17,14 @@ const formSchema = z.object({
   email: z
     .string()
     .min(4, {
-      message: "Email phải dài ít nhất 4 ký tự"
+      message: "Email phải dài ít nhất 4 ký tự",
     })
     .max(50, {
-      message: "Email chỉ được dài tối đa 50 ký tự"
+      message: "Email chỉ được dài tối đa 50 ký tự",
     })
     .refine((value) => value.includes("@"), {
-      message: "Email phải chứa ký tự @"
-    })
+      message: "Email phải chứa ký tự @",
+    }),
 });
 
 const ResetPassword = () => {
@@ -64,17 +64,14 @@ const ResetPassword = () => {
                   )}
                 />
 
-                <Button
-                  type="submit"
-                  className="w-full mt-6 bg-green-1 rounded-full hover:bg-green-2"
-                >
+                <Button type="submit" className="w-full mt-6 rounded-full">
                   Đặt lại mật khẩu
                 </Button>
 
                 <p className="mt-6 mb-8 text-xs dark:text-slate-400">
                   Quay lại đăng nhập? &nbsp;
                   <Link
-                    className="text-green-1 font-bold hover:cursor-pointer"
+                    className="font-bold hover:cursor-pointer"
                     to={"/sign-in"}
                   >
                     Đăng nhập

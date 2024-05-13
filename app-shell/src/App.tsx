@@ -4,6 +4,7 @@ import Dashboard from "@/pages/Dashboard";
 import UserInfo from "@/pages/UserInfo";
 import Signin from "homeApp/Signin";
 import Signup from "homeApp/Signup";
+import ResetPassword from "homeApp/ResetPassword";
 // import Auth from "authApp/Auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootPage from "./pages/RootPage";
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <Signup />,
+      },
+      {
+        path: "/reset-password",
+        element: <ResetPassword />,
       },
     ],
   },

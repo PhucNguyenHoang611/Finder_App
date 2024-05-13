@@ -14,6 +14,7 @@ export default defineConfig({
         "./Home": "./src/pages/Home.tsx",
         "./Signin": "./src/pages/auth/Signin.tsx",
         "./Signup": "./src/pages/auth/Signup.tsx",
+        "./ResetPassword": "./src/pages/auth/ResetPassword.tsx",
         "./Sidebar": "./src/components/nav/Sidebar.tsx",
         "./Header": "./src/components/nav/Header.tsx",
       },

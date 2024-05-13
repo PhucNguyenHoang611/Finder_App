@@ -2,40 +2,21 @@ import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogClose,
-  DialogFooter
+  DialogTrigger
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import PreviewPostCard from "./Card/PreviewPostCard";
 
 // { openPreviewDialog, setOpenPreviewDialog }: PreviewPostDialogProps
 const PreviewPostDialog = () => {
   return (
     <Dialog>
-      <DialogTrigger>
-        <Button type="button" variant="outline" className={cn("rounded-xl my-2")}>
-          <RemoveRedEyeOutlinedIcon className="mr-2" /> Xem trước khi đăng
-        </Button>
+      <DialogTrigger className={cn("rounded-xl my-2 bg-white border border-black p-1.5 sm:w-auto w-full")}>
+        <RemoveRedEyeOutlinedIcon className="mr-2" /> Xem trước khi đăng
       </DialogTrigger>
-      <DialogContent className={cn("rounded-xl bg-white")}>
-        <DialogHeader>
-          <DialogTitle>Dialog Title</DialogTitle>
-          <DialogDescription>
-            Dialog Description
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button type="button" variant="secondary">
-              Close
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+      <DialogContent className={cn("bg-white overflow-y-auto lg:h-[95%] h-[85%] px-0 pb-0")}>
+        <PreviewPostCard />
       </DialogContent>
     </Dialog>
   );

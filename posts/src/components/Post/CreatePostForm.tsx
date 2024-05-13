@@ -31,14 +31,14 @@ import { useNavigate } from "react-router-dom";
 
 import { level1s, findLevel1ByName, Level1, Level2, Level3 } from "dvhcvn";
 import { useEffect, useState } from "react";
-// import { ImageUploader } from "./ImageUploader";
-import PreviewPostDialog from "./PreviewPostDialog";
+import ImageUploader from "@/components/Post/ImageUploader";
+import PreviewPostDialog from "@/components/Post/PreviewPostDialog";
 
 const formSchema = z.object({
   title: z
-    .string()
-    .min(1, {
-      message: "Tiêu đề không được để trống",
+  .string()
+  .min(1, {
+    message: "Tiêu đề không được để trống",
     })
     .max(100, {
       message: "Tiêu đề không được dài quá 100 ký tự",
@@ -60,12 +60,8 @@ const formSchema = z.object({
   city: z.string().min(1, {
     message: "Tỉnh/Thành Phố không được để trống",
   }),
-  district: z.string().min(1, {
-    message: "Quận/Huyện/TP không được để trống",
-  }),
-  ward: z.string().min(1, {
-    message: "Phường/Xã/Thị trấn không được để trống",
-  }),
+  district: z.string(),
+  ward: z.string(),
   contact: z.string().min(1, {
     message: "Thông tin liên lạc không được để trống",
   }),
@@ -87,6 +83,11 @@ const CreatePostForm = () => {
   // const [images, setImages] = useState<never[]>([]);
   // const [openPreviewDialog, setOpenPreviewDialog] = useState<boolean>(false);
 
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const [districtVal, setDistrictVal] = useState<string>("all");
+  const [wardVal, setWardVal] = useState<string>("all");
+
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -100,12 +101,20 @@ const CreatePostForm = () => {
       contact: "",
     },
   });
+
   const cityValue = form.watch("city");
-  const districtValue = form.watch("district");
 
   // Submit handler
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
+
+    // form.setError("district", {
+    //   message: "Quận/Huyện/TP không được để trống",
+    // });
+
+    // form.setError("ward", {
+    //   message: "Phường/Xã/Thị trấn không được để trống",
+    // });
 
     toast.success("Đăng tin thành công");
     navigate("/");
@@ -119,20 +128,24 @@ const CreatePostForm = () => {
       setLevel3s([]);
 
       form.setValue("district", "");
+      setDistrictVal("all");
+
       form.setValue("ward", "");
+      setWardVal("all");
     }
   }, [cityValue]);
 
   useEffect(() => {
-    if (districtValue) {
+    if (districtVal) {
       const tempLevel1: Level1 | undefined = findLevel1ByName(cityValue);
       const tempLevel2: Level2 | undefined =
-        tempLevel1?.findLevel2ByName(districtValue);
+        tempLevel1?.findLevel2ByName(districtVal);
       setLevel3s(tempLevel2?.children);
 
       form.setValue("ward", "");
+      setWardVal("all");
     }
-  }, [districtValue]);
+  }, [districtVal]);
 
   return (
     <div>
@@ -159,8 +172,8 @@ const CreatePostForm = () => {
             )}
           />
 
-          <div className="flex justify-center items-center gap-4">
-            <div className="w-1/2 flex flex-col gap-2">
+          <div className="flex sm:flex-row flex-col justify-center items-center gap-4">
+            <div className="sm:w-1/2 w-full flex flex-col gap-2">
               <FormField
                 control={form.control}
                 name="type"
@@ -227,7 +240,7 @@ const CreatePostForm = () => {
               />
             </div>
 
-            <div className="w-1/2">
+            <div className="sm:w-1/2 w-full">
               <div className="w-full flex flex-col justify-center items-start gap-2">
                 <FormLabel>Khu vực</FormLabel>
                 <FormField
@@ -262,11 +275,11 @@ const CreatePostForm = () => {
                 <FormField
                   control={form.control}
                   name="district"
-                  render={({ field }) => (
+                  render={() => (
                     <FormItem className="w-full">
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={districtVal}
+                        onValueChange={(value: string) => setDistrictVal(value)}
                       >
                         <FormControl>
                           <SelectTrigger
@@ -276,6 +289,9 @@ const CreatePostForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem key={-1} value="all">
+                            Quận/Huyện/TP
+                          </SelectItem>
                           {level2s?.map((item, index) => (
                             <SelectItem key={index} value={item.name}>
                               {item.name}
@@ -291,11 +307,11 @@ const CreatePostForm = () => {
                 <FormField
                   control={form.control}
                   name="ward"
-                  render={({ field }) => (
+                  render={() => (
                     <FormItem className="w-full">
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        value={wardVal}
+                        onValueChange={(value: string) => setWardVal(value)}
                       >
                         <FormControl>
                           <SelectTrigger
@@ -305,6 +321,9 @@ const CreatePostForm = () => {
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem key={-1} value="all">
+                            Phường/Xã/Thị trấn
+                          </SelectItem>
                           {level3s?.map((item, index) => (
                             <SelectItem key={index} value={item.name}>
                               {item.name}
@@ -320,7 +339,8 @@ const CreatePostForm = () => {
             </div>
           </div>
 
-          {/* <ImageUploader images={images} setImages={setImages} /> */}
+          {/* images={images} setImages={setImages} */}
+          <ImageUploader selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
 
           <FormField
             control={form.control}
@@ -358,9 +378,9 @@ const CreatePostForm = () => {
             )}
           />
 
-          <div className="flex justify-center items-center gap-4">
+          <div className="flex sm:flex-row flex-col justify-center items-center sm:gap-4">
             <PreviewPostDialog />
-            <Button type="submit" className={cn("rounded-xl my-2")}>
+            <Button type="submit" className={cn("rounded-xl my-2 sm:w-auto w-full")}>
               <UploadOutlinedIcon className="mr-2" /> Đăng tin
             </Button>
           </div>

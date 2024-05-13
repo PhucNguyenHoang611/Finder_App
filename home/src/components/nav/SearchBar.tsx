@@ -10,8 +10,9 @@ const SearchBar = () => {
           name="search"
           placeholder="Tìm kiếm ở đây..."
         />
+
         <button type="submit" className="absolute right-0 top-0 mt-5 mr-4">
-          <RiSearchLine className="pb-2"></RiSearchLine>
+          <RiSearchLine className="pb-2" />
         </button>
       </div>
     </div>

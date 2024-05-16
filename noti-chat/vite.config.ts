@@ -8,10 +8,11 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: "posts",
-      filename: "posts.js",
+      name: "notiChat",
+      filename: "notiChat.js",
       exposes: {
-        "./UserInfo": "./src/App.tsx",
+        "./ChatPopover": "./src/components/Chat/ChatPopover.tsx",
+        "./NotifyPage": "./src/pages/NotificationPage.tsx"
       },
       shared: ["react", "react-dom"]
     })
@@ -22,9 +23,8 @@ export default defineConfig({
     }
   },
   build: {
-    modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: true
+    cssCodeSplit: false
   }
 });

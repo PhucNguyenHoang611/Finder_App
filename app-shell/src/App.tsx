@@ -13,6 +13,7 @@ import CreatePost from "./pages/posts/CreatePost";
 import PostDetails from "./pages/posts/PostDetails";
 import PostResultList from "./pages/posts/PostResultList";
 import NewsPage from "./pages/posts/NewsPage";
+import NotifyPage from "./pages/chat/NotifyPage";
 
 const router = createBrowserRouter([
   {
@@ -26,44 +27,48 @@ const router = createBrowserRouter([
         children: [
           {
             path: "/",
-            element: <Home />,
+            element: <Home />
           },
           {
             path: "/post-details",
-            element: <PostDetails />,
+            element: <PostDetails />
           },
           {
             path: "/result-list",
-            element: <PostResultList />,
+            element: <PostResultList />
           },
           {
             path: "/news",
-            element: <NewsPage />,
+            element: <NewsPage />
           },
           {
             path: "/create-post",
-            element: <CreatePost />,
+            element: <CreatePost />
           },
-        ],
+          {
+            path: "/notification",
+            element: <NotifyPage />
+          }
+        ]
       },
       {
         path: "/*",
-        element: <UserInfo />,
+        element: <UserInfo />
       },
       {
         path: "/sign-in",
-        element: <Signin />,
+        element: <Signin />
       },
       {
         path: "/sign-up",
-        element: <Signup />,
+        element: <Signup />
       },
       {
         path: "/reset-password",
-        element: <ResetPassword />,
-      },
-    ],
-  },
+        element: <ResetPassword />
+      }
+    ]
+  }
 ]);
 
 function App() {

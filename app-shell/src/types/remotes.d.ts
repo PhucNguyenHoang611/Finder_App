@@ -15,3 +15,6 @@ declare module "posts/PostDetails";
 declare module "posts/PostResultList";
 declare module "posts/NewsPage";
 declare module "posts/Bootstrap";
+// notiChat
+declare module "notiChat/ChatPopover";
+declare module "notiChat/NotifyPage";

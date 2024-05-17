@@ -9,49 +9,49 @@ const cardData = [
       "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
     title: "Cần tìm mèo lạc",
     location: "Hà Nội",
-    type: "Tìm thú cưng",
+    type: "Tìm thú cưng"
   },
   {
     image:
       "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
     title: "Tìm chó lạc",
     location: "Hồ Chí Minh",
-    type: "Tìm thú cưng",
+    type: "Tìm thú cưng"
   },
   {
     image:
       "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
     title: "Tìm chủ cho chó",
     location: "Đà Nẵng",
-    type: "Tìm người",
+    type: "Tìm người"
   },
   {
     image:
       "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
     title: "Tìm chủ cho mèo",
     location: "Hà Nội",
-    type: "Tìm người",
+    type: "Tìm người"
   },
   {
     image:
       "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Tìm chủ cho chóooooooooooooooo",
+    title: "Tìm chủ cho chó",
     location: "Đà Nẵng",
-    type: "Tìm người",
+    type: "Tìm người"
   },
   {
     image:
       "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
     title: "Tìm chủ cho mèo",
     location: "Hà Nội",
-    type: "Tìm người",
-  },
+    type: "Tìm người"
+  }
 ];
 
 const Home = () => {
   return (
     <section className="flex flex-col justify-center">
-      <Alert className="bg-slate-200 border rounded-lg w-full mx-auto">
+      <Alert className="bg-slate-200 border rounded-[8px] w-full mx-auto">
         <AlertDescription className="flex justify-center items-center gap-2">
           <Megaphone className="h-4 w-4" />
 

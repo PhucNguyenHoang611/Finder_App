@@ -109,7 +109,7 @@ const ChatBox = () => {
         </div>
       </CardHeader>
 
-      <CardContent className="relative h-[400px] p-2 overflow-hidden">
+      <CardContent className="relative h-[380px] p-2 overflow-hidden">
         <div
           ref={containerRef}
           className="h-full flex flex-col gap-2 overflow-y-auto"

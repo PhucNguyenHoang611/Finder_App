@@ -11,32 +11,32 @@ const Header = () => {
 
   return (
     <header
-      className="py-2 lg:px-10 md:px-6 px-4 w-full flex justify-between items-center fixed bg-[#f4f6f9] shadow-gray-200 shadow-sm"
+      className="py-2 min-[1024px]:px-10 min-[768px]:px-6 max-[768px]:px-4 w-full flex justify-between items-center fixed bg-[#f4f6f9] shadow-gray-200 shadow-sm"
       style={{ zIndex: 1000 }}
     >
       <div className="flex justify-center items-center">
         {location.pathname !== "/sign-in" &&
-          location.pathname !== "/sign-up" ? (
-            <NavDrawer />
-          ) : null
-        }
+        location.pathname !== "/sign-up" ? (
+          <NavDrawer />
+        ) : null}
 
-        <Link to={"/"} className="lg:flex hidden lg:ml-6 justify-center items-center">
+        <Link
+          to={"/"}
+          className="min-[1024px]:flex max-[1024px]:hidden min-[1024px]:ml-6 justify-center items-center"
+        >
           <img src="/mainLogo_nt.png" alt="mainLogo" className="w-16" />
-          <h1 className="font-bold text-2xl text-center">
-            Finder
-          </h1>
+          <h1 className="font-bold text-2xl text-center">Finder</h1>
         </Link>
       </div>
 
-      <div className="w-full flex lg:justify-center justify-end items-center">
+      <div className="w-full flex min-[1024px]:justify-center max-[1024px]:justify-end items-center">
         {location.pathname !== "/sign-in" &&
         location.pathname !== "/sign-up" ? (
           <SearchBar />
         ) : null}
       </div>
-      
-      <ul className="lg:flex hidden">
+
+      <ul className="min-[1024px]:flex max-[1024px]:hidden">
         <li className="flex justify-start gap-2 bottom-4">
           <Link to={"/sign-in"}>
             <Button className="w-30 rounded-xl">Đăng nhập</Button>
@@ -48,11 +48,17 @@ const Header = () => {
           </Link>
         </li>
 
-        <li className={`${!temp ? "flex" : "hidden"} justify-center items-center mr-6`}>
+        <li
+          className={`${
+            !temp ? "flex" : "hidden"
+          } justify-center items-center mr-6`}
+        >
           <NotificationDropdown />
         </li>
 
-        <li className={`${!temp ? "flex" : "hidden"} justify-center items-center`}>
+        <li
+          className={`${!temp ? "flex" : "hidden"} justify-center items-center`}
+        >
           <NavDropdown />
         </li>
       </ul>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -6,15 +7,17 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { RiGoogleFill, RiFacebookFill } from "@remixicon/react";
 import { EyeIcon, EyeOffIcon, Undo2 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { AuthenticateService } from "@/services/api";
 
 const formSchema = z.object({
   email: z
@@ -30,26 +33,67 @@ const formSchema = z.object({
     .min(6, {
       message: "Mật khẩu phải dài ít nhất 6 ký tự"
     })
-    .max(100, {
-      message: "Mật khẩu chỉ được dài tối đa 100 ký tự"
-    }),
+    .max(14, {
+      message: "Mật khẩu chỉ được dài tối đa 14 ký tự"
+    })
 });
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: "",
-      password: "",
-    },
+      password: ""
+    }
   });
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () =>
     setShowPassword((prev: boolean) => !prev);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("login", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // const result =
+      await AuthenticateService.authControllerLogin({
+        email: values.email,
+        password: values.password
+      });
+
+      toast.success("Đăng nhập thành công! Mừng bạn trở lại");
+      navigate("/");
+    } catch (error: any) {
+      const errorCode = error.body.error.code;
+
+      if (errorCode === "INVALID_EMAIL_NOT_REGISTERED") {
+        form.setError("email", {
+          type: "manual",
+          message: "Email chưa được đăng ký"
+        });
+      } else if (errorCode === "PASSWORD_NOT_MATCH") {
+        form.setError("password", {
+          type: "manual",
+          message: "Mật khẩu không đúng"
+        });
+      }
+    }
+  }
+
+  async function signInWithGoogle() {
+    try {
+      await AuthenticateService.authControllerSignWithGoogle();
+      // window.open(`${apiBaseUrl}/api/v1/auths/google/login`, "_self");
+    } catch (error: any) {
+      console.log(error.body.error.code);
+    }
+  }
+
+  async function signInWithFacebook() {
+    try {
+      await AuthenticateService.authControllerSignWithFacebook();
+    } catch (error: any) {
+      console.log(error.body.error.code);
+    }
   }
 
   return (
@@ -70,25 +114,27 @@ const SignIn = () => {
                 type="button"
                 className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
                 variant="outline"
+                onClick={signInWithGoogle}
               >
                 <RiGoogleFill
                   size={24}
                   // color="white"
                   className="loginWithGoogle"
                 />
-                <p className="mr-4">Đăng nhập bằng Google</p>
+                <p className="mr-4">Tiếp tục với Google</p>
               </Button>
               <Button
                 type="button"
                 className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
                 variant="outline"
+                onClick={signInWithFacebook}
               >
                 <RiFacebookFill
                   size={24}
                   // color="white"
                   className="loginWithFacebook"
                 />
-                <p>Đăng nhập bằng Facebook</p>
+                <p>Tiếp tục với Facebook</p>
               </Button>
               <FormField
                 control={form.control}
@@ -97,10 +143,7 @@ const SignIn = () => {
                   <FormItem>
                     <FormLabel>Địa chỉ Email*</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="Nhập địa chỉ Email"
-                        {...field}
-                      />
+                      <Input placeholder="Nhập địa chỉ Email" {...field} />
                     </FormControl>
                     {/* <FormDescription>Give me your email.</FormDescription> */}
                     <FormMessage />

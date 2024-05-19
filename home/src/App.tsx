@@ -3,13 +3,15 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.scss";
 import RootPage from "@/pages/RootPage";
 import ErrorPage from "@/pages/ErrorPage";
-import PostPage from "./pages/PostPage";
-import Home from "./pages/Home";
-import FindPage from "./pages/FindPage";
-import SignIn from "./pages/auth/SignIn";
-import SignUp from "./pages/auth/SignUp";
-import Dashboard from "./pages/Dashboard";
-import ResetPassword from "./pages/auth/ResetPassword";
+import PostPage from "@/pages/PostPage";
+import Home from "@/pages/Home";
+import FindPage from "@/pages/FindPage";
+import SignIn from "@/pages/auth/SignIn";
+import SignUp from "@/pages/auth/SignUp";
+import Dashboard from "@/pages/Dashboard";
+import ResetPassword from "@/pages/auth/ResetPassword";
+
+import { setAPIBaseUrl } from "@/config/api";
 
 const router = createBrowserRouter([
   {
@@ -23,35 +25,36 @@ const router = createBrowserRouter([
         children: [
           {
             element: <Home />,
-            index: true,
+            index: true
           },
           {
             path: "/post",
-            element: <PostPage />,
+            element: <PostPage />
           },
           {
             path: `/filter`,
-            element: <FindPage />,
-          },
-        ],
+            element: <FindPage />
+          }
+        ]
       },
       {
         path: "sign-in",
-        element: <SignIn />,
+        element: <SignIn />
       },
       {
         path: "sign-up",
-        element: <SignUp />,
+        element: <SignUp />
       },
       {
         path: "reset-password",
-        element: <ResetPassword />,
-      },
-    ],
-  },
+        element: <ResetPassword />
+      }
+    ]
+  }
 ]);
 
 function App() {
+  setAPIBaseUrl();
   return <RouterProvider router={router} />;
 }
 

@@ -10,7 +10,7 @@ export default defineConfig({
     federation({
       name: "app-shell",
       remotes: {
-        homeApp: "http://localhost:5001/assets/home.js",
+        homeApp: "http://localhost:5010/assets/home.js",
         authApp: "http://localhost:5002/assets/auth.js",
         userInfo: "http://localhost:5003/assets/userInfo.js",
         posts: "http://localhost:5004/assets/posts.js",

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -6,85 +7,92 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
-import { Link } from "react-router-dom";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { toast } from "sonner";
+import { Link, useNavigate } from "react-router-dom";
 import { EyeIcon, EyeOffIcon, Undo2 } from "lucide-react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { RiGoogleFill } from "@remixicon/react";
+import { RiGoogleFill, RiFacebookFill } from "@remixicon/react";
+import { AuthenticateService } from "@/services/api";
 
 const formSchema = z
   .object({
     firstName: z
       .string()
       .min(2, {
-        message: "At least 2 characters",
+        message: "Tên không được ngắn hơn 2 ký tự"
       })
       .max(50, {
-        message: "At most 50 characters",
+        message: "Tên không được dài quá 50 ký tự"
       }),
     lastName: z
       .string()
       .min(2, {
-        message: "At least 2 characters",
+        message: "Họ không được ngắn hơn 2 ký tự"
       })
       .max(50, {
-        message: "At most 50 characters",
+        message: "Họ không được dài quá 50 ký tự"
       }),
     email: z
       .string()
       .min(4, {
-        message: "Email must be at least 4 characters long",
+        message: "Email không được ngắn hơn 4 ký tự"
       })
       .max(50, {
-        message: "Email must be at most 50 characters long",
+        message: "Email không được dài quá 50 ký tự"
+      })
+      .regex(/^[a-z0-9_\\.]{1,32}@[a-z0-9]{2,10}(\.[a-z0-9]{2,10}){1,}$/, {
+        message: "Định dạng email không hợp lệ"
       }),
+    gender: z.enum(["Nam", "Nữ"], {
+      required_error: "Giới tính không được để trống"
+    }),
     phone: z
       .string()
       .min(10, {
-        message: "Phone number must be at least 10 characters long",
+        message: "Số điện thoại không được ngắn hơn 10 ký tự"
       })
       .refine(
         (value) => {
-          const phoneRegex = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+          const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/; // /^(\+\d{1,3}[- ]?)?\d{10}$/
           return phoneRegex.test(value);
         },
         {
-          message: "Phone number must be valid",
+          message: "Số điện thoại không hợp lệ"
         }
       ),
     password: z
       .string()
       .min(6, {
-        message: "Password must be at least 6 characters long",
+        message: "Mật khẩu không được ngắn hơn 6 ký tự"
       })
-      .max(100, {
-        message: "Password must be at most 100 characters long",
+      .max(14, {
+        message: "Mật khẩu không được dài quá 14 ký tự"
       }),
-    confirmPassword: z
-      .string()
-      .min(6, {
-        message: "Password must be at least 6 characters long",
-      })
-      .max(100, {
-        message: "Password must be at most 100 characters long",
-      }),
+    confirmPassword: z.string()
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords not match",
-    path: ["confirmPassword"],
+    message: "Mật khẩu xác nhận không khớp",
+    path: ["confirmPassword"]
   });
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      firstName: "",
+      lastName: "",
       email: "",
+      phone: "",
       password: "",
-    },
+      confirmPassword: ""
+    }
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -95,8 +103,45 @@ const SignUp = () => {
   const toggleCoPasswordVisibility = () =>
     setShowCoPassword((prev: boolean) => !prev);
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("sign up: ", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      // const result =
+      await AuthenticateService.authControllerSignUpWithEmailPassword({
+        email: values.email,
+        password: values.password,
+        displayName: values.lastName + " " + values.firstName,
+        phone: values.phone,
+        gender: values.gender === "Nam" ? true : false
+      });
+
+      toast.success("Đăng ký thành công! Vui lòng đăng nhập lại");
+      navigate("/sign-in");
+    } catch (error: any) {
+      const errorCode = error.body.error.code;
+
+      if (errorCode === "INVALID_EMAIL_EXISTED") {
+        form.setError("email", {
+          type: "manual",
+          message: "Email này đã được đăng ký"
+        });
+      }
+    }
+  }
+
+  async function signUpWithGoogle() {
+    try {
+      await AuthenticateService.authControllerSignWithGoogle();
+    } catch (error: any) {
+      console.log(error.body.error.code);
+    }
+  }
+
+  async function signUpWithFacebook() {
+    try {
+      await AuthenticateService.authControllerSignWithFacebook();
+    } catch (error: any) {
+      console.log(error.body.error.code);
+    }
   }
 
   return (
@@ -117,13 +162,28 @@ const SignUp = () => {
                 type="button"
                 className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
                 variant="outline"
+                onClick={signUpWithGoogle}
               >
                 <RiGoogleFill
                   size={24}
                   // color="white"
                   className="loginWithGoogle"
                 />
-                Đăng ký bằng Google
+                Tiếp tục với Google
+              </Button>
+
+              <Button
+                type="button"
+                className="flex items-center w-full gap-4 px-12 mb-4 bg-transparent rounded-full"
+                variant="outline"
+                onClick={signUpWithFacebook}
+              >
+                <RiFacebookFill
+                  size={24}
+                  // color="white"
+                  className="loginWithFacebook"
+                />
+                Tiếp tục với Facebook
               </Button>
 
               <div>
@@ -133,12 +193,12 @@ const SignUp = () => {
               <div className="flex items-center justify-center w-full gap-4">
                 <FormField
                   control={form.control}
-                  name="firstName"
+                  name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tên*</FormLabel>
+                      <FormLabel>Họ*</FormLabel>
                       <FormControl>
-                        <Input placeholder="Tên của bạn" {...field} />
+                        <Input placeholder="Họ của bạn" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -147,12 +207,12 @@ const SignUp = () => {
 
                 <FormField
                   control={form.control}
-                  name="lastName"
+                  name="firstName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Họ*</FormLabel>
+                      <FormLabel>Tên*</FormLabel>
                       <FormControl>
-                        <Input placeholder="Họ của bạn" {...field} />
+                        <Input placeholder="Tên của bạn" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -177,6 +237,37 @@ const SignUp = () => {
 
               <FormField
                 control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem className="space-y-3 my-4">
+                    <FormLabel>Giới tính</FormLabel>
+                    <FormControl>
+                      <RadioGroup
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        className="flex items-center space-x-4"
+                      >
+                        <FormItem className="flex justify-center items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Nam" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Nam</FormLabel>
+                        </FormItem>
+                        <FormItem className="flex justify-center items-center space-x-3 space-y-0">
+                          <FormControl>
+                            <RadioGroupItem value="Nữ" />
+                          </FormControl>
+                          <FormLabel className="font-normal">Nữ</FormLabel>
+                        </FormItem>
+                      </RadioGroup>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
                 name="phone"
                 render={({ field }) => (
                   <FormItem className="mt-2">
@@ -184,7 +275,6 @@ const SignUp = () => {
                     <FormControl>
                       <Input placeholder="Nhập SĐT" {...field} />
                     </FormControl>
-                    {/* <FormDescription>Give me your phone.</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -218,7 +308,6 @@ const SignUp = () => {
                         </div>
                       </div>
                     </FormControl>
-                    {/* <FormDescription>Give me your password.</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}
@@ -252,7 +341,6 @@ const SignUp = () => {
                         </div>
                       </div>
                     </FormControl>
-                    {/* <FormDescription>Give me your password.</FormDescription> */}
                     <FormMessage />
                   </FormItem>
                 )}

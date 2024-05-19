@@ -1,5 +1,6 @@
-import Header from "@/components/nav/Header";
 import { Outlet } from "react-router-dom";
+import Header from "@/components/nav/Header";
+import { Toaster } from "@/components/ui/sonner";
 
 const RootPage = () => {
   return (
@@ -8,6 +9,8 @@ const RootPage = () => {
         <Header />
       </div>
       <Outlet />
+
+      <Toaster richColors closeButton className="font-montserrat" />
     </div>
   );
 };

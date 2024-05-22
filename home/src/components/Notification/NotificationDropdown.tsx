@@ -8,14 +8,10 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle
-} from "@/components/ui/alert";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import {
-  Bell,
+  Bell
   // BellDotIcon
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -26,23 +22,31 @@ const tempList = [1, 2, 3];
 const EmptyNotificationsList = () => {
   return (
     <div className="w-full h-[100px] flex justify-center items-center">
-      <p className="text-center font-semibold text-slate-500">Không có thông báo nào</p>
+      <p className="text-center font-semibold text-slate-500">
+        Không có thông báo nào
+      </p>
     </div>
   );
 };
 
 const NotificationDropdownItem = () => {
-  const tempMessage = "Đồ của bạn đã được Nguyễn Thanh Sang tìm thấy ở căn tin KTX Khu A.";
+  const tempMessage =
+    "Đồ của bạn đã được Nguyễn Thanh Sang tìm thấy ở căn tin KTX Khu A.";
   const tempTitle = "Đã tìm được đồ của bạn !";
+
   return (
     <DropdownMenuItem className="cursor-pointer w-full rounded-lg">
       <Alert className="border-none bg-slate-100">
         <AlertTitle>
-          {tempTitle.length > 50 ? tempTitle.substring(0, 50) + "..." : tempTitle}
+          {tempTitle.length > 50
+            ? tempTitle.substring(0, 50) + "..."
+            : tempTitle}
         </AlertTitle>
 
         <AlertDescription>
-          {tempMessage.length > 50 ? tempMessage.substring(0, 50) + "..." : tempMessage}
+          {tempMessage.length > 50
+            ? tempMessage.substring(0, 50) + "..."
+            : tempMessage}
         </AlertDescription>
       </Alert>
     </DropdownMenuItem>
@@ -62,7 +66,10 @@ const NotificationDropdown = () => {
       <DropdownMenuContent className="mt-6 mr-2 w-[500px]">
         <DropdownMenuLabel>Thông báo</DropdownMenuLabel>
 
-        {tempList.length > 0 && tempList.map((_item, index) => <NotificationDropdownItem key={index} />)}
+        {tempList.length > 0 &&
+          tempList.map((_item, index) => (
+            <NotificationDropdownItem key={index} />
+          ))}
 
         {tempList.length === 0 && !isLoading && <EmptyNotificationsList />}
 

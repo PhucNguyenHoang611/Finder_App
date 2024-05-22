@@ -1,5 +1,11 @@
 /// <reference types="vite/client" />
 
+interface Position {
+  latitude: number | null;
+  longitude: number | null;
+}
+
+// Props Interfaces
 interface ImageCardProps {
   imageURL: string;
   title: string;
@@ -7,7 +13,16 @@ interface ImageCardProps {
   type: string;
 }
 
-interface Position {
-  latitude: number | null;
-  longitude: number | null;
+// Other Interfaces
+interface SignedInUser {
+  accessToken: string;
+  accessTokenExpired: Date;
+  refreshToken: string;
+  refreshTokenExpired: Date;
+  expired: Date;
+  avatar: string;
+  displayName: string;
+  email: string;
+  gender: boolean;
+  phone: string;
 }

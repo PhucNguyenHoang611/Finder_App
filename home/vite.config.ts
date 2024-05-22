@@ -6,7 +6,11 @@ import federation from "@originjs/vite-plugin-federation";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    react(),
+    react({
+      babel: {
+        presets: ["jotai/babel/preset"]
+      }
+    }),
     federation({
       name: "home",
       filename: "home.js",
@@ -17,21 +21,24 @@ export default defineConfig({
         "./ResetPassword": "./src/pages/auth/ResetPassword.tsx",
         "./Sidebar": "./src/components/nav/Sidebar.tsx",
         "./Header": "./src/components/nav/Header.tsx",
+        "./store": "./src/store.ts",
+        "./apiConfig": "./src/config/api.ts",
+        "./authMiddleware": "./src/middlewares/auth.ts"
       },
-      shared: ["react", "react-dom", "react-router-dom"],
-    }),
+      shared: ["react", "react-dom", "react-router-dom", "jotai"]
+    })
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+      "@": path.resolve(__dirname, "./src")
+    }
   },
   build: {
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: false,
-  },
+    cssCodeSplit: false
+  }
   // build: {
   //   target: "es2022", // Set your target environment here
   //   outDir: "dist", // The output directory for the build

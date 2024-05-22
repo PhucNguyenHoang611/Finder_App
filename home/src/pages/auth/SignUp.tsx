@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { RiGoogleFill, RiFacebookFill } from "@remixicon/react";
 import { AuthenticateService } from "@/services/api";
+import Spinner from "@/components/Spinner";
 
 const formSchema = z
   .object({
@@ -95,6 +96,7 @@ const SignUp = () => {
     }
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () =>
     setShowPassword((prev: boolean) => !prev);
@@ -104,6 +106,8 @@ const SignUp = () => {
     setShowCoPassword((prev: boolean) => !prev);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
     try {
       // const result =
       await AuthenticateService.authControllerSignUpWithEmailPassword({
@@ -126,6 +130,8 @@ const SignUp = () => {
         });
       }
     }
+
+    setIsLoading(false);
   }
 
   async function signUpWithGoogle() {
@@ -347,6 +353,7 @@ const SignUp = () => {
               />
 
               <Button type="submit" className="w-full mt-6 rounded-full">
+                {isLoading && <Spinner />}
                 Đăng ký
               </Button>
 

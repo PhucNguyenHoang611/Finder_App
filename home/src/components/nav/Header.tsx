@@ -4,10 +4,12 @@ import SearchBar from "./SearchBar";
 import NavDrawer from "./NavDrawer";
 import NavDropdown from "./NavDropdown";
 import NotificationDropdown from "@/components/Notification/NotificationDropdown";
+import { useAtomValue } from "jotai";
+import { signedInUserAtom } from "@/store";
 
 const Header = () => {
   const location = useLocation();
-  const temp = true;
+  const signedInUser = useAtomValue(signedInUserAtom);
 
   return (
     <header
@@ -37,7 +39,11 @@ const Header = () => {
       </div>
 
       <ul className="min-[1024px]:flex max-[1024px]:hidden">
-        <li className="flex justify-start gap-2 bottom-4">
+        <li
+          className={`${
+            signedInUser.email ? "hidden" : "flex"
+          } justify-start gap-2 bottom-4`}
+        >
           <Link to={"/sign-in"}>
             <Button className="w-30 rounded-xl">Đăng nhập</Button>
           </Link>
@@ -50,14 +56,16 @@ const Header = () => {
 
         <li
           className={`${
-            !temp ? "flex" : "hidden"
+            signedInUser.email ? "flex" : "hidden"
           } justify-center items-center mr-6`}
         >
           <NotificationDropdown />
         </li>
 
         <li
-          className={`${!temp ? "flex" : "hidden"} justify-center items-center`}
+          className={`${
+            signedInUser.email ? "flex" : "hidden"
+          } justify-center items-center`}
         >
           <NavDropdown />
         </li>

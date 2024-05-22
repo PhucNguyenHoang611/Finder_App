@@ -12,6 +12,11 @@ import Dashboard from "@/pages/Dashboard";
 import ResetPassword from "@/pages/auth/ResetPassword";
 
 import { setAPIBaseUrl } from "@/config/api";
+import { DevTools } from "jotai-devtools";
+import "jotai-devtools/styles.css";
+import { useSignedInUserAtom } from "./store";
+import { signInValidate } from "./middlewares/auth";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -54,8 +59,22 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [signedInUser, setSignedInUser] = useSignedInUserAtom();
+
   setAPIBaseUrl();
-  return <RouterProvider router={router} />;
+
+  useEffect(() => {
+    if (signedInUser.email) {
+      signInValidate(signedInUser, setSignedInUser);
+    }
+  }, [signedInUser, setSignedInUser]);
+
+  return (
+    <>
+      <RouterProvider router={router} />
+      <DevTools />
+    </>
+  );
 }
 
 export default App;

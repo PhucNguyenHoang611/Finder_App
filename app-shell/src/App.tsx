@@ -5,6 +5,9 @@ import UserInfo from "@/pages/UserInfo";
 import Signin from "homeApp/Signin";
 import Signup from "homeApp/Signup";
 import ResetPassword from "homeApp/ResetPassword";
+import { useSignedInUserAtom } from "homeApp/store";
+import { setAPIBaseUrl } from "homeApp/apiConfig";
+import { signInValidate } from "homeApp/authMiddleware";
 // import Auth from "authApp/Auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootPage from "./pages/RootPage";
@@ -14,6 +17,7 @@ import PostDetails from "./pages/posts/PostDetails";
 import PostResultList from "./pages/posts/PostResultList";
 import NewsPage from "./pages/posts/NewsPage";
 import NotifyPage from "./pages/chat/NotifyPage";
+import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -72,6 +76,16 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
+  const [signedInUser, setSignedInUser] = useSignedInUserAtom();
+
+  setAPIBaseUrl();
+
+  useEffect(() => {
+    if (signedInUser.email) {
+      signInValidate(signedInUser, setSignedInUser);
+    }
+  }, [signedInUser, setSignedInUser]);
+
   return <RouterProvider router={router} />;
 }
 

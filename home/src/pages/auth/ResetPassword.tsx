@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,26 +17,26 @@ const formSchema = z.object({
   email: z
     .string()
     .min(4, {
-      message: "Email phải dài ít nhất 4 ký tự",
+      message: "Email không được ngắn hơn 4 ký tự"
     })
     .max(50, {
-      message: "Email chỉ được dài tối đa 50 ký tự",
+      message: "Email không được dài quá 50 ký tự"
     })
-    .refine((value) => value.includes("@"), {
-      message: "Email phải chứa ký tự @",
-    }),
+    .regex(/^[a-z0-9_\\.]{1,32}@[a-z0-9]{2,10}(\.[a-z0-9]{2,10}){1,}$/, {
+      message: "Định dạng email không hợp lệ"
+    })
 });
 
 const ResetPassword = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-    },
+      email: ""
+    }
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("reset password", values);
+    console.log("Reset Password:", values);
   }
 
   return (

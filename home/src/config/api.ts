@@ -7,7 +7,10 @@ export const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
 export function setAPIBaseUrl() {
   const baseUrl = import.meta.env.VITE_API_BASE_URL;
-  OpenAPI.BASE = baseUrl ? baseUrl : "";
+
+  if (OpenAPI.BASE !== baseUrl) {
+    OpenAPI.BASE = baseUrl ? baseUrl : "";
+  }
 }
 
 export function setJWT(jwt: string | Resolver<string> | undefined) {

@@ -1,10 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger
-} from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -22,10 +18,21 @@ import {
 } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useSignedInUserAtom } from "@/store";
+import { AuthenticateService } from "@/services/api";
+import { RESET } from "jotai/utils";
 
 const NavDrawer = () => {
+  const navigate = useNavigate();
   const location = useLocation();
-  const temp = true;
+  const [signedInUser, setSignedInUser] = useSignedInUserAtom();
+
+  const handleLogout = async () => {
+    await AuthenticateService.authControllerLogout();
+    setSignedInUser(RESET);
+
+    navigate("/sign-in");
+  };
 
   return (
     <Drawer direction="left">
@@ -38,7 +45,11 @@ const NavDrawer = () => {
 
           <li>
             <Link to={"/create-post"}>
-              <div className={`${location.pathname === "/create-post" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/create-post" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <Upload className="text-black" />
                 Đăng tin
               </div>
@@ -46,7 +57,11 @@ const NavDrawer = () => {
           </li>
           <li>
             <Link to={`/result-list`}>
-              <div className={`${location.pathname === "/result-list" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <TextSearch className="text-black" />
                 Tin cần tìm
               </div>
@@ -54,7 +69,11 @@ const NavDrawer = () => {
           </li>
           <li>
             <Link to={"/result-list"}>
-              <div className={`${location.pathname === "/result-list" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <HandHeart className="text-black" />
                 Tin nhặt được
               </div>
@@ -62,7 +81,11 @@ const NavDrawer = () => {
           </li>
           <li>
             <Link to={"/result-list"}>
-              <div className={`${location.pathname === "/result-list" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <Dog className="text-black" />
                 Tìm thú cưng
               </div>
@@ -70,7 +93,11 @@ const NavDrawer = () => {
           </li>
           <li>
             <Link to={"/result-list"}>
-              <div className={`${location.pathname === "/result-list" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <PersonStanding className="text-black" />
                 Tìm người
               </div>
@@ -79,15 +106,23 @@ const NavDrawer = () => {
           <hr className="text-black border my-2" />
           <li>
             <Link to={"/scam"}>
-              <div className={`${location.pathname === "/scam" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/scam" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <PhoneOff className="text-black" />
                 Cảnh báo lừa đảo
               </div>
             </Link>
           </li>
           <li>
-            <Link to={"/aboutus"}>
-              <div className={`${location.pathname === "/aboutus" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+            <Link to={"/about-us"}>
+              <div
+                className={`${
+                  location.pathname === "/about-us" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <UsersRound className="text-black" />
                 Giới thiệu
               </div>
@@ -95,57 +130,86 @@ const NavDrawer = () => {
           </li>
           <li>
             <Link to={"/contact"}>
-              <div className={`${location.pathname === "/contact" ? "bg-gray-300" : ""} sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}>
+              <div
+                className={`${
+                  location.pathname === "/contact" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
                 <Bug className="text-black" />
                 Liên hệ chúng tôi
               </div>
             </Link>
           </li>
 
-          <hr className="text-black border my-2" />
+          {signedInUser.email && (
+            <>
+              <hr className="text-black border my-2" />
 
-          <li>
-            <Link to={"/notification"}>
-              <div className="flex justify-between items-center w-full gap-2 hover:bg-appbg-2 p-2 rounded-xl">
-                <div className={`${location.pathname === "/notification" ? "bg-gray-300" : ""} sm:text-md text-sm font-semibold flex gap-2 w-full border border-transparent text-black`}>
-                  <Bell className="text-black" />
-                  Thông báo
-                </div>
+              <li>
+                <Link to={"/notification"}>
+                  <div className="flex justify-between items-center w-full gap-2 hover:bg-appbg-2 p-2 rounded-xl">
+                    <div
+                      className={`${
+                        location.pathname === "/notification"
+                          ? "bg-gray-300"
+                          : ""
+                      } sm:text-md text-sm font-semibold flex gap-2 w-full border border-transparent text-black`}
+                    >
+                      <Bell className="text-black" />
+                      Thông báo
+                    </div>
 
-                <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
-                  <p className="text-white font-bold text-center">999</p>
-                </div>
-              </div>
-            </Link>
-          </li>
+                    <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
+                      <p className="text-white font-bold text-center">999</p>
+                    </div>
+                  </div>
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
 
         <ul className="w-full">
-          <li className="flex flex-col justify-center items-center gap-2 w-full">
-            <Link to={"/sign-in"} className="w-full flex justify-center items-center">
-              <Button className="sm:w-[50%] w-full rounded-xl sm:text-md text-sm">Đăng nhập</Button>
+          <li
+            className={`${
+              signedInUser.email ? "hidden" : "flex"
+            } flex-col justify-center items-center gap-2 w-full`}
+          >
+            <Link
+              to={"/sign-in"}
+              className="w-full flex justify-center items-center"
+            >
+              <Button className="sm:w-[50%] w-full rounded-xl sm:text-md text-sm">
+                Đăng nhập
+              </Button>
             </Link>
-            <Link to={"/sign-up"} className="w-full flex justify-center items-center">
+            <Link
+              to={"/sign-up"}
+              className="w-full flex justify-center items-center"
+            >
               <Button className="bg-transparent border border-black text-black sm:w-[50%] w-full rounded-xl sm:text-md text-sm">
                 Đăng ký
               </Button>
             </Link>
           </li>
 
-          <li className={`${!temp ? "block" : "hidden"}`}>
+          <li className={`${signedInUser.email ? "block" : "hidden"}`}>
             <div className="p-2 font-bold flex flex-col justify-center items-start gap-4 w-full sm:text-md text-sm border border-transparent	rounded-xl">
               <Link to={"/user-info"}>
                 <div className="flex justify-between items-center gap-2">
-                    <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>FD</AvatarFallback>
-                    </Avatar>
+                  <Avatar>
+                    <AvatarImage src={signedInUser.avatar} />
+                    <AvatarFallback>FD</AvatarFallback>
+                  </Avatar>
 
-                  {"Nguyễn Hoàng Phúc"}
+                  {signedInUser.displayName}
                 </div>
               </Link>
 
-              <div className="flex justify-center items-center gap-1 w-full bg-red-500 p-2 rounded-xl">
+              <div
+                className="flex justify-center items-center gap-1 w-full bg-red-500 p-2 rounded-xl cursor-pointer"
+                onClick={handleLogout}
+              >
                 <LogOut className="text-white" />
                 <p className="text-white">Đăng xuất</p>
               </div>

@@ -5,6 +5,9 @@ declare module "homeApp/Signin";
 declare module "homeApp/Signup";
 declare module "homeApp/Header";
 declare module "homeApp/ResetPassword";
+declare module "homeApp/store";
+declare module "homeApp/apiConfig";
+declare module "homeApp/authMiddleware";
 // auth (not use)
 declare module "authApp/Auth";
 // userInfo

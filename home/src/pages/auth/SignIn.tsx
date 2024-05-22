@@ -18,6 +18,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { AuthenticateService } from "@/services/api";
+import Spinner from "@/components/Spinner";
+import { useSetAtom } from "jotai";
+import { signedInUserAtom } from "@/store";
+import { setJWT } from "@/config/api";
 
 const formSchema = z.object({
   email: z
@@ -48,18 +52,41 @@ const SignIn = () => {
     }
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () =>
     setShowPassword((prev: boolean) => !prev);
 
+  const setSignedInUser = useSetAtom(signedInUserAtom);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
     try {
-      // const result =
-      await AuthenticateService.authControllerLogin({
+      const response = await AuthenticateService.authControllerLogin({
         email: values.email,
         password: values.password
       });
 
+      const userData = response.data;
+      const expiredDate = new Date();
+      expiredDate.setDate(expiredDate.getDate() + 7);
+
+      const signedInUser: SignedInUser = {
+        accessToken: userData.accessToken,
+        accessTokenExpired: new Date(userData.accessTokenExpired),
+        refreshToken: userData.refreshToken,
+        refreshTokenExpired: new Date(userData.refreshTokenExpired),
+        expired: expiredDate,
+        avatar: userData.avatar,
+        displayName: userData.displayName,
+        email: userData.email,
+        gender: userData.gender,
+        phone: userData.phone
+      };
+      setSignedInUser(signedInUser);
+
+      setJWT(signedInUser.accessToken);
       toast.success("Đăng nhập thành công! Mừng bạn trở lại");
       navigate("/");
     } catch (error: any) {
@@ -77,12 +104,14 @@ const SignIn = () => {
         });
       }
     }
+
+    setIsLoading(false);
   }
 
   async function signInWithGoogle() {
     try {
-      await AuthenticateService.authControllerSignWithGoogle();
       // window.open(`${apiBaseUrl}/api/v1/auths/google/login`, "_self");
+      await AuthenticateService.authControllerSignWithGoogle();
     } catch (error: any) {
       console.log(error.body.error.code);
     }
@@ -195,6 +224,7 @@ const SignIn = () => {
               </p>
 
               <Button type="submit" className="w-full mt-6 rounded-full">
+                {isLoading && <Spinner />}
                 Đăng nhập
               </Button>
 

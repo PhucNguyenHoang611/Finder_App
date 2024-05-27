@@ -1,13 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import PostItemCard from "./PostItemCard";
-// import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-const temp: number[] = [1, 2, 3, 4, 5];
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
+import { useLazyQuery } from "@apollo/client";
+import { GET_ALL_MY_POSTS } from "@/services/graphql/queries";
+import { useEffect, useState } from "react";
 
 const EmptyPostsList = () => {
   return (
@@ -21,16 +24,48 @@ const EmptyPostsList = () => {
 
 const PostsList = () => {
   const navigate = useNavigate();
-  // const [isLoading, setIsLoading] = useState(false);
-  const isLoading = false;
+  const [isLoading, setIsLoading] = useState(false);
+  const [postsList, setPostsList] = useState<Post[]>([]);
+
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  const [getAllMyPosts] = useLazyQuery(GET_ALL_MY_POSTS, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
+  const getAllPosts = async () => {
+    setIsLoading(true);
+
+    await getAllMyPosts()
+      .then((result) => {
+        setPostsList(result.data.getPostOfMe.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (signedInUser.email && postsList.length === 0) {
+      console.log("Loading my posts...");
+      getAllPosts();
+    }
+  }, [signedInUser]);
 
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
-      {temp.length > 0 &&
+      {postsList.length > 0 &&
         !isLoading &&
-        temp.map((_item, index) => <PostItemCard key={index} />)}
+        postsList.map((item, index) => (
+          <PostItemCard key={index} post={item} />
+        ))}
 
-      {temp.length === 0 && !isLoading && <EmptyPostsList />}
+      {postsList.length === 0 && !isLoading && <EmptyPostsList />}
 
       {isLoading && (
         <div className="w-full flex flex-col justify-center items-center space-y-3">

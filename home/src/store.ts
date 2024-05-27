@@ -12,7 +12,9 @@ export const signedInUserAtom = atomWithStorage<SignedInUser>("signedInUser", {
   displayName: "",
   email: "",
   gender: true,
-  phone: ""
+  phone: "",
+  birthDate: new Date(),
+  address: ""
 });
 
 export const useSignedInUserAtom = () => useAtom(signedInUserAtom);

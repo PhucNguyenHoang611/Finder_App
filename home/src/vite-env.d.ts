@@ -25,4 +25,6 @@ interface SignedInUser {
   email: string;
   gender: boolean;
   phone: string;
+  birthDate: Date;
+  address: string;
 }

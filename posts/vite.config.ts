@@ -15,25 +15,20 @@ export default defineConfig({
         "./PostDetails": "./src/pages/Post/PostDetails.tsx",
         "./PostResultList": "./src/pages/Post/PostResultList.tsx",
         "./NewsPage": "./src/pages/News/NewsPage.tsx",
-        "./Bootstrap": "./src/Bootstrap.tsx",
+        "./Bootstrap": "./src/Bootstrap.tsx"
       },
-      shared: [
-        "react",
-        "react-dom",
-        "react-router-dom",
-        "react-images-uploading",
-      ],
-    }),
+      shared: ["react", "react-dom", "react-router-dom"]
+    })
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+      "@": path.resolve(__dirname, "./src")
+    }
   },
   build: {
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: false,
-  },
+    cssCodeSplit: false
+  }
 });

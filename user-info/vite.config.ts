@@ -12,19 +12,27 @@ export default defineConfig({
       filename: "userInfo.js",
       exposes: {
         "./UserInfo": "./src/Bootstrap.tsx",
+        "./apolloConfig": "./src/config/apollo.ts"
       },
-      shared: ["react", "react-dom", "react-router-dom"],
-    }),
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "jotai",
+        "graphql",
+        "@apollo/client"
+      ]
+    })
   ],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
+      "@": path.resolve(__dirname, "./src")
+    }
   },
   build: {
     modulePreload: false,
     target: "esnext",
     minify: false,
-    cssCodeSplit: false,
-  },
+    cssCodeSplit: false
+  }
 });

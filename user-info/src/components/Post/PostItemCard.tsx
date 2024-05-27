@@ -24,12 +24,10 @@ import {
 } from "@/components/ui/carousel";
 import { useEffect, useState } from "react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
 
 const images: any[] = [
   "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
@@ -38,30 +36,32 @@ const images: any[] = [
   "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60"
 ];
 
-export default function PostCard() {
+export default function PostItemCard({ post }: PostItemCardProps) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
 
   useEffect(() => {
     if (!api) {
       return;
     }
- 
+
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
- 
+
     api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
 
   return (
-    <CardMUI
-      variant="outlined"
-      className="lg:w-[80%] w-full rounded-xl"
-    >
-      <CardMUIContent orientation="horizontal" sx={{ alignItems: "center", gap: 1 }}>
+    <CardMUI variant="outlined" className="lg:w-[80%] w-full rounded-xl">
+      <CardMUIContent
+        orientation="horizontal"
+        sx={{ alignItems: "center", gap: 1 }}
+      >
         <Box
           sx={{
             position: "relative",
@@ -81,43 +81,66 @@ export default function PostCard() {
         >
           <Avatar
             size="sm"
-            src="https://github.com/shadcn.png"
+            src={signedInUser.avatar}
             sx={{ width: 48, height: 48 }}
           />
         </Box>
-        <Typography fontWeight="lg" fontFamily="Montserrat">Nguyễn Hoàng Phúc</Typography>
-        <IconButton variant="plain" color="neutral" size="sm" sx={{ ml: "auto" }}>
+        <Typography fontWeight="lg" fontFamily="Montserrat">
+          {signedInUser.displayName}
+        </Typography>
+        <IconButton
+          variant="plain"
+          color="neutral"
+          size="sm"
+          sx={{ ml: "auto" }}
+        >
           <MoreHoriz />
         </IconButton>
       </CardMUIContent>
 
       <CardMUIContent orientation="horizontal" sx={{ alignItems: "center" }}>
-        <Typography fontFamily="Montserrat">Tìm người yêu biết nấu ăn, chăm chồng chăm con hehe !!!</Typography>
+        <Typography fontFamily="Montserrat">{post.title}</Typography>
       </CardMUIContent>
 
       <CardMUIOverflow>
         <Carousel setApi={setApi} className="w-full">
           <CarouselContent>
-            {images.length > 0 && images.map((img, index) => (
-              <CarouselItem key={index}>
-                <Card className="border-0 bg-transparent">
-                  <CardContent className="flex items-center justify-center object-cover p-0 w-full h-[500px]">
-                    <Dialog>
-                      <DialogTrigger>
-                        <img src={img} alt="postImage" loading="lazy" className="cursor-pointer" />
-                      </DialogTrigger>
-                      <DialogContent className={cn("border-0 rounded-xl p-0")}>
-                        <img src={img} alt="postImage" loading="lazy" className="w-full h-full object-cover rounded-xl" />
-                      </DialogContent>
-                    </Dialog>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
+            {images.length > 0 &&
+              images.map((img, index) => (
+                <CarouselItem key={index}>
+                  <Card className="border-0 bg-transparent">
+                    <CardContent className="flex items-center justify-center object-cover p-0 w-full h-[500px]">
+                      <Dialog>
+                        <DialogTrigger>
+                          <img
+                            src={img}
+                            alt="postImage"
+                            loading="lazy"
+                            className="cursor-pointer"
+                          />
+                        </DialogTrigger>
+                        <DialogContent
+                          className={cn("border-0 rounded-xl p-0")}
+                        >
+                          <img
+                            src={img}
+                            alt="postImage"
+                            loading="lazy"
+                            className="w-full h-full object-cover rounded-xl"
+                          />
+                        </DialogContent>
+                      </Dialog>
+                    </CardContent>
+                  </Card>
+                </CarouselItem>
+              ))}
           </CarouselContent>
         </Carousel>
       </CardMUIOverflow>
-      <CardMUIContent orientation="horizontal" sx={{ alignItems: "center", mx: -1 }}>
+      <CardMUIContent
+        orientation="horizontal"
+        sx={{ alignItems: "center", mx: -1 }}
+      >
         <Box sx={{ width: 0, display: "flex", gap: 0.5 }}>
           <IconButton variant="plain" color="neutral" size="sm">
             <FavoriteBorder />
@@ -129,7 +152,9 @@ export default function PostCard() {
             <SendOutlined />
           </IconButton>
         </Box>
-        <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, mx: "auto" }}>
+        <Box
+          sx={{ display: "flex", alignItems: "center", gap: 0.5, mx: "auto" }}
+        >
           <div className="py-2 text-center text-sm text-muted-foreground">
             {current} / {count}
           </div>
@@ -191,7 +216,12 @@ export default function PostCard() {
           variant="plain"
           size="sm"
           placeholder="Thêm bình luận của bạn…"
-          sx={{ flex: 1, px: 0, "--Input-focusedThickness": "0px", fontFamily: "Montserrat" }}
+          sx={{
+            flex: 1,
+            px: 0,
+            "--Input-focusedThickness": "0px",
+            fontFamily: "Montserrat"
+          }}
         />
         <Link disabled underline="none" role="button" fontFamily="Montserrat">
           Gửi

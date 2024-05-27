@@ -16,12 +16,7 @@ export default defineConfig({
         posts: "http://localhost:5004/assets/posts.js",
         notiChat: "http://localhost:5005/assets/notiChat.js"
       },
-      shared: [
-        "react",
-        "react-dom",
-        "react-router-dom",
-        "react-images-uploading"
-      ]
+      shared: ["react", "react-dom", "react-router-dom", "@apollo/client"]
     })
   ],
   resolve: {

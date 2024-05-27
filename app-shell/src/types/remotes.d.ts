@@ -12,6 +12,7 @@ declare module "homeApp/authMiddleware";
 declare module "authApp/Auth";
 // userInfo
 declare module "userInfo/UserInfo";
+declare module "userInfo/apolloConfig";
 // posts
 declare module "posts/CreatePost";
 declare module "posts/PostDetails";

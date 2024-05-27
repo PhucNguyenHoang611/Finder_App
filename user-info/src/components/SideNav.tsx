@@ -6,7 +6,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
+  CardTitle
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
@@ -26,33 +26,35 @@ import FeedOutlinedIcon from "@mui/icons-material/FeedOutlined";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import KeyOutlinedIcon from "@mui/icons-material/KeyOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
 
 const menuItems: MenuItemProps[] = [
   {
     title: "Thông tin chung",
     to: "user-info",
-    icon: <InfoOutlinedIcon />,
+    icon: <InfoOutlinedIcon />
   },
   {
     title: "Bài viết của tôi",
     to: "my-posts",
-    icon: <NewspaperOutlinedIcon />,
+    icon: <NewspaperOutlinedIcon />
   },
   {
     title: "Cập nhật thông tin",
     to: "update-info",
-    icon: <FeedOutlinedIcon />,
+    icon: <FeedOutlinedIcon />
   },
   {
     title: "Đăng ký nhận tin",
     to: "register-newsletter",
-    icon: <MailOutlinedIcon />,
+    icon: <MailOutlinedIcon />
   },
   {
     title: "Đổi mật khẩu",
     to: "change-password",
-    icon: <KeyOutlinedIcon />,
-  },
+    icon: <KeyOutlinedIcon />
+  }
 ];
 
 const MenuItem = (props: MenuItemProps) => {
@@ -64,7 +66,7 @@ const MenuItem = (props: MenuItemProps) => {
       disablePadding
       sx={{
         backgroundColor:
-          location.pathname === props.to ? "#E5E5E5" : "transparent",
+          location.pathname === props.to ? "#E5E5E5" : "transparent"
       }}
     >
       <ListItemButton onClick={() => navigate(props.to)}>
@@ -79,13 +81,15 @@ const MenuItem = (props: MenuItemProps) => {
 };
 
 const SideNav = () => {
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+
   return (
     <Card className={cn("w-full h-max rounded-xl")}>
       <aside>
         <Link to={"/"}>
-          <button className="p-2 m-1 flex justify-start items-center hover:bg-slate-200 hover:border-0 rounded-xl">
+          <button className="p-2 m-1 flex justify-start items-center hover:bg-slate-200 hover:border-0 rounded-xl gap-2">
             <ArrowBackIcon />
-            <span>Trở về trang chủ</span>
+            <span className="font-medium">Trở về trang chủ</span>
           </button>
         </Link>
       </aside>
@@ -95,13 +99,13 @@ const SideNav = () => {
       >
         {/* User Avatar */}
         <Avatar className={cn("w-40 h-40")}>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={signedInUser.avatar} />
           <AvatarFallback>FD</AvatarFallback>
         </Avatar>
 
         {/* User Basic Information */}
-        <CardTitle>Nguyễn Hoàng Phúc</CardTitle>
-        <CardDescription>hoangphucnguyen112002@gmail.com</CardDescription>
+        <CardTitle>{signedInUser.displayName}</CardTitle>
+        <CardDescription>{signedInUser.email}</CardDescription>
       </CardHeader>
 
       <div className="w-full flex justify-center items-center">

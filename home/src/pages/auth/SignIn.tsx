@@ -82,7 +82,9 @@ const SignIn = () => {
         displayName: userData.displayName,
         email: userData.email,
         gender: userData.gender,
-        phone: userData.phone
+        phone: userData.phone,
+        birthDate: userData.birthDate,
+        address: userData.address
       };
       setSignedInUser(signedInUser);
 

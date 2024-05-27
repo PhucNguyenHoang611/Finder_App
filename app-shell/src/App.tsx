@@ -1,4 +1,3 @@
-// import "./App.css";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import UserInfo from "@/pages/UserInfo";

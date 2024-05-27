@@ -7,8 +7,11 @@ import { Button } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
 import { Pencil2Icon } from "@radix-ui/react-icons";
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
 
 const UserInfo = () => {
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
   const navigate = useNavigate();
 
   return (
@@ -24,18 +27,18 @@ const UserInfo = () => {
           className={cn("flex flex-col justify-center items-center gap-4")}
         >
           <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="lastName">Họ</Label>
+            <Label htmlFor="displayName">Họ và tên</Label>
             <Input
               type="text"
-              id="lastName"
-              placeholder="Họ"
-              defaultValue="Nguyễn Hoàng"
+              id="displayName"
+              placeholder="Họ và tên"
+              defaultValue={signedInUser.displayName}
               className={cn("rounded-xl border-slate-300")}
               readOnly
             />
           </div>
 
-          <div className="grid w-full max-w-sm items-center gap-1.5">
+          {/* <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="firstName">Tên</Label>
             <Input
               type="text"
@@ -45,19 +48,7 @@ const UserInfo = () => {
               className={cn("rounded-xl border-slate-300")}
               readOnly
             />
-          </div>
-
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="phoneNumber">Số điện thoại</Label>
-            <Input
-              type="text"
-              id="phoneNumber"
-              placeholder="Số điện thoại"
-              defaultValue="0933538901"
-              className={cn("rounded-xl border-slate-300")}
-              readOnly
-            />
-          </div>
+          </div> */}
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="gender">Giới tính</Label>
@@ -65,19 +56,38 @@ const UserInfo = () => {
               type="text"
               id="gender"
               placeholder="Giới tính"
-              defaultValue="Nam"
+              defaultValue={signedInUser.gender ? "Nam" : "Nữ"}
               className={cn("rounded-xl border-slate-300")}
               readOnly
             />
           </div>
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="yearOfBirth">Năm sinh</Label>
+            <Label htmlFor="birthDate">Ngày sinh</Label>
             <Input
               type="text"
-              id="yearOfBirth"
-              placeholder="Năm sinh"
-              defaultValue="2002"
+              id="birthDate"
+              placeholder="Ngày sinh"
+              defaultValue={new Date(signedInUser.birthDate).toLocaleDateString(
+                "vi-VN",
+                {
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit"
+                }
+              )}
+              className={cn("rounded-xl border-slate-300")}
+              readOnly
+            />
+          </div>
+
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="phone">Số điện thoại</Label>
+            <Input
+              type="text"
+              id="phone"
+              placeholder="Số điện thoại"
+              defaultValue={signedInUser.phone}
               className={cn("rounded-xl border-slate-300")}
               readOnly
             />
@@ -89,7 +99,7 @@ const UserInfo = () => {
               type="text"
               id="address"
               placeholder="Địa chỉ"
-              defaultValue="123/ABC, XYZ"
+              defaultValue={signedInUser.address}
               className={cn("rounded-xl border-slate-300")}
               readOnly
             />

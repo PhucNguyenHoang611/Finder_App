@@ -1,54 +1,91 @@
-import ImageCard from "@/components/ImageCard";
+/* eslint-disable react-hooks/exhaustive-deps */
+import PostsList from "@/components/Post/PostsList";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { setJWT } from "@/config/api";
+import { GET_MY_PROFILE } from "@/services/graphql/queries";
+import { signedInUserAtom } from "@/store";
+import { useLazyQuery } from "@apollo/client";
+import { useSetAtom } from "jotai";
 import { Megaphone } from "lucide-react";
-import { Link } from "react-router-dom";
-
-const cardData = [
-  {
-    image:
-      "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Cần tìm mèo lạc",
-    location: "Hà Nội",
-    type: "Tìm thú cưng"
-  },
-  {
-    image:
-      "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Tìm chó lạc",
-    location: "Hồ Chí Minh",
-    type: "Tìm thú cưng"
-  },
-  {
-    image:
-      "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Tìm chủ cho chó",
-    location: "Đà Nẵng",
-    type: "Tìm người"
-  },
-  {
-    image:
-      "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Tìm chủ cho mèo",
-    location: "Hà Nội",
-    type: "Tìm người"
-  },
-  {
-    image:
-      "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Tìm chủ cho chó",
-    location: "Đà Nẵng",
-    type: "Tìm người"
-  },
-  {
-    image:
-      "https://timdothatlac.vn/storage/images/categories/8fa6c3f9-942c-467d-9113-12b4b3607b40.jpg",
-    title: "Tìm chủ cho mèo",
-    location: "Hà Nội",
-    type: "Tìm người"
-  }
-];
+import { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { toast } from "sonner";
 
 const Home = () => {
+  // Manage Signed In User Data
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [getMyProfile] = useLazyQuery(GET_MY_PROFILE);
+  const setSignedInUser = useSetAtom(signedInUserAtom);
+
+  const handleGetMyProfile = async (
+    accessToken: string,
+    accessTokenExpired: string,
+    refreshToken: string,
+    refreshTokenExpired: string,
+    expiredDate: Date
+  ) => {
+    await getMyProfile({
+      context: {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      }
+    })
+      .then((result) => {
+        const userData = result.data.getMyProfile.data;
+
+        const signedInUser: SignedInUser = {
+          accessToken: accessToken,
+          accessTokenExpired: new Date(accessTokenExpired),
+          refreshToken: refreshToken,
+          refreshTokenExpired: new Date(refreshTokenExpired),
+          expired: expiredDate,
+          avatar: userData.avatar,
+          displayName: userData.displayName,
+          email: userData.email,
+          gender: userData.gender,
+          phone: userData.phone,
+          birthDate: userData.birthDate,
+          address: userData.address
+        };
+        setSignedInUser(signedInUser);
+
+        setJWT(accessToken);
+        toast.success("Đăng nhập thành công! Chào mừng bạn trở lại");
+
+        searchParams.delete("accessToken");
+        searchParams.delete("accessTokenExpired");
+        searchParams.delete("refreshToken");
+        searchParams.delete("refreshTokenExpired");
+
+        setSearchParams(searchParams);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // Get Search Params
+  useEffect(() => {
+    if (searchParams.size > 0 && searchParams.get("accessToken")) {
+      const expiredDate = new Date();
+      expiredDate.setDate(expiredDate.getDate() + 7);
+
+      const accessToken = searchParams.get("accessToken") || "";
+      const accessTokenExpired = searchParams.get("accessTokenExpired") || "";
+      const refreshToken = searchParams.get("refreshToken") || "";
+      const refreshTokenExpired = searchParams.get("refreshTokenExpired") || "";
+
+      handleGetMyProfile(
+        accessToken,
+        accessTokenExpired,
+        refreshToken,
+        refreshTokenExpired,
+        expiredDate
+      );
+    }
+  }, [searchParams]);
+
   return (
     <section className="flex flex-col justify-center">
       <Alert className="bg-slate-200 border rounded-[8px] w-full mx-auto">
@@ -60,17 +97,8 @@ const Home = () => {
           </Link>
         </AlertDescription>
       </Alert>
-      <div className="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 py-8 justify-center w-full">
-        {cardData.map((card, index) => (
-          <ImageCard
-            key={index}
-            imageURL={card.image}
-            title={card.title}
-            location={card.location}
-            type={card.type}
-          />
-        ))}
-      </div>
+
+      <PostsList />
     </section>
   );
 };

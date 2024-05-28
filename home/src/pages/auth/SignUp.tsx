@@ -20,6 +20,7 @@ import { useState } from "react";
 import { RiGoogleFill, RiFacebookFill } from "@remixicon/react";
 import { AuthenticateService } from "@/services/api";
 import Spinner from "@/components/Spinner";
+import { apiBaseUrl } from "@/config/api";
 
 const formSchema = z
   .object({
@@ -136,7 +137,7 @@ const SignUp = () => {
 
   async function signUpWithGoogle() {
     try {
-      await AuthenticateService.authControllerSignWithGoogle();
+      window.open(`${apiBaseUrl}/api/v1/auths/google/login`, "_self");
     } catch (error: any) {
       console.log(error.body.error.code);
     }
@@ -144,7 +145,7 @@ const SignUp = () => {
 
   async function signUpWithFacebook() {
     try {
-      await AuthenticateService.authControllerSignWithFacebook();
+      window.open(`${apiBaseUrl}/api/v1/auths/facebook/login`, "_self");
     } catch (error: any) {
       console.log(error.body.error.code);
     }

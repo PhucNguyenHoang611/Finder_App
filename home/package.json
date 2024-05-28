@@ -12,6 +12,7 @@
     "api:generate": "openapi -i http://localhost:5001/api-json -o src/services/api --client axios --indent 2"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.4",
     "@hookform/resolvers": "^3.3.4",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -29,6 +30,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
     "form-data": "^4.0.0",
+    "graphql": "^16.8.1",
     "jotai": "^2.8.0",
     "jotai-devtools": "^0.9.1",
     "jotai-redux": "^0.2.1",

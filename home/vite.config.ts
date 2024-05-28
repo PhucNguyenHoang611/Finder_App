@@ -25,7 +25,14 @@ export default defineConfig({
         "./apiConfig": "./src/config/api.ts",
         "./authMiddleware": "./src/middlewares/auth.ts"
       },
-      shared: ["react", "react-dom", "react-router-dom", "jotai"]
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "jotai",
+        "graphql",
+        "@apollo/client"
+      ]
     })
   ],
   resolve: {

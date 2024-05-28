@@ -21,7 +21,7 @@ import { AuthenticateService } from "@/services/api";
 import Spinner from "@/components/Spinner";
 import { useSetAtom } from "jotai";
 import { signedInUserAtom } from "@/store";
-import { setJWT } from "@/config/api";
+import { apiBaseUrl, setJWT } from "@/config/api";
 
 const formSchema = z.object({
   email: z
@@ -89,7 +89,7 @@ const SignIn = () => {
       setSignedInUser(signedInUser);
 
       setJWT(signedInUser.accessToken);
-      toast.success("Đăng nhập thành công! Mừng bạn trở lại");
+      toast.success("Đăng nhập thành công! Chào mừng bạn trở lại");
       navigate("/");
     } catch (error: any) {
       const errorCode = error.body.error.code;
@@ -112,8 +112,7 @@ const SignIn = () => {
 
   async function signInWithGoogle() {
     try {
-      // window.open(`${apiBaseUrl}/api/v1/auths/google/login`, "_self");
-      await AuthenticateService.authControllerSignWithGoogle();
+      window.open(`${apiBaseUrl}/api/v1/auths/google/login`, "_self");
     } catch (error: any) {
       console.log(error.body.error.code);
     }
@@ -121,7 +120,7 @@ const SignIn = () => {
 
   async function signInWithFacebook() {
     try {
-      await AuthenticateService.authControllerSignWithFacebook();
+      window.open(`${apiBaseUrl}/api/v1/auths/facebook/login`, "_self");
     } catch (error: any) {
       console.log(error.body.error.code);
     }

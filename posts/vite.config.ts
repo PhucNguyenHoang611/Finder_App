@@ -17,7 +17,13 @@ export default defineConfig({
         "./NewsPage": "./src/pages/News/NewsPage.tsx",
         "./Bootstrap": "./src/Bootstrap.tsx"
       },
-      shared: ["react", "react-dom", "react-router-dom"]
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "graphql",
+        "@apollo/client"
+      ]
     })
   ],
   resolve: {

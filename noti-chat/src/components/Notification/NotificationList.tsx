@@ -1,8 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import NotificationCard from "./NotificationCard";
 
-const tempList = [1, 2, 3];
-
 const EmptyNotificationsList = () => {
   return (
     <div className="w-full h-[300px] flex justify-center items-center">
@@ -13,17 +11,28 @@ const EmptyNotificationsList = () => {
   );
 };
 
-const NotificationList = () => {
-  // const [isLoading, setIsLoading] = useState(false);
-  const isLoading = false;
-
+const NotificationList = ({
+  signedInUser,
+  isLoading,
+  notifications,
+  selectedNotifications,
+  setSelectedNotifications
+}: NotificationListProps) => {
   return (
     <div className="flex flex-col sm:gap-2 gap-4">
-      {tempList.map((item) => (
-        <NotificationCard key={item} />
-      ))}
+      {!isLoading &&
+        notifications.length > 0 &&
+        notifications.map((item: INotification, index: number) => (
+          <NotificationCard
+            signedInUser={signedInUser}
+            key={index}
+            notification={item}
+            selectedNotifications={selectedNotifications}
+            setSelectedNotifications={setSelectedNotifications}
+          />
+        ))}
 
-      {tempList.length === 0 && !isLoading && <EmptyNotificationsList />}
+      {!isLoading && notifications.length === 0 && <EmptyNotificationsList />}
 
       {isLoading && (
         <div className="w-full flex flex-col justify-center items-center space-y-3 my-2">

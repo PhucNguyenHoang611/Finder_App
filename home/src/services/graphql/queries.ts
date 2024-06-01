@@ -48,3 +48,31 @@ export const GET_POST_WITH_FILTER = gql`
     }
   }
 `;
+
+// Notification
+export const GET_NUMBER_OF_NOTIFY_UNREAD = gql`
+  query GetNumberOfNotifyUnread {
+    getNumberOfNotifyUnRead {
+      status
+      statusCode
+      data {
+        unRead
+      }
+      message
+    }
+  }
+`;
+
+export const GET_NOTIFY_WITH_FILTER = gql`
+  query GetNotifyWithFilter($filters: FilterNotifyInput) {
+    getNotifyWithFilter(filters: $filters) {
+      status
+      statusCode
+      data {
+        listData
+        totalCount
+      }
+      message
+    }
+  }
+`;

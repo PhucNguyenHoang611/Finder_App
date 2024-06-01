@@ -1,5 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { GET_NUMBER_OF_NOTIFY_UNREAD } from "@/services/graphql/queries";
 import { signedInUserAtom } from "@/store";
+import { useLazyQuery } from "@apollo/client";
 import { useAtomValue } from "jotai";
 import {
   Bell,
@@ -12,12 +15,39 @@ import {
   Upload,
   UsersRound
 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 const SideBar = () => {
   const location = useLocation();
   const [searchParams, _setSearchParams] = useSearchParams();
   const signedInUser = useAtomValue(signedInUserAtom);
+  const [notifyUnRead, setNotifyUnRead] = useState(0);
+
+  const [getNumberOfNotifyUnRead] = useLazyQuery(GET_NUMBER_OF_NOTIFY_UNREAD, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
+  const handleGetNumberOfNotifyUnRead = async () => {
+    try {
+      const { data } = await getNumberOfNotifyUnRead();
+      const resultData = data.getNumberOfNotifyUnRead.data;
+
+      setNotifyUnRead(resultData.unRead);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (signedInUser.accessToken) {
+      handleGetNumberOfNotifyUnRead();
+    }
+  }, []);
 
   return (
     <nav className="flex justify-center items-start gap-4 w-full h-full">
@@ -140,19 +170,23 @@ const SideBar = () => {
 
             <li>
               <Link to={"/notification"}>
-                <div className="flex justify-between items-center w-full hover:bg-appbg-2 rounded-xl p-2">
-                  <div
-                    className={`${
-                      location.pathname === "/notification" ? "bg-gray-300" : ""
-                    } font-semibold flex gap-2 w-full border border-transparent text-black`}
-                  >
+                <div
+                  className={`${
+                    location.pathname === "/notification" ? "bg-gray-300" : ""
+                  } flex justify-between items-center w-full hover:bg-appbg-2 rounded-xl p-2`}
+                >
+                  <div className="font-semibold flex gap-2 w-full border border-transparent text-black">
                     <Bell className="text-black" />
                     Thông báo
                   </div>
 
-                  <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
-                    <p className="text-white font-bold text-center">999</p>
-                  </div>
+                  {notifyUnRead > 0 && (
+                    <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
+                      <p className="text-white font-bold text-center">
+                        {notifyUnRead}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </Link>
             </li>

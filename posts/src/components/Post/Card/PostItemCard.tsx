@@ -37,7 +37,7 @@ const PostItemCard = ({ post }: PostItemCardProps) => {
           <CardTitle
             onClick={() => navigate("/post-details/" + post.id)}
             className={cn(
-              "cursor-pointer hover:text-green-700 lg:text-xl text-base"
+              "cursor-pointer hover:text-slate-600 lg:text-xl text-base"
             )}
           >
             {post.title ? post.title : "Không có tiêu đề"}

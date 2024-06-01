@@ -11,6 +11,7 @@
     "serve": "vite preview --port 5005 --strictPort"
   },
   "dependencies": {
+    "@apollo/client": "^3.10.4",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.3.4",
@@ -31,7 +32,10 @@
     "@reduxjs/toolkit": "^2.2.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "date-fns": "^3.6.0",
     "embla-carousel-react": "^8.0.4",
+    "graphql": "^16.8.1",
+    "jotai": "^2.8.2",
     "lucide-react": "^0.377.0",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",

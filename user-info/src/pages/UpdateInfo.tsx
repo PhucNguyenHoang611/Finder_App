@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -167,9 +168,7 @@ const UpdateInfo = () => {
         }
       }
     })
-      .then((result) => {
-        console.log(result);
-
+      .then((_result) => {
         setSignedInUser({
           ...signedInUser,
           displayName: values.displayName,

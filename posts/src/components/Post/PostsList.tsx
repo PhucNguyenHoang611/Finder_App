@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Skeleton } from "@/components/ui/skeleton";
 import PostItemCard from "@/components/Post/Card/PostItemCard";
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-const temp: number[] = [1, 2, 3];
 
 const EmptyPostsList = () => {
   return (
@@ -16,18 +12,14 @@ const EmptyPostsList = () => {
   );
 };
 
-const PostsList = () => {
-  // const navigate = useNavigate();
-  // const [isLoading, setIsLoading] = useState(false);
-  const isLoading = false;
-
+const PostsList = ({ isLoading, posts }: PostsListProps) => {
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
-      {temp.length > 0 &&
+      {posts.length > 0 &&
         !isLoading &&
-        temp.map((_item, index) => <PostItemCard key={index} />)}
+        posts.map((item, index) => <PostItemCard key={index} post={item} />)}
 
-      {temp.length === 0 && !isLoading && <EmptyPostsList />}
+      {posts.length === 0 && !isLoading && <EmptyPostsList />}
 
       {isLoading && (
         <div className="w-full flex flex-col justify-center items-center space-y-3">

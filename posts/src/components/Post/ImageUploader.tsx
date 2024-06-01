@@ -1,21 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { ChangeEvent, DragEvent } from "react";
 
-export default function ImageUploader({ selectedFile, setSelectedFile }: any) {
-  const handleDragOver = (event: any) => {
+export default function ImageUploader({
+  selectedFile,
+  setSelectedFile
+}: ImageUploaderProps) {
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
-  const handleDrop = (event: any) => {
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     setSelectedFile(file);
   };
 
-  const handleInputChange = (event: any) => {
-    setSelectedFile(event.target.files[0]);
-    console.log(event.target.files[0]);
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file: File = event.target.files[0];
+      setSelectedFile(file);
+    }
   };
 
   const handleDeleteImage = () => {
@@ -33,7 +39,8 @@ export default function ImageUploader({ selectedFile, setSelectedFile }: any) {
           <div className="w-full flex justify-center items-center gap-2 h-[200px]">
             <CloudUploadOutlinedIcon />
             <span className="text-sm font-semibold text-center">
-              Kéo thả hình ảnh vào đây hoặc click vào nút bên dưới để chọn hình ảnh
+              Kéo thả hình ảnh vào đây hoặc click vào nút bên dưới để chọn hình
+              ảnh
             </span>
           </div>
         ) : (
@@ -45,7 +52,11 @@ export default function ImageUploader({ selectedFile, setSelectedFile }: any) {
         )}
       </div>
 
-      <div className={`lg:w-[80%] w-full h-max flex sm:flex-row flex-col ${selectedFile ? "justify-between" : "justify-center"} items-center gap-4`}>
+      <div
+        className={`lg:w-[80%] w-full h-max flex sm:flex-row flex-col ${
+          selectedFile ? "justify-between" : "justify-center"
+        } items-center gap-4`}
+      >
         <input
           type="file"
           onChange={handleInputChange}

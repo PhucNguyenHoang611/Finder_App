@@ -52,7 +52,6 @@ const PostsList = () => {
 
   useEffect(() => {
     if (signedInUser.email && postsList.length === 0) {
-      console.log("Loading my posts...");
       getAllPosts();
     }
   }, [signedInUser]);

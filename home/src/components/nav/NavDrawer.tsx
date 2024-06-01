@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Link,
@@ -27,12 +28,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSignedInUserAtom } from "@/store";
 import { AuthenticateService } from "@/services/api";
 import { RESET } from "jotai/utils";
+import { useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { GET_NUMBER_OF_NOTIFY_UNREAD } from "@/services/graphql/queries";
 
 const NavDrawer = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [searchParams, _setSearchParams] = useSearchParams();
   const [signedInUser, setSignedInUser] = useSignedInUserAtom();
+  const [notifyUnRead, setNotifyUnRead] = useState(0);
 
   const handleLogout = async () => {
     await AuthenticateService.authControllerLogout();
@@ -40,6 +45,33 @@ const NavDrawer = () => {
 
     navigate("/sign-in");
   };
+
+  const [getNumberOfNotifyUnRead] = useLazyQuery(GET_NUMBER_OF_NOTIFY_UNREAD, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
+  const handleGetNumberOfNotifyUnRead = async () => {
+    console.log("aa");
+
+    try {
+      const { data } = await getNumberOfNotifyUnRead();
+      const resultData = data.getNumberOfNotifyUnRead.data;
+
+      setNotifyUnRead(resultData.unRead);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (signedInUser.accessToken) {
+      handleGetNumberOfNotifyUnRead();
+    }
+  }, []);
 
   return (
     <Drawer direction="left">
@@ -166,21 +198,27 @@ const NavDrawer = () => {
 
               <li>
                 <Link to={"/notification"}>
-                  <div className="flex justify-between items-center w-full gap-2 hover:bg-appbg-2 p-2 rounded-xl">
+                  <div
+                    className={`${
+                      location.pathname === "/notification" ? "bg-gray-300" : ""
+                    } flex justify-between items-center w-full hover:bg-appbg-2 rounded-xl p-2`}
+                  >
                     <div
-                      className={`${
-                        location.pathname === "/notification"
-                          ? "bg-gray-300"
-                          : ""
-                      } sm:text-md text-sm font-semibold flex gap-2 w-full border border-transparent text-black`}
+                      className={
+                        "sm:text-md text-sm font-semibold flex gap-2 w-full border border-transparent text-black"
+                      }
                     >
                       <Bell className="text-black" />
                       Thông báo
                     </div>
 
-                    <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
-                      <p className="text-white font-bold text-center">999</p>
-                    </div>
+                    {notifyUnRead > 0 && (
+                      <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
+                        <p className="text-white font-bold text-center">
+                          {notifyUnRead}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </Link>
               </li>

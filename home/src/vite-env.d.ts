@@ -17,6 +17,11 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+interface NotificationDropdownItemProps {
+  signedInUser: SignedInUser;
+  notification: INotification;
+}
+
 // Other Interfaces
 interface SignedInUser {
   accessToken: string;
@@ -48,3 +53,28 @@ interface Post {
   createdDate: Date;
   updatedDate: Date;
 }
+
+interface CommentNotification {
+  id: number;
+  commentId: number;
+  content: string;
+  isRead: boolean;
+  parentCommentId: number;
+  postId: number;
+  postTitle: string;
+  senderAvatar: string;
+  senderId: number;
+  senderName: string;
+  timestamp: Date;
+  type: string;
+}
+interface PostNotification {
+  id: number;
+  approved: string;
+  isRead: boolean;
+  postId: number;
+  postTitle: string;
+  timestamp: Date;
+  type: string;
+}
+type INotification = CommentNotification | PostNotification;

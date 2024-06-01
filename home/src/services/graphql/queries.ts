@@ -22,7 +22,7 @@ export const GET_MY_PROFILE = gql`
 `;
 
 export const GET_POST_WITH_FILTER = gql`
-  query GetPostWithFilter($filters: FilterPostInput!) {
+  query GetPostWithFilter($filters: FilterPostInput) {
     getPostWithFilter(filters: $filters) {
       status
       statusCode

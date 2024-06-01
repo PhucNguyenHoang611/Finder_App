@@ -1,4 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useSearchParams
+} from "react-router-dom";
 
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
@@ -25,6 +31,7 @@ import { RESET } from "jotai/utils";
 const NavDrawer = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams, _setSearchParams] = useSearchParams();
   const [signedInUser, setSignedInUser] = useSignedInUserAtom();
 
   const handleLogout = async () => {
@@ -56,10 +63,13 @@ const NavDrawer = () => {
             </Link>
           </li>
           <li>
-            <Link to={`/result-list`}>
+            <Link to={`/result-list?filter=lost`}>
               <div
                 className={`${
-                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                  location.pathname === "/result-list" &&
+                  searchParams.get("filter") === "lost"
+                    ? "bg-gray-300"
+                    : ""
                 } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
               >
                 <TextSearch className="text-black" />
@@ -68,10 +78,13 @@ const NavDrawer = () => {
             </Link>
           </li>
           <li>
-            <Link to={"/result-list"}>
+            <Link to={"/result-list?filter=collect"}>
               <div
                 className={`${
-                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                  location.pathname === "/result-list" &&
+                  searchParams.get("filter") === "collect"
+                    ? "bg-gray-300"
+                    : ""
                 } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
               >
                 <HandHeart className="text-black" />
@@ -80,10 +93,13 @@ const NavDrawer = () => {
             </Link>
           </li>
           <li>
-            <Link to={"/result-list"}>
+            <Link to={"/result-list?filter=pet"}>
               <div
                 className={`${
-                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                  location.pathname === "/result-list" &&
+                  searchParams.get("filter") === "pet"
+                    ? "bg-gray-300"
+                    : ""
                 } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
               >
                 <Dog className="text-black" />
@@ -92,10 +108,13 @@ const NavDrawer = () => {
             </Link>
           </li>
           <li>
-            <Link to={"/result-list"}>
+            <Link to={"/result-list?filter=people"}>
               <div
                 className={`${
-                  location.pathname === "/result-list" ? "bg-gray-300" : ""
+                  location.pathname === "/result-list" &&
+                  searchParams.get("filter") === "people"
+                    ? "bg-gray-300"
+                    : ""
                 } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
               >
                 <PersonStanding className="text-black" />

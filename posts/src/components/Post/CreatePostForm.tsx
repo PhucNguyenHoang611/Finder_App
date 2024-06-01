@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
   Form,
@@ -5,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +16,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from "@/components/ui/select";
 
 import { cn } from "@/lib/utils";
@@ -33,91 +34,170 @@ import { level1s, findLevel1ByName, Level1, Level2, Level3 } from "dvhcvn";
 import { useEffect, useState } from "react";
 import ImageUploader from "@/components/Post/ImageUploader";
 import PreviewPostDialog from "@/components/Post/PreviewPostDialog";
+import { useLazyQuery, useMutation } from "@apollo/client";
+import { GET_ITEM_TYPE_WITH_FILTER } from "@/services/graphql/queries";
+import { CREATE_POST } from "@/services/graphql/mutations";
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
+import Spinner from "../Spinner";
 
 const formSchema = z.object({
   title: z
-  .string()
-  .min(1, {
-    message: "Tiêu đề không được để trống",
-    })
-    .max(100, {
-      message: "Tiêu đề không được dài quá 100 ký tự",
-    }),
-  type: z.enum(["Tin cần tìm", "Tin nhặt được"], {
-    required_error: "Loại bài viết không được để trống",
-  }),
-  category: z.string({
-    required_error: "Danh mục không được để trống",
-  }),
-  content: z
     .string()
     .min(1, {
-      message: "Nội dung không được để trống",
+      message: "Tiêu đề không được để trống"
+    })
+    .max(100, {
+      message: "Tiêu đề không được dài quá 100 ký tự"
+    }),
+  postType: z.enum(["LOST", "COLLECT"], {
+    required_error: "Loại bài viết không được để trống"
+  }),
+  description: z
+    .string()
+    .min(1, {
+      message: "Nội dung không được để trống"
     })
     .max(1000, {
-      message: "Nội dung không được dài quá 1000 ký tự",
+      message: "Nội dung không được dài quá 1000 ký tự"
     }),
+  itemType: z.string({
+    required_error: "Danh mục không được để trống"
+  }),
+  contactPhone: z.string().min(1, {
+    message: "Thông tin liên lạc không được để trống"
+  }),
   city: z.string().min(1, {
-    message: "Tỉnh/Thành Phố không được để trống",
+    message: "Tỉnh/Thành Phố không được để trống"
   }),
   district: z.string(),
-  ward: z.string(),
-  contact: z.string().min(1, {
-    message: "Thông tin liên lạc không được để trống",
-  }),
+  ward: z.string()
 });
-
-const categories = [
-  "Ví/Giấy tờ",
-  "Thú cưng (Chó/Mèo)",
-  "Tìm người",
-  "Điện thoại/Tablet/Laptop",
-  "Xe máy/Ô tô",
-  "Đồ vật khác",
-];
 
 const CreatePostForm = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  const [createPost] = useMutation(CREATE_POST, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
+  // Address
   const [level2s, setLevel2s] = useState<Level2[] | undefined>([]);
   const [level3s, setLevel3s] = useState<Level3[] | undefined>([]);
-  // const [images, setImages] = useState<never[]>([]);
-  // const [openPreviewDialog, setOpenPreviewDialog] = useState<boolean>(false);
-
-  const [selectedFile, setSelectedFile] = useState(null);
-
   const [districtVal, setDistrictVal] = useState<string>("all");
   const [wardVal, setWardVal] = useState<string>("all");
+
+  // Item Types
+  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+  const [getAllItemTypes] = useLazyQuery(GET_ITEM_TYPE_WITH_FILTER);
+
+  // Images
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      category: "",
-      content: "",
+      itemType: "",
+      description: "",
       city: "",
       district: "",
       ward: "",
-      contact: "",
-    },
+      contactPhone: ""
+    }
   });
-
   const cityValue = form.watch("city");
 
-  // Submit handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  const handleGetItemTypes = async () => {
+    await getAllItemTypes({
+      variables: {
+        filters: {
+          page: 1,
+          pageSize: 100
+        }
+      }
+    })
+      .then((result) => {
+        const resultData = result.data.getItemTypeWithFilter.data;
 
-    // form.setError("district", {
-    //   message: "Quận/Huyện/TP không được để trống",
-    // });
+        const iList: ItemType[] = resultData.listData.map((itemType: any) => {
+          return {
+            id: itemType.id,
+            name: itemType.name
+          };
+        });
 
-    // form.setError("ward", {
-    //   message: "Phường/Xã/Thị trấn không được để trống",
-    // });
+        setItemTypes(iList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
-    toast.success("Đăng tin thành công");
-    navigate("/");
+  // Submit Handler
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (districtVal === "all") {
+      form.setError("district", {
+        message: "Quận/Huyện/TP không được để trống"
+      });
+
+      return;
+    }
+
+    if (wardVal === "all") {
+      form.setError("ward", {
+        message: "Phường/Xã/Thị trấn không được để trống"
+      });
+
+      return;
+    }
+
+    setIsLoading(true);
+
+    const requestBody = selectedFile
+      ? {
+          title: values.title,
+          location: values.city,
+          locationDetail: `${wardVal}, ${districtVal}, ${values.city}`,
+          postType: values.postType,
+          contactPhone: values.contactPhone,
+          description: values.description,
+          itemTypeIds: [Number(values.itemType)],
+          images: [selectedFile]
+        }
+      : {
+          title: values.title,
+          location: values.city,
+          locationDetail: `${wardVal}, ${districtVal}, ${values.city}`,
+          postType: values.postType,
+          contactPhone: values.contactPhone,
+          description: values.description,
+          itemTypeIds: [Number(values.itemType)]
+        };
+
+    await createPost({
+      variables: {
+        bodyReq: requestBody
+      }
+    })
+      .then((result) => {
+        console.log(result);
+
+        toast.success("Đăng tin thành công");
+        navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -146,6 +226,12 @@ const CreatePostForm = () => {
       setWardVal("all");
     }
   }, [districtVal]);
+
+  useEffect(() => {
+    if (itemTypes.length === 0) {
+      handleGetItemTypes();
+    }
+  }, []);
 
   return (
     <div>
@@ -176,7 +262,7 @@ const CreatePostForm = () => {
             <div className="sm:w-1/2 w-full flex flex-col gap-2">
               <FormField
                 control={form.control}
-                name="type"
+                name="postType"
                 render={({ field }) => (
                   <FormItem className="space-y-3">
                     <FormLabel>Loại tin</FormLabel>
@@ -188,7 +274,7 @@ const CreatePostForm = () => {
                       >
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="Tin cần tìm" />
+                            <RadioGroupItem value="LOST" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Tin cần tìm
@@ -196,7 +282,7 @@ const CreatePostForm = () => {
                         </FormItem>
                         <FormItem className="flex items-center space-x-3 space-y-0">
                           <FormControl>
-                            <RadioGroupItem value="Tin nhặt được" />
+                            <RadioGroupItem value="COLLECT" />
                           </FormControl>
                           <FormLabel className="font-normal">
                             Tin nhặt được
@@ -211,7 +297,7 @@ const CreatePostForm = () => {
 
               <FormField
                 control={form.control}
-                name="category"
+                name="itemType"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Danh mục</FormLabel>
@@ -227,9 +313,9 @@ const CreatePostForm = () => {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {categories.map((item, index) => (
-                          <SelectItem key={index} value={item}>
-                            {item}
+                        {itemTypes?.map((item, index) => (
+                          <SelectItem key={index} value={item.id.toString()}>
+                            {item.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -279,7 +365,10 @@ const CreatePostForm = () => {
                     <FormItem className="w-full">
                       <Select
                         value={districtVal}
-                        onValueChange={(value: string) => setDistrictVal(value)}
+                        onValueChange={(value: string) => {
+                          setDistrictVal(value);
+                          form.setValue("district", value);
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger
@@ -311,7 +400,10 @@ const CreatePostForm = () => {
                     <FormItem className="w-full">
                       <Select
                         value={wardVal}
-                        onValueChange={(value: string) => setWardVal(value)}
+                        onValueChange={(value: string) => {
+                          setWardVal(value);
+                          form.setValue("ward", value);
+                        }}
                       >
                         <FormControl>
                           <SelectTrigger
@@ -339,12 +431,14 @@ const CreatePostForm = () => {
             </div>
           </div>
 
-          {/* images={images} setImages={setImages} */}
-          <ImageUploader selectedFile={selectedFile} setSelectedFile={setSelectedFile} />
+          <ImageUploader
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+          />
 
           <FormField
             control={form.control}
-            name="content"
+            name="description"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Nội dung</FormLabel>
@@ -362,7 +456,7 @@ const CreatePostForm = () => {
 
           <FormField
             control={form.control}
-            name="contact"
+            name="contactPhone"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Thông tin liên lạc</FormLabel>
@@ -379,9 +473,22 @@ const CreatePostForm = () => {
           />
 
           <div className="flex sm:flex-row flex-col justify-center items-center sm:gap-4">
-            <PreviewPostDialog />
-            <Button type="submit" className={cn("rounded-xl my-2 sm:w-auto w-full")}>
-              <UploadOutlinedIcon className="mr-2" /> Đăng tin
+            <PreviewPostDialog
+              author={signedInUser}
+              post={form}
+              image={selectedFile}
+              itemTypes={itemTypes}
+            />
+            <Button
+              type="submit"
+              className={cn("rounded-xl my-2 sm:w-auto w-full")}
+            >
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                <UploadOutlinedIcon className="mr-2" />
+              )}
+              <p>Đăng tin</p>
             </Button>
           </div>
         </form>

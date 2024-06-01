@@ -9,6 +9,9 @@ module.exports = {
   ],
   prefix: "",
   theme: {
+    fontFamily: {
+      montserrat: ["Montserrat", "sans-serif"]
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -73,5 +76,5 @@ module.exports = {
       }
     }
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [require("tailwindcss-animate")]
+};

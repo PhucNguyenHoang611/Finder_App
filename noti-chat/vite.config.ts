@@ -14,7 +14,14 @@ export default defineConfig({
         "./ChatPopover": "./src/components/Chat/ChatPopover.tsx",
         "./NotifyPage": "./src/pages/NotificationPage.tsx"
       },
-      shared: ["react", "react-dom", "react-router-dom"]
+      shared: [
+        "react",
+        "react-dom",
+        "react-router-dom",
+        "jotai",
+        "graphql",
+        "@apollo/client"
+      ]
     })
   ],
   resolve: {

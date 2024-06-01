@@ -1,4 +1,6 @@
-import { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -17,35 +19,201 @@ import { level1s } from "dvhcvn";
 import { Button } from "@/components/ui/button";
 import ChangeCircleOutlinedIcon from "@mui/icons-material/ChangeCircleOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-
-const categories = [
-  "Ví/Giấy tờ",
-  "Thú cưng (Chó/Mèo)",
-  "Tìm người",
-  "Điện thoại/Tablet/Laptop",
-  "Xe máy/Ô tô",
-  "Đồ vật khác"
-];
+import { useLazyQuery } from "@apollo/client";
+import {
+  GET_ITEM_TYPE_WITH_FILTER,
+  GET_POST_WITH_FILTER
+} from "@/services/graphql/queries";
+import { useSearchParams } from "react-router-dom";
 
 const PostResultList = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [searchString, setSearchString] = useState<string>("");
-  const [type, setType] = useState<string>("");
-  const [category, setCategory] = useState<string>("");
-  const [city, setCity] = useState<string>("all");
+  const [postType, setPostType] = useState<string>("all");
+  const [itemType, setItemType] = useState<string>("all");
+  const [location, setLocation] = useState<string>("all");
+
+  const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+  const [getAllItemTypes] = useLazyQuery(GET_ITEM_TYPE_WITH_FILTER);
+
+  const [posts, setPosts] = useState<PostWithFilter[]>([]);
+  const [getPostWithFilter] = useLazyQuery(GET_POST_WITH_FILTER);
+
+  const handleGetItemTypes = async () => {
+    await getAllItemTypes({
+      variables: {
+        filters: {
+          page: 1,
+          pageSize: 100
+        }
+      }
+    })
+      .then((result) => {
+        const resultData = result.data.getItemTypeWithFilter.data;
+
+        const iList: ItemType[] = resultData.listData.map((itemType: any) => {
+          return {
+            id: itemType.id,
+            name: itemType.name
+          };
+        });
+
+        setItemTypes(iList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const resetFilters = () => {
     setSearchString("");
-    setType("");
-    setCategory("");
-    setCity("all");
+    setPostType("all");
+    setItemType("all");
+    setLocation("all");
+
+    if (searchParams.size > 0) {
+      searchParams.delete("search");
+      searchParams.delete("filter");
+
+      setSearchParams(searchParams);
+    }
   };
 
-  const handleSearch = () => {
-    console.log(searchString);
-    console.log(type);
-    console.log(category);
-    console.log(city);
+  const handleSearch = async () => {
+    const filters: any = {
+      page: 1,
+      pageSize: 10000,
+      searchKey: searchString,
+      itemTypeIds: itemType === "all" ? [] : [Number(itemType)],
+      location: location === "all" ? "" : location
+    };
+    if (postType !== "all") {
+      filters["postType"] = postType;
+    }
+
+    setIsLoading(true);
+
+    await getPostWithFilter({
+      variables: {
+        filters: filters
+      }
+    })
+      .then((result) => {
+        const resultData = result.data.getPostWithFilter.data;
+
+        const pList: PostWithFilter[] = resultData.listData.map(
+          (post: PostWithFilter) => {
+            return {
+              id: post.id,
+              title: post.title,
+              postType: post.postType,
+              location: post.location,
+              locationDetail: post.locationDetail,
+              description: post.description,
+              approved: post.approved,
+              viewCount: post.viewCount,
+              totalComments: post.totalComments,
+              fileName: post.fileName ? post.fileName : "",
+              filePath: post.filePath ? post.filePath : "",
+              createdDate: new Date(post.createdDate),
+              updatedDate: new Date(post.updatedDate)
+            };
+          }
+        );
+
+        setPosts(pList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setIsLoading(false);
   };
+
+  const queryPostWithFilters = async (filters: any) => {
+    setIsLoading(true);
+
+    await getPostWithFilter({
+      variables: {
+        filters: filters
+      }
+    })
+      .then((result) => {
+        const resultData = result.data.getPostWithFilter.data;
+
+        const pList: PostWithFilter[] = resultData.listData.map(
+          (post: PostWithFilter) => {
+            return {
+              id: post.id,
+              title: post.title,
+              postType: post.postType,
+              location: post.location,
+              locationDetail: post.locationDetail,
+              description: post.description,
+              approved: post.approved,
+              viewCount: post.viewCount,
+              totalComments: post.totalComments,
+              fileName: post.fileName ? post.fileName : "",
+              filePath: post.filePath ? post.filePath : "",
+              createdDate: new Date(post.createdDate),
+              updatedDate: new Date(post.updatedDate)
+            };
+          }
+        );
+
+        setPosts(pList);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (itemTypes.length === 0) {
+      handleGetItemTypes();
+    }
+
+    if (searchParams.size > 0) {
+      const filters: any = {
+        page: 1,
+        pageSize: 10000
+      };
+
+      if (searchParams.get("search")) {
+        setSearchString(searchParams.get("search") as string);
+        filters["searchKey"] = searchParams.get("search");
+      }
+
+      if (searchParams.get("filter")) {
+        switch (searchParams.get("filter")) {
+          case "lost":
+            setPostType("LOST");
+            filters["postType"] = "LOST";
+            break;
+          case "collect":
+            setPostType("COLLECT");
+            filters["postType"] = "COLLECT";
+            break;
+          case "pet":
+            setItemType("2");
+            filters["itemTypeIds"] = [2];
+            break;
+          case "people":
+            setItemType("3");
+            filters["itemTypeIds"] = [3];
+            break;
+        }
+      }
+
+      queryPostWithFilters(filters);
+    } else {
+      handleSearch();
+    }
+  }, [searchParams]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
@@ -62,15 +230,13 @@ const PostResultList = () => {
           </Button>
         </div>
 
-        <Separator
-          className={cn(
-            "w-full bg-slate-200 my-2"
-          )}
-        />
+        <Separator className={cn("w-full bg-slate-200 my-2")} />
 
         <div className="w-full h-full flex md:flex-row flex-col gap-8">
           <div className="lg:w-2/5 md:w-1/4 flex flex-col gap-2">
-            <Label htmlFor="search" className="font-semibold text-lg">Từ khóa</Label>
+            <Label htmlFor="search" className="font-semibold text-lg">
+              Từ khóa
+            </Label>
             <Input
               type="text"
               id="search"
@@ -82,26 +248,30 @@ const PostResultList = () => {
           </div>
 
           <RadioGroup
-            value={type}
-            onValueChange={(value: string) => setType(value)}
+            value={postType}
+            onValueChange={(value: string) => setPostType(value)}
             className="lg:w-1/5 md:w-1/4"
           >
             <p className="font-semibold text-lg">Loại tin</p>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Tin cần tìm" id="tin-can-tim" />
-              <Label htmlFor="tin-can-tim">Tin cần tìm</Label>
+              <RadioGroupItem value="all" id="type-all" />
+              <Label htmlFor="type-all">Tất cả</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="Tin nhặt được" id="tin-nhat-duoc" />
-              <Label htmlFor="tin-nhat-duoc">Tin nhặt được</Label>
+              <RadioGroupItem value="LOST" id="type-lost" />
+              <Label htmlFor="type-lost">Tin cần tìm</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <RadioGroupItem value="COLLECT" id="type-collect" />
+              <Label htmlFor="type-collect">Tin nhặt được</Label>
             </div>
           </RadioGroup>
 
           <div className="lg:w-1/5 md:w-1/4 flex flex-col gap-2">
             <p className="font-semibold text-lg">Chọn khu vực</p>
             <Select
-              value={city}
-              onValueChange={(value: string) => setCity(value)}
+              value={location}
+              onValueChange={(value: string) => setLocation(value)}
             >
               <SelectTrigger className="border-2 border-slate-200 rounded-xl">
                 <SelectValue placeholder="Toàn quốc" />
@@ -122,8 +292,8 @@ const PostResultList = () => {
           <div className="lg:w-1/5 md:w-1/4 flex flex-col gap-2">
             <p className="font-semibold text-lg">Danh mục</p>
             <Select
-              value={category}
-              onValueChange={(value: string) => setCategory(value)}
+              value={itemType}
+              onValueChange={(value: string) => setItemType(value)}
             >
               <SelectTrigger className="border-2 border-slate-200 rounded-xl">
                 <SelectValue placeholder="Tất cả" />
@@ -132,9 +302,9 @@ const PostResultList = () => {
                 <SelectItem key={-1} value="all">
                   Tất cả
                 </SelectItem>
-                {categories.map((item: string, index: number) => (
-                  <SelectItem key={index} value={item}>
-                    {item}
+                {itemTypes.map((item: ItemType, index: number) => (
+                  <SelectItem key={index} value={item.id.toString()}>
+                    {item.name}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -143,17 +313,14 @@ const PostResultList = () => {
         </div>
 
         <div className="w-full flex md:justify-end justify-center items-center">
-          <Button
-            onClick={handleSearch}
-            className="rounded-xl gap-2"
-          >
+          <Button onClick={handleSearch} className="rounded-xl gap-2">
             <SearchOutlinedIcon />
             Tìm kiếm
           </Button>
         </div>
       </div>
 
-      <PostsList />
+      <PostsList isLoading={isLoading} posts={posts} />
     </div>
   );
 };

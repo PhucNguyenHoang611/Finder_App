@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { signedInUserAtom } from "@/store";
 import { useAtomValue } from "jotai";
 import {
@@ -11,10 +12,11 @@ import {
   Upload,
   UsersRound
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 
 const SideBar = () => {
   const location = useLocation();
+  const [searchParams, _setSearchParams] = useSearchParams();
   const signedInUser = useAtomValue(signedInUserAtom);
 
   return (
@@ -35,10 +37,13 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={`/result-list`}>
+          <Link to={`/result-list?filter=lost`}>
             <div
               className={`${
-                location.pathname === "/result-list" ? "bg-gray-300" : ""
+                location.pathname === "/result-list" &&
+                searchParams.get("filter") === "lost"
+                  ? "bg-gray-300"
+                  : ""
               } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
             >
               <TextSearch className="text-black" />
@@ -47,10 +52,13 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/result-list"}>
+          <Link to={"/result-list?filter=collect"}>
             <div
               className={`${
-                location.pathname === "/result-list" ? "bg-gray-300" : ""
+                location.pathname === "/result-list" &&
+                searchParams.get("filter") === "collect"
+                  ? "bg-gray-300"
+                  : ""
               } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
             >
               <HandHeart className="text-black" />
@@ -59,10 +67,13 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/result-list"}>
+          <Link to={"/result-list?filter=pet"}>
             <div
               className={`${
-                location.pathname === "/result-list" ? "bg-gray-300" : ""
+                location.pathname === "/result-list" &&
+                searchParams.get("filter") === "pet"
+                  ? "bg-gray-300"
+                  : ""
               } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
             >
               <Dog className="text-black" />
@@ -71,10 +82,13 @@ const SideBar = () => {
           </Link>
         </li>
         <li>
-          <Link to={"/result-list"}>
+          <Link to={"/result-list?filter=people"}>
             <div
               className={`${
-                location.pathname === "/result-list" ? "bg-gray-300" : ""
+                location.pathname === "/result-list" &&
+                searchParams.get("filter") === "people"
+                  ? "bg-gray-300"
+                  : ""
               } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
             >
               <PersonStanding className="text-black" />

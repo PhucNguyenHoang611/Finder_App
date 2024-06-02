@@ -1,232 +1,167 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import Avatar from "@mui/joy/Avatar";
-import Box from "@mui/joy/Box";
-import CardMUI from "@mui/joy/Card";
-import CardMUIContent from "@mui/joy/CardContent";
-import CardMUIOverflow from "@mui/joy/CardOverflow";
-import Link from "@mui/joy/Link";
-import IconButton from "@mui/joy/IconButton";
-import Input from "@mui/joy/Input";
-import Typography from "@mui/joy/Typography";
-import MoreHoriz from "@mui/icons-material/MoreHoriz";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import ModeCommentOutlined from "@mui/icons-material/ModeCommentOutlined";
-import SendOutlined from "@mui/icons-material/SendOutlined";
-import Face from "@mui/icons-material/Face";
-import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
-
-import { Card, CardContent } from "@/components/ui/card";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi
-} from "@/components/ui/carousel";
-import { useEffect, useState } from "react";
-
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { useAtomValue } from "jotai";
-import { signedInUserAtomWithPersistence } from "@/store";
+import { useNavigate } from "react-router-dom";
 
-const images: any[] = [
-  "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60",
-  "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60",
-  "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250",
-  "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60"
-];
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogClose
+} from "@/components/ui/dialog";
 
-export default function PostItemCard({ post }: PostItemCardProps) {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import PostDetailsDialog from "./PostDetailsDialog";
 
-  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
-
-  useEffect(() => {
-    if (!api) {
-      return;
-    }
-
-    setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
-
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
-  }, [api]);
+const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
+  const navigate = useNavigate();
 
   return (
-    <CardMUI variant="outlined" className="lg:w-[80%] w-full rounded-xl">
-      <CardMUIContent
-        orientation="horizontal"
-        sx={{ alignItems: "center", gap: 1 }}
-      >
-        <Box
-          sx={{
-            position: "relative",
-            width: 48,
-            height: 48,
-            "&::before": {
-              content: "''",
-              position: "absolute",
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              m: "-2px",
-              borderRadius: "50%"
-            }
-          }}
-        >
-          <Avatar
-            size="sm"
-            src={signedInUser.avatar}
-            sx={{ width: 48, height: 48 }}
-          />
-        </Box>
-        <Typography fontWeight="lg" fontFamily="Montserrat">
-          {signedInUser.displayName}
-        </Typography>
-        <IconButton
-          variant="plain"
-          color="neutral"
-          size="sm"
-          sx={{ ml: "auto" }}
-        >
-          <MoreHoriz />
-        </IconButton>
-      </CardMUIContent>
-
-      <CardMUIContent orientation="horizontal" sx={{ alignItems: "center" }}>
-        <Typography fontFamily="Montserrat">{post.title}</Typography>
-      </CardMUIContent>
-
-      <CardMUIOverflow>
-        <Carousel setApi={setApi} className="w-full">
-          <CarouselContent>
-            {images.length > 0 &&
-              images.map((img, index) => (
-                <CarouselItem key={index}>
-                  <Card className="border-0 bg-transparent">
-                    <CardContent className="flex items-center justify-center object-cover p-0 w-full h-[500px]">
-                      <Dialog>
-                        <DialogTrigger>
-                          <img
-                            src={img}
-                            alt="postImage"
-                            loading="lazy"
-                            className="cursor-pointer"
-                          />
-                        </DialogTrigger>
-                        <DialogContent
-                          className={cn("border-0 rounded-xl p-0")}
-                        >
-                          <img
-                            src={img}
-                            alt="postImage"
-                            loading="lazy"
-                            className="w-full h-full object-cover rounded-xl"
-                          />
-                        </DialogContent>
-                      </Dialog>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-          </CarouselContent>
-        </Carousel>
-      </CardMUIOverflow>
-      <CardMUIContent
-        orientation="horizontal"
-        sx={{ alignItems: "center", mx: -1 }}
-      >
-        <Box sx={{ width: 0, display: "flex", gap: 0.5 }}>
-          <IconButton variant="plain" color="neutral" size="sm">
-            <FavoriteBorder />
-          </IconButton>
-          <IconButton variant="plain" color="neutral" size="sm">
-            <ModeCommentOutlined />
-          </IconButton>
-          <IconButton variant="plain" color="neutral" size="sm">
-            <SendOutlined />
-          </IconButton>
-        </Box>
-        <Box
-          sx={{ display: "flex", alignItems: "center", gap: 0.5, mx: "auto" }}
-        >
-          <div className="py-2 text-center text-sm text-muted-foreground">
-            {current} / {count}
-          </div>
-        </Box>
-        <Box sx={{ width: 0, display: "flex", flexDirection: "row-reverse" }}>
-          <IconButton variant="plain" color="neutral" size="sm">
-            <BookmarkBorderRoundedIcon />
-          </IconButton>
-        </Box>
-      </CardMUIContent>
-      <CardMUIContent>
-        <Link
-          component="button"
-          underline="none"
-          fontFamily="Montserrat"
-          fontSize="sm"
-          fontWeight="lg"
-          textColor="text.primary"
-        >
-          6.11M Lượt thích
-        </Link>
-        <Typography fontSize="sm" fontFamily="Montserrat">
-          <Link
-            component="button"
-            color="neutral"
-            fontFamily="Montserrat"
-            fontWeight="lg"
-            textColor="text.primary"
+    <Card
+      className={cn(
+        "w-full h-max rounded-xl flex sm:flex-row flex-col shadow-mdr relative"
+      )}
+    >
+      <div className="absolute top-3 right-3 cursor-pointer p-1 text-white rounded-full bg-red-500">
+        <Dialog>
+          <DialogTrigger asChild>
+            <DeleteOutlineOutlinedIcon />
+          </DialogTrigger>
+          <DialogContent
+            className="sm:max-w-[425px] bg-white"
+            style={{ borderRadius: 15 }}
           >
-            Nguyễn Hoàng Phúc
-          </Link>{" "}
-          Sáng sớm thức dậy anh bỗng thấy mình quá đẹp trai hjhj !!!
-        </Typography>
-        <Link
-          component="button"
-          underline="none"
-          fontFamily="Montserrat"
-          fontSize="sm"
-          startDecorator="…"
-          sx={{ color: "text.tertiary" }}
-        >
-          Tải thêm
-        </Link>
-        <Link
-          component="button"
-          underline="none"
-          fontFamily="Montserrat"
-          fontSize="10px"
-          sx={{ color: "text.tertiary", my: 0.5 }}
-        >
-          2 ngày trước
-        </Link>
-      </CardMUIContent>
-      <CardMUIContent orientation="horizontal" sx={{ gap: 1 }}>
-        <IconButton size="sm" variant="plain" color="neutral" sx={{ ml: -1 }}>
-          <Face />
-        </IconButton>
-        <Input
-          variant="plain"
-          size="sm"
-          placeholder="Thêm bình luận của bạn…"
-          sx={{
-            flex: 1,
-            px: 0,
-            "--Input-focusedThickness": "0px",
-            fontFamily: "Montserrat"
-          }}
+            <DialogHeader>
+              <DialogTitle>Xóa bài viết</DialogTitle>
+              <DialogDescription>
+                Bạn có chắc chắn muốn xóa bài viết này
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button
+                  type="button"
+                  className="rounded-xl"
+                  onClick={() => handleDeletePost(post.id)}
+                >
+                  Xác nhận
+                </Button>
+              </DialogClose>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      <div className="md:w-3/12 sm:w-4/12 flex justify-center items-center overflow-hidden cursor-pointer rounded-tl-xl sm:rounded-bl-xl sm:rounded-tr-none rounded-bl-none rounded-tr-xl">
+        <img
+          src={
+            post.filePath
+              ? post.filePath
+              : "https://cdn.vectorstock.com/i/preview-1x/39/63/no-photo-camera-sign-vector-3213963.jpg"
+          }
+          alt={post.fileName ? post.fileName : "no-image"}
+          loading="lazy"
+          className="object-cover w-full h-[250px] hover:scale-125 duration-300"
         />
-        <Link disabled underline="none" role="button" fontFamily="Montserrat">
-          Gửi
-        </Link>
-      </CardMUIContent>
-    </CardMUI>
+      </div>
+      <div className="md:w-9/12 sm:w-8/12 justify-center items-center">
+        <CardHeader>
+          <CardTitle
+            className={cn(
+              "xl:text-xl text-base flex flex-col justify-center items-start gap-2"
+            )}
+          >
+            <Badge
+              className="w-max"
+              style={{
+                backgroundColor:
+                  post.approved === "ACCEPT"
+                    ? "#00cc66"
+                    : post.approved === "REJECT"
+                    ? "#ff3300"
+                    : "#ffcc00"
+              }}
+            >
+              {post.approved === "ACCEPT"
+                ? "Đã duyệt"
+                : post.approved === "REJECT"
+                ? "Không được duyệt"
+                : "Đang chờ duyệt"}
+            </Badge>
+            {post.title ? post.title : "Không có tiêu đề"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex sm:flex-row flex-col justify-between items-center">
+          <p className="lg:text-base text-sm">
+            {post.description ? (
+              <>
+                {post.description.length > 150
+                  ? post.description.substring(0, 150) + "..."
+                  : post.description}
+              </>
+            ) : (
+              "Không có mô tả"
+            )}
+          </p>
+
+          {post.approved === "ACCEPT" ? (
+            <Button
+              className={cn(
+                "rounded-xl my-2 bg-white border border-black p-1.5 sm:w-auto w-full text-black text-base font-light hover:bg-transparent"
+              )}
+              onClick={() => navigate("/post-details/" + post.id)}
+            >
+              <RemoveRedEyeOutlinedIcon className="mr-3" /> Chi tiết
+            </Button>
+          ) : (
+            <PostDetailsDialog post={post} />
+          )}
+        </CardContent>
+
+        <CardFooter
+          className={cn(
+            "flex justify-between md:items-center items-end md:flex-row flex-col"
+          )}
+        >
+          <div className="flex justify-center items-center">
+            <LocationOnOutlinedIcon />
+            <p className="font-medium xl:text-base text-sm">
+              {post.locationDetail
+                ? post.locationDetail
+                : "Khu vực chưa được cung cấp"}
+            </p>
+          </div>
+
+          <div className="flex justify-center items-center">
+            <p className="font-semibold xl:text-base text-sm">
+              {post.postType ? (
+                <>
+                  {post.postType === "COLLECT"
+                    ? "Tin nhặt được"
+                    : "Tin cần tìm"}
+                </>
+              ) : (
+                "Loại tin không xác định"
+              )}
+            </p>
+          </div>
+        </CardFooter>
+      </div>
+    </Card>
   );
-}
+};
+
+export default PostItemCard;

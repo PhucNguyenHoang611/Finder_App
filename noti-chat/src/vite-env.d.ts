@@ -2,7 +2,7 @@
 
 // Props Interface
 interface MessageProps {
-  message: string;
+  message: Message;
 }
 
 interface PaginationProps {
@@ -24,6 +24,14 @@ interface NotificationCardProps {
   notification: INotification;
   selectedNotifications: number[];
   setSelectedNotifications: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
+interface ChatBoxProps {
+  signedInUser: SignedInUser;
+  chatSections: ChatSection[];
+}
+interface ChatSectionProps {
+  chatSection: ChatSection;
 }
 
 // Other Interfaces
@@ -66,3 +74,34 @@ interface PostNotification {
   type: string;
 }
 type INotification = CommentNotification | PostNotification;
+
+interface Conversation {
+  conversationId: number;
+  userId: number;
+  avatar: string;
+  userName: string;
+  lastMessage: string;
+  lastTime: Date;
+  unreadCount: number;
+}
+interface Message {
+  id: number;
+  isRead: boolean;
+  isEdited: boolean;
+  message: string;
+  createdDate: Date;
+  updatedDate: Date;
+}
+interface ClusMessage {
+  id: number;
+  senderId: number;
+  messages: Message[];
+  createdDate: Date;
+  updatedDate: Date;
+}
+interface ChatSection {
+  id: number;
+  clusMessages: ClusMessage[];
+  createdDate: Date;
+  updatedDate: Date;
+}

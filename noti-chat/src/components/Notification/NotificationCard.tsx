@@ -94,12 +94,12 @@ const NotificationCard = ({
 
   return (
     <Card
-      className={`rounded-xl cursor-pointer flex sm:flex-row flex-col justify-center items-center p-2 ${
+      className={`rounded-xl cursor-pointer flex md:flex-row flex-col justify-center items-center p-2 ${
         !notification.isRead ? "bg-gray-200" : ""
       }`}
     >
-      <CardHeader className="sm:w-2/3 w-full flex flex-row justify-between items-center p-4">
-        <div className="sm:w-full w-1/2 flex flex-col gap-2">
+      <CardHeader className="md:w-2/3 w-full flex flex-row justify-between items-center p-4">
+        <div className="md:w-full w-1/2 flex flex-col gap-2">
           <Badge
             className="w-max"
             style={{
@@ -128,7 +128,7 @@ const NotificationCard = ({
           </Badge>
 
           <CardTitle
-            className="sm:text-lg text-md text-pretty hover:text-slate-600"
+            className="md:text-lg text-md text-pretty hover:text-slate-600"
             onClick={handleNavigateToPost}
           >
             {notification.type === "NEW_COMMENT" &&
@@ -146,12 +146,12 @@ const NotificationCard = ({
               "Bài viết của bạn đã bị từ chối"}
           </CardTitle>
 
-          <CardDescription className="sm:text-md text-sm md:text-nowrap md:truncate">
+          <CardDescription className="md:text-md text-sm md:text-nowrap md:truncate">
             {renderNotificationDescription()}
           </CardDescription>
         </div>
 
-        <div className="w-1/2 sm:hidden flex justify-end items-center">
+        <div className="w-1/2 md:hidden flex justify-end items-center">
           <Checkbox
             className="rounded border-2 border-gray-400"
             checked={selectedNotifications.includes(notification.id)}
@@ -159,10 +159,10 @@ const NotificationCard = ({
           />
         </div>
       </CardHeader>
-      <CardContent className="sm:w-1/3 w-full sm:p-0 p-2 mt-0 flex sm:flex-row sm:justify-between justify-end items-center">
+      <CardContent className="md:w-1/3 w-full md:p-0 p-2 mt-0 flex md:flex-row md:justify-between justify-end items-center">
         <div className="flex gap-1 justify-center items-center">
           <AccessTimeOutlinedIcon className="w-2 h-2" />
-          <p className="sm:text-base text-sm">
+          <p className="md:text-base text-sm">
             {notification.timestamp.toLocaleDateString("vi-VN", {
               year: "numeric",
               month: "2-digit",
@@ -171,7 +171,7 @@ const NotificationCard = ({
           </p>
         </div>
 
-        <div className="sm:block hidden pr-4">
+        <div className="md:block hidden pr-4">
           <Checkbox
             className="rounded border-2 border-gray-400"
             checked={selectedNotifications.includes(notification.id)}

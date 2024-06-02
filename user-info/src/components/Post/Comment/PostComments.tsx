@@ -7,19 +7,13 @@ import Input from "@mui/joy/Input";
 import { useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_COMMENTS } from "@/services/graphql/queries";
-import { useParams } from "react-router-dom";
 
 import Spinner from "../../Spinner";
 import CommentItem from "./CommentItem";
 import LoadingDots from "@/components/LoadingDots";
 import { ADD_COMMENT } from "@/services/graphql/mutations";
-import { useAtomValue } from "jotai";
-import { signedInUserAtomWithPersistence } from "@/store";
 
-const PostComments = () => {
-  const { postId } = useParams();
-  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
-
+const PostComments = ({ postId, signedInUser }: PostCommentsProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, _setIsTyping] = useState(false);
 
@@ -121,6 +115,7 @@ const PostComments = () => {
             {comments.map((comment: Comment, index: number) => (
               <CommentItem
                 key={index}
+                signedInUser={signedInUser}
                 comment={comment}
                 postId={Number(postId)}
                 level={1}
@@ -180,32 +175,30 @@ const PostComments = () => {
         </div>
       )}
 
-      {signedInUser.accessToken && (
-        <CardMUIContent orientation="horizontal" sx={{ gap: 1 }}>
-          <Input
-            variant="plain"
-            size="sm"
-            placeholder="Thêm bình luận của bạn…"
-            sx={{
-              flex: 1,
-              px: 0,
-              "--Input-focusedThickness": "0px",
-              fontFamily: "Montserrat"
-            }}
-            value={commentValue}
-            onChange={(event) => setCommentValue(event.target.value)}
-          />
-          <Link
-            underline="none"
-            role="button"
-            fontFamily="Montserrat"
-            fontWeight={700}
-            onClick={handleAddComment}
-          >
-            Gửi
-          </Link>
-        </CardMUIContent>
-      )}
+      <CardMUIContent orientation="horizontal" sx={{ gap: 1 }}>
+        <Input
+          variant="plain"
+          size="sm"
+          placeholder="Thêm bình luận của bạn…"
+          sx={{
+            flex: 1,
+            px: 0,
+            "--Input-focusedThickness": "0px",
+            fontFamily: "Montserrat"
+          }}
+          value={commentValue}
+          onChange={(event) => setCommentValue(event.target.value)}
+        />
+        <Link
+          underline="none"
+          role="button"
+          fontFamily="Montserrat"
+          fontWeight={700}
+          onClick={handleAddComment}
+        >
+          Gửi
+        </Link>
+      </CardMUIContent>
     </>
   );
 };

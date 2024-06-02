@@ -10,12 +10,14 @@ import { vi } from "date-fns/locale";
 import LoadingDots from "@/components/LoadingDots";
 import { useMutation } from "@apollo/client";
 import { REPLY_COMMENT } from "@/services/graphql/mutations";
-import { useAtomValue } from "jotai";
-import { signedInUserAtomWithPersistence } from "@/store";
 
-const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
+const CommentItem = ({
+  comment,
+  postId,
+  level,
+  signedInUser
+}: CommentItemProps) => {
   const commentLevel = level;
-  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
 
   const [replyValue, setReplyValue] = useState("");
   const [showReply, setShowReply] = useState(false);
@@ -120,7 +122,7 @@ const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
             )}
           </Link>
 
-          {commentLevel < 3 && signedInUser.accessToken && (
+          {commentLevel < 3 && (
             <Link
               component="button"
               underline="none"
@@ -160,6 +162,7 @@ const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
               comment.subComments.map((comment: Comment, index: number) => (
                 <CommentItem
                   key={index}
+                  signedInUser={signedInUser}
                   comment={comment}
                   postId={postId}
                   level={commentLevel + 1}

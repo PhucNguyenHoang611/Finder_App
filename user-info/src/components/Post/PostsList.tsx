@@ -8,9 +8,11 @@ import PostItemCard from "./PostItemCard";
 import { useNavigate } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { signedInUserAtomWithPersistence } from "@/store";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_ALL_MY_POSTS } from "@/services/graphql/queries";
 import { useEffect, useState } from "react";
+import { DELETE_POST } from "@/services/graphql/mutations";
+import { toast } from "sonner";
 
 const EmptyPostsList = () => {
   return (
@@ -25,10 +27,18 @@ const EmptyPostsList = () => {
 const PostsList = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [postsList, setPostsList] = useState<Post[]>([]);
+  const [postsList, setPostsList] = useState<PostWithFilter[]>([]);
 
   const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
   const [getAllMyPosts] = useLazyQuery(GET_ALL_MY_POSTS, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
+  const [deletePost] = useMutation(DELETE_POST, {
     context: {
       headers: {
         Authorization: `Bearer ${signedInUser.accessToken}`
@@ -41,13 +51,53 @@ const PostsList = () => {
 
     await getAllMyPosts()
       .then((result) => {
-        setPostsList(result.data.getPostOfMe.data);
+        const resultData = result.data.getPostOfMe.data;
+
+        const pList: PostWithFilter[] = resultData.map(
+          (post: PostWithFilter) => {
+            return {
+              id: post.id,
+              title: post.title,
+              postType: post.postType,
+              location: post.location,
+              locationDetail: post.locationDetail,
+              description: post.description,
+              approved: post.approved,
+              viewCount: post.viewCount,
+              totalComments: post.totalComments,
+              fileName: post.fileName ? post.fileName : "",
+              filePath: post.filePath ? post.filePath : "",
+              createdDate: new Date(post.createdDate),
+              updatedDate: new Date(post.updatedDate)
+            };
+          }
+        );
+
+        setPostsList(pList);
       })
       .catch((error) => {
         console.log(error);
       });
 
     setIsLoading(false);
+  };
+
+  const handleDeletePost = async (id: number) => {
+    try {
+      await deletePost({
+        variables: {
+          id: id
+        }
+      });
+
+      const pList: PostWithFilter[] = postsList.filter(
+        (item: PostWithFilter) => !(item.id === id)
+      );
+      setPostsList(pList);
+      toast.success("Xóa bài viết thành công");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -61,7 +111,11 @@ const PostsList = () => {
       {postsList.length > 0 &&
         !isLoading &&
         postsList.map((item, index) => (
-          <PostItemCard key={index} post={item} />
+          <PostItemCard
+            key={index}
+            post={item}
+            handleDeletePost={handleDeletePost}
+          />
         ))}
 
       {postsList.length === 0 && !isLoading && <EmptyPostsList />}
@@ -90,7 +144,7 @@ const PostsList = () => {
         <Button
           className="rounded-xl sm:w-[25%] w-[60%]"
           variant="outline"
-          onClick={() => navigate("/add-post")}
+          onClick={() => navigate("/create-post")}
         >
           <BorderColorOutlinedIcon className="mr-2" />
           Thêm bài viết

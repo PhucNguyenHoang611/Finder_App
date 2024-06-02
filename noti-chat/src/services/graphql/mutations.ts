@@ -31,3 +31,13 @@ export const SEND_MESSAGE = gql`
     }
   }
 `;
+
+export const SEND_MESSAGE_TO_ADMIN = gql`
+  mutation SendMessageToAdmin($bodyReq: SendMessageToAdminInput!) {
+    sendMessageToAdmin(bodyReq: $bodyReq) {
+      status
+      statusCode
+      message
+    }
+  }
+`;

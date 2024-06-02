@@ -17,8 +17,8 @@ export const GET_NOTIFY_WITH_FILTER = gql`
 
 // Chat
 export const GET_USER_CONVERSATIONS = gql`
-  query GetUserConversations($FilterConditions: FilterConversations) {
-    getUserConversations(FilterConditions: $FilterConditions) {
+  query GetUserConversations($filters: FilterConversationInput) {
+    getUserConversations(filters: $filters) {
       status
       statusCode
       data {
@@ -27,6 +27,9 @@ export const GET_USER_CONVERSATIONS = gql`
           userId
           avatar
           userName
+          lastMessage
+          lastTime
+          unreadCount
         }
         totalCount
       }
@@ -41,6 +44,38 @@ export const GET_DETAIL_CONVERSATION = gql`
     $filters: FilterSectionInput
   ) {
     getDetailConversation(conversationId: $conversationId, filters: $filters) {
+      status
+      statusCode
+      data {
+        listData {
+          id
+          clusMessages {
+            id
+            senderId
+            messages {
+              id
+              isRead
+              isEdited
+              message
+              createdDate
+              updatedDate
+            }
+            createdDate
+            updatedDate
+          }
+          createdDate
+          updatedDate
+        }
+        totalCount
+      }
+      message
+    }
+  }
+`;
+
+export const GET_DETAIL_CONVERSATION_WITH_ADMIN = gql`
+  query GetDetailConversationWithAdmin($filters: FilterSectionInput) {
+    getDetailConversationWithAdmin(filters: $filters) {
       status
       statusCode
       data {

@@ -34,7 +34,9 @@ const SideBar = () => {
 
   const handleGetNumberOfNotifyUnRead = async () => {
     try {
-      const { data } = await getNumberOfNotifyUnRead();
+      const { data } = await getNumberOfNotifyUnRead({
+        fetchPolicy: "network-only"
+      });
       const resultData = data.getNumberOfNotifyUnRead.data;
 
       setNotifyUnRead(resultData.unRead);

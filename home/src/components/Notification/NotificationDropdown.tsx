@@ -168,7 +168,8 @@ const NotificationDropdown = () => {
             page: 1,
             pageSize: 4
           }
-        }
+        },
+        fetchPolicy: "network-only"
       });
       const resultData = data.getNotifyWithFilter.data;
 
@@ -210,7 +211,9 @@ const NotificationDropdown = () => {
   };
 
   useEffect(() => {
-    handleGetAllNotifications();
+    if (signedInUser.accessToken) {
+      handleGetAllNotifications();
+    }
   }, []);
 
   return (

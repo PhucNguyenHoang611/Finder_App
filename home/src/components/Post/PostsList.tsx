@@ -62,7 +62,8 @@ const PostsList = () => {
           page: p,
           pageSize: pSize
         }
-      }
+      },
+      fetchPolicy: "network-only"
     })
       .then((result) => {
         const resultData = result.data.getPostWithFilter.data;

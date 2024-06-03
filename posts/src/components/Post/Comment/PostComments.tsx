@@ -45,8 +45,8 @@ const PostComments = () => {
     setVisibleComments(3);
   };
 
-  const handleGetPostComments = async () => {
-    setIsLoading(true);
+  const handleGetPostComments = async (load: boolean) => {
+    if (load) setIsLoading(true);
 
     await getPostComments({
       variables: {
@@ -55,7 +55,8 @@ const PostComments = () => {
           page: 1,
           pageSize: visibleComments
         }
-      }
+      },
+      fetchPolicy: "network-only"
     })
       .then((result) => {
         const resultData = result.data.getComments.data;
@@ -76,14 +77,14 @@ const PostComments = () => {
           };
         });
 
-        setComments(cList);
+        setComments(cList.reverse());
         setTotalComments(resultData.totalCount);
       })
       .catch((error) => {
         console.log(error);
       });
 
-    setIsLoading(false);
+    if (load) setIsLoading(false);
   };
 
   const handleAddComment = async () => {
@@ -98,6 +99,7 @@ const PostComments = () => {
       })
         .then(() => {
           setCommentValue("");
+          handleGetPostComments(false);
         })
         .catch((error) => {
           console.log(error);
@@ -107,7 +109,7 @@ const PostComments = () => {
 
   useEffect(() => {
     if (postId) {
-      handleGetPostComments();
+      handleGetPostComments(true);
     }
   }, [postId, visibleComments]);
 
@@ -124,6 +126,7 @@ const PostComments = () => {
                 comment={comment}
                 postId={Number(postId)}
                 level={1}
+                getComments={handleGetPostComments}
               />
             ))}
 

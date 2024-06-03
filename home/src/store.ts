@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
 export const signedInUserAtom = atomWithStorage<SignedInUser>("signedInUser", {
+  id: 0,
   accessToken: "",
   accessTokenExpired: new Date(),
   refreshToken: "",

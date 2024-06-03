@@ -31,11 +31,13 @@ interface ChatBoxProps {
   chatSections: ChatSection[];
 }
 interface ChatSectionProps {
+  signedInUser: SignedInUser;
   chatSection: ChatSection;
 }
 
 // Other Interfaces
 interface SignedInUser {
+  id: number;
   accessToken: string;
   accessTokenExpired: Date;
   refreshToken: string;

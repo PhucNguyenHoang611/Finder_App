@@ -23,7 +23,8 @@ export default function ImageCard({ post }: ImageCardProps) {
       </div>
       <div className="min-[1024px]:px-2 max-[1024px]:px-4 py-2">
         <div
-          className="font-bold min-[1024px]:text-md min-[640px]:text-base max-[640px]:text-lg w-full cursor-pointer hover:text-gray-500"
+          // min-[1024px]:text-md min-[640px]:text-base max-[640px]:text-lg
+          className="font-semibold text-pretty text-sm  w-full cursor-pointer hover:text-gray-500"
           onClick={openDetailPage}
         >
           {post.title.length > 100
@@ -31,11 +32,12 @@ export default function ImageCard({ post }: ImageCardProps) {
             : post.title}
         </div>
       </div>
-      <div className="min-[1024px]:px-2 max-[1024px]:px-4 pt-2 pb-1 flex min-[1024px]:flex-row max-[1024px]:flex-col justify-between">
-        <span className="text-nowrap inline-block min-[640px]:text-xs max-[640px]:text-base font-semibold text-white bg-black mb-2 min-[1024px]:text-left max-[1024px]:text-center border border-black rounded-full p-1">
+      <div className="min-[1024px]:px-2 max-[1024px]:px-4 pt-2 pb-1 flex min-[1150px]:flex-row max-[1150px]:flex-col justify-between">
+        {/* min-[640px]:text-xs max-[640px]:text-base */}
+        <span className="text-nowrap inline-block text-xs font-semibold text-white bg-black mb-2 min-[1150px]:text-left max-[1150px]:text-center border border-black rounded-full p-1">
           {post.location}
         </span>
-        <span className="text-nowrap inline-block min-[640px]:text-xs max-[640px]:text-base font-semibold text-black mb-2 min-[1024px]:text-right max-[1024px]:text-center border border-black rounded-full p-1">
+        <span className="text-nowrap inline-block text-xs font-semibold text-black mb-2 min-[1150px]:text-right max-[1150px]:text-center border border-black rounded-full p-1">
           {post.postType === "LOST" ? "Tin cần tìm" : "Tin nhặt được"}
         </span>
       </div>

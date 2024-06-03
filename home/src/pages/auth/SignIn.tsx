@@ -23,6 +23,8 @@ import { useSetAtom } from "jotai";
 import { signedInUserAtom } from "@/store";
 import { apiBaseUrl, setJWT } from "@/config/api";
 
+import SignInImage from "/SignInImage.png";
+
 const formSchema = z.object({
   email: z
     .string()
@@ -73,6 +75,7 @@ const SignIn = () => {
       expiredDate.setDate(expiredDate.getDate() + 7);
 
       const signedInUser: SignedInUser = {
+        id: userData.id,
         accessToken: userData.accessToken,
         accessTokenExpired: new Date(userData.accessTokenExpired),
         refreshToken: userData.refreshToken,
@@ -243,11 +246,7 @@ const SignIn = () => {
         </div>
         <div className="relative hidden lg:block p-1">
           <div className="flex justify-center items-center h-full">
-            <img
-              className="object-cover"
-              src="https://demo.alert.ind.in/public//login_assets/images/error/auth-img-7.png"
-              alt="loginImage"
-            />
+            <img className="object-cover" src={SignInImage} alt="loginImage" />
           </div>
         </div>
       </div>

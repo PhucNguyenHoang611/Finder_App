@@ -29,7 +29,7 @@ import { useEffect, useState } from "react";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, subHours } from "date-fns";
 import { vi } from "date-fns/locale";
 import PostComments from "../Comment/PostComments";
 
@@ -86,7 +86,7 @@ export default function PostCard({ post }: PostCardProps) {
           </Typography>
           <Typography fontFamily="Montserrat" fontSize={13}>
             {formatDistanceToNow(
-              post?.createdDate ? post.createdDate : new Date(),
+              post?.createdDate ? subHours(post.createdDate, 7) : new Date(),
               {
                 addSuffix: true,
                 locale: vi

@@ -1,5 +1,5 @@
 import "@/assets/loading.css";
 
-const Fallback = () => <p>I am finding remote page...</p>;
+const Fallback = () => <p>Đang tìm ứng dụng remote...</p>;
 
 export default Fallback;

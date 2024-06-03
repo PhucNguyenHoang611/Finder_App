@@ -24,6 +24,7 @@ interface NotificationDropdownItemProps {
 
 // Other Interfaces
 interface SignedInUser {
+  id: number;
   accessToken: string;
   accessTokenExpired: Date;
   refreshToken: string;

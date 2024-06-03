@@ -182,7 +182,7 @@ export default function PreviewPostCard({
               images.map((img, index) => (
                 <CarouselItem key={index}>
                   <Card className="border-0 bg-transparent">
-                    <CardContent className="flex items-center justify-center object-cover p-0 w-full h-[500px]">
+                    <CardContent className="flex items-center justify-center object-cover p-0 w-full h-[400px]">
                       <Dialog>
                         <DialogTrigger>
                           <img
@@ -207,6 +207,33 @@ export default function PreviewPostCard({
                   </Card>
                 </CarouselItem>
               ))}
+
+            {images.length === 0 && (
+              <CarouselItem>
+                <Card className="border-0 bg-transparent">
+                  <CardContent className="flex items-center justify-center object-cover p-0 w-full h-[400px]">
+                    <Dialog>
+                      <DialogTrigger>
+                        <img
+                          src="https://cdn.vectorstock.com/i/preview-1x/39/63/no-photo-camera-sign-vector-3213963.jpg"
+                          alt="postImage"
+                          loading="lazy"
+                          className="cursor-pointer"
+                        />
+                      </DialogTrigger>
+                      <DialogContent className={cn("border-0 rounded-xl p-0")}>
+                        <img
+                          src="https://cdn.vectorstock.com/i/preview-1x/39/63/no-photo-camera-sign-vector-3213963.jpg"
+                          alt="postImage"
+                          loading="lazy"
+                          className="w-full h-full object-cover rounded-xl"
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </CardContent>
+                </Card>
+              </CarouselItem>
+            )}
           </CarouselContent>
         </Carousel>
       </CardMUIOverflow>

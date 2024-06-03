@@ -5,15 +5,21 @@ import Input from "@mui/joy/Input";
 import Link from "@mui/joy/Link";
 import { useState } from "react";
 import Box from "@mui/joy/Box";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNow, subHours } from "date-fns";
 import { vi } from "date-fns/locale";
 import LoadingDots from "@/components/LoadingDots";
 import { useMutation } from "@apollo/client";
 import { REPLY_COMMENT } from "@/services/graphql/mutations";
 import { useAtomValue } from "jotai";
 import { signedInUserAtomWithPersistence } from "@/store";
+import CommentDropdownMenu from "./CommentDropdownMenu";
 
-const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
+const CommentItem = ({
+  comment,
+  postId,
+  level,
+  getComments
+}: CommentItemProps) => {
   const commentLevel = level;
   const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
 
@@ -43,6 +49,9 @@ const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
       })
         .then(() => {
           setReplyValue("");
+          setShowReply(true);
+          setShowReplyInput(false);
+          getComments(false);
         })
         .catch((error) => {
           console.log(error);
@@ -77,7 +86,17 @@ const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
       </Box>
 
       <div className="flex flex-col">
-        <div className="flex flex-col px-4 py-2 bg-slate-100 rounded-xl">
+        <div className="w-max flex flex-col pl-4 pr-8 py-2 bg-slate-100 rounded-xl relative">
+          {comment?.senderId === signedInUser.id && (
+            <div className="absolute top-0 right-0 pr-1">
+              <CommentDropdownMenu
+                signedInUser={signedInUser}
+                commentId={comment?.id}
+                getComments={getComments}
+              />
+            </div>
+          )}
+
           <Typography fontSize="sm" fontFamily="Montserrat">
             <Link
               component="button"
@@ -112,7 +131,9 @@ const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
             sx={{ color: "text.tertiary", my: 0.5 }}
           >
             {formatDistanceToNow(
-              comment?.createdDate ? comment.createdDate : new Date(),
+              comment?.createdDate
+                ? subHours(comment.createdDate, 7)
+                : new Date(),
               {
                 addSuffix: true,
                 locale: vi
@@ -157,12 +178,13 @@ const CommentItem = ({ comment, postId, level }: CommentItemProps) => {
             </Link>
 
             {showReply &&
-              comment.subComments.map((comment: Comment, index: number) => (
+              comment.subComments.map((item: Comment, index: number) => (
                 <CommentItem
                   key={index}
-                  comment={comment}
+                  comment={item}
                   postId={postId}
                   level={commentLevel + 1}
+                  getComments={getComments}
                 />
               ))}
           </>

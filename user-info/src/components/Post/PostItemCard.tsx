@@ -65,7 +65,7 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
         </Dialog>
       </div>
 
-      <div className="md:w-3/12 sm:w-4/12 flex justify-center items-center overflow-hidden cursor-pointer rounded-tl-xl sm:rounded-bl-xl sm:rounded-tr-none rounded-bl-none rounded-tr-xl">
+      <div className="md:w-3/12 sm:w-4/12 flex justify-center items-center overflow-hidden rounded-tl-xl sm:rounded-bl-xl sm:rounded-tr-none rounded-bl-none rounded-tr-xl">
         <img
           src={
             post.filePath
@@ -74,14 +74,14 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
           }
           alt={post.fileName ? post.fileName : "no-image"}
           loading="lazy"
-          className="object-cover w-full h-[250px] hover:scale-125 duration-300"
+          className="object-cover w-full h-[250px]"
         />
       </div>
       <div className="md:w-9/12 sm:w-8/12 justify-center items-center">
         <CardHeader>
           <CardTitle
             className={cn(
-              "xl:text-xl text-base flex flex-col justify-center items-start gap-2"
+              "xl:text-xl md:text-base text-lg flex flex-col justify-center items-start gap-2"
             )}
           >
             <Badge
@@ -104,7 +104,7 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
             {post.title ? post.title : "Không có tiêu đề"}
           </CardTitle>
         </CardHeader>
-        <CardContent className="flex sm:flex-row flex-col justify-between items-center">
+        <CardContent className="flex sm:flex-row flex-col justify-between sm:items-center items-start">
           <p className="lg:text-base text-sm">
             {post.description ? (
               <>
@@ -120,7 +120,7 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
           {post.approved === "ACCEPT" ? (
             <Button
               className={cn(
-                "rounded-xl my-2 bg-white border border-black p-1.5 sm:w-auto w-full text-black text-base font-light hover:bg-transparent"
+                "rounded-xl my-2 bg-white border-2 border-black p-1.5 sm:w-auto w-full text-black lg:text-base md:text-sm text-xs hover:bg-transparent"
               )}
               onClick={() => navigate("/post-details/" + post.id)}
             >
@@ -133,12 +133,12 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
 
         <CardFooter
           className={cn(
-            "flex justify-between md:items-center items-end md:flex-row flex-col"
+            "flex justify-between md:items-center items-end md:flex-row flex-col gap-2"
           )}
         >
           <div className="flex justify-center items-center">
             <LocationOnOutlinedIcon />
-            <p className="font-medium xl:text-base text-sm">
+            <p className="font-medium text-right xl:text-base md:text-sm text-xs">
               {post.locationDetail
                 ? post.locationDetail
                 : "Khu vực chưa được cung cấp"}

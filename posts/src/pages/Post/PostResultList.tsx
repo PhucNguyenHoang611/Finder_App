@@ -48,7 +48,8 @@ const PostResultList = () => {
           page: 1,
           pageSize: 100
         }
-      }
+      },
+      fetchPolicy: "network-only"
     })
       .then((result) => {
         const resultData = result.data.getItemTypeWithFilter.data;
@@ -98,7 +99,8 @@ const PostResultList = () => {
     await getPostWithFilter({
       variables: {
         filters: filters
-      }
+      },
+      fetchPolicy: "network-only"
     })
       .then((result) => {
         const resultData = result.data.getPostWithFilter.data;
@@ -138,7 +140,8 @@ const PostResultList = () => {
     await getPostWithFilter({
       variables: {
         filters: filters
-      }
+      },
+      fetchPolicy: "network-only"
     })
       .then((result) => {
         const resultData = result.data.getPostWithFilter.data;
@@ -232,8 +235,8 @@ const PostResultList = () => {
 
         <Separator className={cn("w-full bg-slate-200 my-2")} />
 
-        <div className="w-full h-full flex md:flex-row flex-col gap-8">
-          <div className="lg:w-2/5 md:w-1/4 flex flex-col gap-2">
+        <div className="w-full h-full flex lg:flex-row flex-col gap-8">
+          <div className="xl:w-2/5 lg:w-1/4 flex flex-col gap-2">
             <Label htmlFor="search" className="font-semibold text-lg">
               Từ khóa
             </Label>
@@ -250,7 +253,7 @@ const PostResultList = () => {
           <RadioGroup
             value={postType}
             onValueChange={(value: string) => setPostType(value)}
-            className="lg:w-1/5 md:w-1/4"
+            className="xl:w-1/5 lg:w-1/4"
           >
             <p className="font-semibold text-lg">Loại tin</p>
             <div className="flex items-center space-x-2">
@@ -267,7 +270,7 @@ const PostResultList = () => {
             </div>
           </RadioGroup>
 
-          <div className="lg:w-1/5 md:w-1/4 flex flex-col gap-2">
+          <div className="xl:w-1/5 lg:w-1/4 flex flex-col gap-2">
             <p className="font-semibold text-lg">Chọn khu vực</p>
             <Select
               value={location}
@@ -289,7 +292,7 @@ const PostResultList = () => {
             </Select>
           </div>
 
-          <div className="lg:w-1/5 md:w-1/4 flex flex-col gap-2">
+          <div className="xl:w-1/5 lg:w-1/4 flex flex-col gap-2">
             <p className="font-semibold text-lg">Danh mục</p>
             <Select
               value={itemType}
@@ -312,7 +315,7 @@ const PostResultList = () => {
           </div>
         </div>
 
-        <div className="w-full flex md:justify-end justify-center items-center">
+        <div className="w-full flex xl:justify-end justify-center items-center">
           <Button onClick={handleSearch} className="rounded-xl gap-2">
             <SearchOutlinedIcon />
             Tìm kiếm

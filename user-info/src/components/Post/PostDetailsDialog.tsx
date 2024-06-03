@@ -9,13 +9,13 @@ const PostDetailsDialog = (props: PostDetailsProps) => {
     <Dialog>
       <DialogTrigger
         className={cn(
-          "rounded-xl my-2 bg-white border border-black p-1.5 sm:w-auto w-full"
+          "rounded-xl my-2 bg-white lg:text-base md:text-sm text-xs font-medium border-2 border-black p-1.5 sm:w-auto w-full"
         )}
       >
         <RemoveRedEyeOutlinedIcon className="mr-2" /> Chi tiết
       </DialogTrigger>
       <DialogContent
-        className={cn("bg-white overflow-y-auto md:h-[90%] h-[85%] px-0")}
+        className={cn("bg-white overflow-y-auto lg:h-[80%] h-[75%] px-0")}
         style={{ borderRadius: 10 }}
       >
         <PostDetailsCard post={props.post} />

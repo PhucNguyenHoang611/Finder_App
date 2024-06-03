@@ -23,7 +23,8 @@ export default defineConfig({
         "react-router-dom",
         "jotai",
         "graphql",
-        "@apollo/client"
+        "@apollo/client",
+        "socket.io-client"
       ]
     })
   ],

@@ -1,6 +1,7 @@
 import { atom } from "jotai";
 
 const initialValue = {
+  id: 0,
   accessToken: "",
   accessTokenExpired: new Date(),
   refreshToken: "",

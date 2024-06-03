@@ -41,3 +41,13 @@ export const SEND_MESSAGE_TO_ADMIN = gql`
     }
   }
 `;
+
+export const UPDATE_LAST_READ_WITH_ADMIN = gql`
+  mutation UpdateLastReadWithAdmin($bodyReq: UpdateLastReadWithAdminInput!) {
+    updateLastReadWithAdmin(bodyReq: $bodyReq) {
+      status
+      statusCode
+      message
+    }
+  }
+`;

@@ -15,7 +15,8 @@ const PreviewPostDialog = (props: PreviewPostProps) => {
         <RemoveRedEyeOutlinedIcon className="mr-2" /> Xem trước khi đăng
       </DialogTrigger>
       <DialogContent
-        className={cn("bg-white overflow-y-auto lg:h-[80%] h-[75%] px-0 pb-0")}
+        className={cn("bg-white overflow-y-auto lg:h-[80%] h-[75%] px-0 p-0")}
+        style={{ borderRadius: 10 }}
       >
         <PreviewPostCard
           author={props.author}

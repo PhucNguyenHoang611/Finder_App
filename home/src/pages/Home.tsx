@@ -35,6 +35,7 @@ const Home = () => {
         const userData = result.data.getMyProfile.data;
 
         const signedInUser: SignedInUser = {
+          id: userData.id,
           accessToken: accessToken,
           accessTokenExpired: new Date(accessTokenExpired),
           refreshToken: refreshToken,

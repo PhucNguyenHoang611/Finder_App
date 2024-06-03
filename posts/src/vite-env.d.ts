@@ -20,18 +20,25 @@ interface PostsListProps {
 interface PostItemCardProps {
   post: PostWithFilter;
 }
-
 interface PostCardProps {
   post: Post | null;
 }
+
 interface CommentItemProps {
   postId: number;
   comment: Comment;
   level: number;
+  getComments: (load: boolean) => Promise<void>;
+}
+interface CommentDropdownProps {
+  signedInUser: SignedInUser;
+  commentId: number;
+  getComments: (load: boolean) => Promise<void>;
 }
 
 // Other Interfaces
 interface SignedInUser {
+  id: number;
   accessToken: string;
   accessTokenExpired: Date;
   refreshToken: string;

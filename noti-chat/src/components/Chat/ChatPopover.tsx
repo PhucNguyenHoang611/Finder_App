@@ -21,10 +21,10 @@ const ChatPopover = () => {
     {
       context: {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTcxNzMzODE0MiwiZXhwIjoxNzE3MzQxNzQyfQ.kOKXatzPk97_7iUQYUU1UlKi59fcQoQqOQXq90QTzAk"
+          // Authorization:
+          //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNzM5MTIzMCwiZXhwIjoxNzE3Mzk0ODMwfQ.Qv_Dvi3KOZAi47sFuLdaMT7r6PXEYSjqm7ibKInx8yo"
+          Authorization: `Bearer ${signedInUser?.accessToken}`
         }
-        // Authorization: `Bearer ${signedInUser?.accessToken}`
       }
     }
   );
@@ -75,18 +75,18 @@ const ChatPopover = () => {
   };
 
   useEffect(() => {
-    handleGetDetailConversationWithAdmin();
+    if (signedInUser.accessToken) handleGetDetailConversationWithAdmin();
   }, []);
 
   return (
-    <div className="fixed sm:right-4 right-2 sm:bottom-4 bottom-2">
+    <div className="fixed md:right-4 right-2 md:bottom-4 bottom-2">
       <Popover>
-        <PopoverTrigger className="bg-black rounded-full text-white sm:p-4 p-2">
+        <PopoverTrigger className="bg-black rounded-full text-white md:p-4 p-2">
           <MessageOutlinedIcon />
         </PopoverTrigger>
         <PopoverContent
           side="left"
-          className="lg:w-[350px] md:w-[300px] w-[280px] rounded-xl border-none shadow-xl ms:mr-2 mr-1 sm:mb-4 mb-2 p-0"
+          className="lg:w-[350px] md:w-[320px] w-[280px] rounded-xl border-none shadow-xl ms:mr-2 mr-1 md:mb-4 mb-2 p-0"
         >
           <ChatBox signedInUser={signedInUser} chatSections={chatSections} />
         </PopoverContent>

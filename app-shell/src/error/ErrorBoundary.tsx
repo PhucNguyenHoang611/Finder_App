@@ -10,7 +10,7 @@ interface State {
 
 class ErrorBoundary extends Component<Props, State> {
   public state: State = {
-    hasError: false,
+    hasError: false
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,20 +30,19 @@ class ErrorBoundary extends Component<Props, State> {
   public render() {
     if (this.state.hasError) {
       return (
-        <h3>
-          Xin lỗi... đã có lỗi xảy ra. Vui lòng
+        <h3 className="p-4 text-nowrap">
+          Lỗi!
           <a
             style={{
               padding: "5px",
               border: "none",
               cursor: "pointer",
-              textDecoration: "underline",
+              textDecoration: "underline"
             }}
             onClick={this.reloadPage}
           >
-            tải lại trang
+            Tải lại trang
           </a>
-          !
         </h3>
       );
     }

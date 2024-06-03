@@ -55,10 +55,10 @@ const NavDrawer = () => {
   });
 
   const handleGetNumberOfNotifyUnRead = async () => {
-    console.log("aa");
-
     try {
-      const { data } = await getNumberOfNotifyUnRead();
+      const { data } = await getNumberOfNotifyUnRead({
+        fetchPolicy: "network-only"
+      });
       const resultData = data.getNumberOfNotifyUnRead.data;
 
       setNotifyUnRead(resultData.unRead);

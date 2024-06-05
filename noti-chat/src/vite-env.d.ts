@@ -26,9 +26,19 @@ interface NotificationCardProps {
   setSelectedNotifications: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
+interface NotificationTabProps {
+  notifySocket: Socket | null;
+}
+
 interface ChatBoxProps {
+  isLoading: boolean;
   signedInUser: SignedInUser;
   chatSections: ChatSection[];
+  countUnread: () => Promise<void>;
+  getDetailConversation: () => Promise<void>;
+  loadMoreMessages: () => Promise<void>;
+  hasMoreSection: boolean;
+  chatSocket: Socket | null;
 }
 interface ChatSectionProps {
   signedInUser: SignedInUser;
@@ -106,4 +116,45 @@ interface ChatSection {
   clusMessages: ClusMessage[];
   createdDate: Date;
   updatedDate: Date;
+}
+
+// Socket Interface
+interface NewCommentNotificationSocket {
+  postId: number;
+  postTitle: string;
+  senderId: number;
+  commentId: number;
+  senderName: string;
+  senderAvatar: string;
+  content: string;
+  type: string;
+  isRead: boolean;
+  timestamp: Date;
+}
+interface ReplyCommentNotificationSocket {
+  postId: number;
+  postTitle: string;
+  senderId: number;
+  parentCommentId: number;
+  commentId: number;
+  senderName: string;
+  senderAvatar: string;
+  content: string;
+  type: string;
+  isRead: boolean;
+  timestamp: Date;
+}
+interface ApprovePostNotificationSocket {
+  postId: number;
+  postTitle: string;
+  approved: string;
+  type: string;
+  isRead: boolean;
+  timestamp: Date;
+}
+interface NewMessageSocket {
+  conversationId: number;
+  message: string;
+  timestamp: Date;
+  isRead: boolean;
 }

@@ -1,9 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  SEND_MESSAGE_TO_ADMIN,
+  UPDATE_LAST_READ_WITH_ADMIN
+} from "@/services/graphql/mutations";
+import { useEffect, useRef, useState } from "react";
+import { useMutation } from "@apollo/client";
+
+import {
   Card,
   CardContent,
-  // CardDescription,
   CardFooter,
   CardHeader,
   CardTitle
@@ -12,33 +19,36 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
+import ChatSection from "./Message/ChatSection";
+
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import ArrowDropDownOutlinedIcon from "@mui/icons-material/ArrowDropDownOutlined";
-import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined";
-import { useEffect, useRef, useState } from "react";
-import { useMutation } from "@apollo/client";
-import {
-  SEND_MESSAGE_TO_ADMIN,
-  UPDATE_LAST_READ_WITH_ADMIN
-} from "@/services/graphql/mutations";
-import TypingMessage from "./Message/TypingMessage";
-import ChatSection from "./Message/ChatSection";
-// import { io } from "socket.io-client";
-// import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
-// import { formatDistanceToNow } from "date-fns";
-// import { vi } from "date-fns/locale";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import Spinner from "../Spinner";
 
-const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
+// const tempToken = "";
+
+const ChatBox = ({
+  isLoading,
+  signedInUser,
+  chatSections,
+  countUnread,
+  getDetailConversation,
+  loadMoreMessages,
+  hasMoreSection,
+  chatSocket
+}: ChatBoxProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const [stateString, setStateString] = useState<string>("NOT_AT_BOTTOM");
+
   const [isAtBottom, setIsAtBottom] = useState<boolean>(false);
+
   const [messageValue, setMessageValue] = useState<string>("");
   const [sendMessageToAdmin] = useMutation(SEND_MESSAGE_TO_ADMIN, {
     context: {
       headers: {
-        // Authorization:
-        //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNzM5MTIzMCwiZXhwIjoxNzE3Mzk0ODMwfQ.Qv_Dvi3KOZAi47sFuLdaMT7r6PXEYSjqm7ibKInx8yo"
-        Authorization: `Bearer ${signedInUser?.accessToken}`
+        Authorization: `Bearer ${signedInUser?.accessToken}` //`Bearer ${tempToken}
       }
     }
   });
@@ -46,9 +56,7 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
   const [updateLastSeen] = useMutation(UPDATE_LAST_READ_WITH_ADMIN, {
     context: {
       headers: {
-        // Authorization:
-        //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNzM5MTIzMCwiZXhwIjoxNzE3Mzk0ODMwfQ.Qv_Dvi3KOZAi47sFuLdaMT7r6PXEYSjqm7ibKInx8yo"
-        Authorization: `Bearer ${signedInUser?.accessToken}`
+        Authorization: `Bearer ${signedInUser?.accessToken}` //`Bearer ${tempToken}
       }
     }
   });
@@ -56,6 +64,15 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
   const scrollToBottom = () => {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" });
+      if (stateString === "NEW_MESSAGE") setStateString("NOT_AT_BOTTOM");
+    }
+  };
+
+  const checkIfAtTop = () => {
+    if (containerRef.current) {
+      const { scrollTop } = containerRef.current;
+
+      if (scrollTop === 0) loadMoreMessages();
     }
   };
 
@@ -63,6 +80,7 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
     if (containerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
       setIsAtBottom(scrollTop + clientHeight >= scrollHeight - 1);
+      if (stateString === "NEW_MESSAGE") setStateString("NOT_AT_BOTTOM");
     }
   };
 
@@ -73,6 +91,8 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
           bodyReq: { lastSeen: new Date() }
         }
       });
+
+      countUnread();
     } catch (error) {
       console.log(error);
     }
@@ -93,24 +113,43 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
       });
 
       setMessageValue("");
+      getDetailConversation();
+
+      checkIfAtBottom();
+      scrollToBottom();
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    if (signedInUser.accessToken) handleUpdateLastSeen();
+    if (signedInUser.accessToken) {
+      handleUpdateLastSeen();
+    }
+
+    if (chatSocket) {
+      chatSocket.on("newMessage", async (_payload: NewMessageSocket) => {
+        getDetailConversation();
+        if (!isAtBottom) setStateString("NEW_MESSAGE");
+        else {
+          checkIfAtBottom();
+          scrollToBottom();
+        }
+      });
+    }
 
     scrollToBottom();
     checkIfAtBottom();
 
     const container = containerRef.current;
     if (container) {
+      container.addEventListener("scroll", checkIfAtTop);
       container.addEventListener("scroll", checkIfAtBottom);
     }
 
     return () => {
       if (container) {
+        container.removeEventListener("scroll", checkIfAtTop);
         container.removeEventListener("scroll", checkIfAtBottom);
       }
     };
@@ -133,17 +172,34 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
           <CardTitle className="lg:text-base md:text-sm text-xs text-white">
             Quản trị viên
           </CardTitle>
-          {/* <CardDescription className="md:text-sm text-xs text-white">
-            Hoạt động 3 phút trước
-          </CardDescription> */}
         </div>
       </CardHeader>
 
-      <CardContent className="relative h-[380px] p-2 overflow-hidden">
+      <CardContent className="relative h-[380px] p-1 px-2 overflow-hidden">
         <div
           ref={containerRef}
-          className="h-full flex flex-col gap-4 overflow-y-auto"
+          className="h-full flex flex-col gap-2 overflow-y-auto"
         >
+          {chatSections.length === 0 && (
+            <div className="w-full flex justify-center items-center">
+              <p className="text-sm text-gray-500">
+                Nhắn gì đó để bắt đầu trò chuyện
+              </p>
+            </div>
+          )}
+
+          {!hasMoreSection && !isLoading && (
+            <div className="w-full flex justify-center items-center">
+              <p className="text-sm text-gray-500">Đã tải toàn bộ tin nhắn</p>
+            </div>
+          )}
+
+          {isLoading && (
+            <div className="w-full flex justify-center items-center py-2">
+              <Spinner />
+            </div>
+          )}
+
           {chatSections.length > 0 &&
             chatSections.map((item: ChatSection, index: number) => (
               <ChatSection
@@ -153,16 +209,7 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
               />
             ))}
 
-          <div className="w-full flex justify-end items-center">
-            <p className="italic text-xs text-gray-500 w-max mr-1 flex gap-1 justify-center items-center">
-              <DoneAllOutlinedIcon />
-              Đã xem lúc 10:30
-            </p>
-          </div>
-
-          <TypingMessage />
-
-          {!isAtBottom && (
+          {!isAtBottom && stateString === "NEW_MESSAGE" && (
             <div className="w-full absolute flex justify-center items-center bottom-1">
               <Button
                 className="rounded-full lg:text-base md:text-sm text-xs bg-yellow-300 font-bold hover:bg-yellow-400"
@@ -174,6 +221,25 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
             </div>
           )}
 
+          {!isAtBottom && stateString === "NOT_AT_BOTTOM" && (
+            <div className="w-full absolute flex justify-end items-center bottom-1 px-5">
+              <Button
+                className="font-bold bg-transparent hover:bg-transparent"
+                onClick={scrollToBottom}
+              >
+                <ArrowDownwardIcon
+                  sx={{
+                    backgroundColor: "purple",
+                    color: "white",
+                    p: 0.5,
+                    borderRadius: 999
+                  }}
+                  fontSize="medium"
+                />
+              </Button>
+            </div>
+          )}
+
           <div ref={bottomRef} />
         </div>
       </CardContent>
@@ -181,12 +247,6 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
       <CardFooter className="p-2 pb-2 border-t">
         <form onSubmit={handleSendMessage} className="w-full">
           <div className="w-full flex justify-center items-center">
-            {/* <div className="w-1/12 flex justify-center items-center">
-              <Button className="bg-transparent text-black hover:bg-transparent">
-                <AttachFileOutlinedIcon />
-              </Button>
-            </div> */}
-
             <div className="w-10/12">
               <Input
                 className="border-none w-full"
@@ -212,3 +272,14 @@ const ChatBox = ({ signedInUser, chatSections }: ChatBoxProps) => {
 };
 
 export default ChatBox;
+
+{
+  /* <div className="w-full flex justify-end items-center">
+            <p className="italic text-xs text-gray-500 w-max mr-1 flex gap-1 justify-center items-center">
+              <DoneAllOutlinedIcon />
+              Đã xem lúc 10:30
+            </p>
+          </div>
+
+          <TypingMessage /> */
+}

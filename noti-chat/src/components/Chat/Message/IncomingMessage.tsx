@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { format, subHours } from "date-fns";
 
 const IncomingMessage = ({ message }: MessageProps) => {
   const [showTime, setShowTime] = useState<boolean>(false);
@@ -14,10 +15,7 @@ const IncomingMessage = ({ message }: MessageProps) => {
         </p>
         {showTime && (
           <p className="text-xs mt-1">
-            {message.createdDate.toLocaleTimeString("vi-VN", {
-              hour: "2-digit",
-              minute: "2-digit"
-            })}
+            {format(subHours(message.createdDate, 7), "h:mm a")}
           </p>
         )}
       </div>

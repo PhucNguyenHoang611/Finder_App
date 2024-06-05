@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "../ui/button";
 import SearchBar from "./SearchBar";
@@ -6,10 +9,95 @@ import NavDropdown from "./NavDropdown";
 import NotificationDropdown from "@/components/Notification/NotificationDropdown";
 import { useAtomValue } from "jotai";
 import { signedInUserAtom } from "@/store";
+import io, { Socket } from "socket.io-client";
+import { useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client";
+import { GET_NOTIFY_WITH_FILTER } from "@/services/graphql/queries";
 
 const Header = () => {
   const location = useLocation();
   const signedInUser = useAtomValue(signedInUserAtom);
+  const [isLoading, setIsLoading] = useState(false);
+  const [notifications, setNotifications] = useState<INotification[]>([]);
+  const [notifySocket, setNotifySocket] = useState<Socket | null>(null);
+
+  const [getAllNotifications] = useLazyQuery(GET_NOTIFY_WITH_FILTER, {
+    context: {
+      headers: {
+        // Authorization:
+        //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNzUyOTc2MywiZXhwIjoxNzE3NTMzMzYzfQ.IEnmwWqJLFV1J-1sfxjOQgNE910DUek8_Jxtq6tfu5A"
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
+  const handleGetAllNotifications = async () => {
+    setIsLoading(true);
+
+    try {
+      const { data } = await getAllNotifications({
+        variables: {
+          filters: {
+            page: 1,
+            pageSize: 4
+          }
+        },
+        fetchPolicy: "network-only"
+      });
+      const resultData = data.getNotifyWithFilter.data;
+
+      const nList: any[] = resultData.listData.map((item: any) => {
+        if (item.type === "NEW_COMMENT" || item.type === "REPLY_COMMENT") {
+          return {
+            id: item.id,
+            commentId: item.commentId,
+            content: item.content,
+            isRead: item.isRead,
+            parentCommentId: item.parentCommentId,
+            postId: item.postId,
+            postTitle: item.postTitle,
+            senderAvatar: item.senderAvatar,
+            senderId: item.senderId,
+            senderName: item.senderName,
+            timestamp: new Date(item.timestamp),
+            type: item.type
+          };
+        } else {
+          return {
+            id: item.id,
+            approved: item.approved,
+            isRead: item.isRead,
+            postId: item.postId,
+            postTitle: item.postTitle,
+            timestamp: new Date(item.timestamp),
+            type: item.type
+          };
+        }
+      });
+
+      setNotifications(nList);
+    } catch (error) {
+      console.log(error);
+    }
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    if (signedInUser.accessToken) {
+      const socket: Socket = io(import.meta.env.VITE_SOCKET_NOTIFY_URL, {
+        transports: ["websocket"]
+      });
+      setNotifySocket(socket);
+
+      // Register user to Socket Server
+      socket.emit("register", signedInUser.id.toString());
+
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, []);
 
   return (
     <header
@@ -59,7 +147,13 @@ const Header = () => {
             signedInUser.email ? "flex" : "hidden"
           } justify-center items-center mr-6`}
         >
-          <NotificationDropdown />
+          <NotificationDropdown
+            isLoading={isLoading}
+            signedInUser={signedInUser}
+            notifications={notifications}
+            handleGetAllNotifications={handleGetAllNotifications}
+            notifySocket={notifySocket}
+          />
         </li>
 
         <li

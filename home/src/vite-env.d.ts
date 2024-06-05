@@ -17,6 +17,13 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
+interface NotificationDropdownProps {
+  isLoading: boolean;
+  signedInUser: SignedInUser;
+  notifications: INotification[];
+  handleGetAllNotifications: () => Promise<void>;
+  notifySocket: Socket | null;
+}
 interface NotificationDropdownItemProps {
   signedInUser: SignedInUser;
   notification: INotification;
@@ -79,3 +86,38 @@ interface PostNotification {
   type: string;
 }
 type INotification = CommentNotification | PostNotification;
+
+// Socket Interface
+interface NewCommentNotificationSocket {
+  postId: number;
+  postTitle: string;
+  senderId: number;
+  commentId: number;
+  senderName: string;
+  senderAvatar: string;
+  content: string;
+  type: string;
+  isRead: boolean;
+  timestamp: Date;
+}
+interface ReplyCommentNotificationSocket {
+  postId: number;
+  postTitle: string;
+  senderId: number;
+  parentCommentId: number;
+  commentId: number;
+  senderName: string;
+  senderAvatar: string;
+  content: string;
+  type: string;
+  isRead: boolean;
+  timestamp: Date;
+}
+interface ApprovePostNotificationSocket {
+  postId: number;
+  postTitle: string;
+  approved: string;
+  type: string;
+  isRead: boolean;
+  timestamp: Date;
+}

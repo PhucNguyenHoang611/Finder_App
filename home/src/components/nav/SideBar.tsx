@@ -13,7 +13,8 @@ import {
   PhoneOff,
   TextSearch,
   Upload,
-  UsersRound
+  UsersRound,
+  ScanSearch
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router-dom";
@@ -125,6 +126,20 @@ const SideBar = () => {
             >
               <PersonStanding className="text-black" />
               Tìm người
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/result-list"}>
+            <div
+              className={`${
+                location.pathname === "/result-list" && !searchParams
+                  ? "bg-gray-300"
+                  : ""
+              } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+            >
+              <ScanSearch className="text-black" />
+              Tìm kiếm nâng cao
             </div>
           </Link>
         </li>

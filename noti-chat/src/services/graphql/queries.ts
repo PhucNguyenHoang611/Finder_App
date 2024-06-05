@@ -104,3 +104,16 @@ export const GET_DETAIL_CONVERSATION_WITH_ADMIN = gql`
     }
   }
 `;
+
+export const COUNT_UNREAD_MESSAGE_WITH_ADMIN = gql`
+  query CountUnreadMessageWithAdmin {
+    countUnreadMessageWithAdmin {
+      status
+      statusCode
+      data {
+        unreadCount
+      }
+      message
+    }
+  }
+`;

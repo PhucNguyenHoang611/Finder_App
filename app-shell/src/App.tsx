@@ -1,3 +1,4 @@
+// import Auth from "authApp/Auth";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import UserInfo from "@/pages/UserInfo";
@@ -7,7 +8,6 @@ import ResetPassword from "homeApp/ResetPassword";
 import { useSignedInUserAtom } from "homeApp/store";
 import { setAPIBaseUrl } from "homeApp/apiConfig";
 import { signInValidate } from "homeApp/authMiddleware";
-// import Auth from "authApp/Auth";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootPage from "./pages/RootPage";
 import ErrorPage from "./pages/ErrorPage";
@@ -17,6 +17,8 @@ import PostResultList from "./pages/posts/PostResultList";
 import NewsPage from "./pages/posts/NewsPage";
 import NotifyPage from "./pages/chat/NotifyPage";
 import { useEffect } from "react";
+import PrivateRoute from "./pages/PrivateRoute";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
   {
@@ -46,17 +48,29 @@ const router = createBrowserRouter([
           },
           {
             path: "/create-post",
-            element: <CreatePost />
+            element: (
+              <PrivateRoute>
+                <CreatePost />
+              </PrivateRoute>
+            )
           },
           {
             path: "/notification",
-            element: <NotifyPage />
+            element: (
+              <PrivateRoute>
+                <NotifyPage />
+              </PrivateRoute>
+            )
           }
         ]
       },
       {
         path: "/*",
-        element: <UserInfo />
+        element: (
+          <PrivateRoute>
+            <UserInfo />
+          </PrivateRoute>
+        )
       },
       {
         path: "/sign-in",
@@ -85,7 +99,12 @@ function App() {
     }
   }, [signedInUser, setSignedInUser]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer />
+    </>
+  );
 }
 
 export default App;

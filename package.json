@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "scripts": {
+    "start:app-shell": "cd app-shell && npm run dev",
+    "start:home": "cd home && npm run build && npm run serve",
+    "start:noti-chat": "cd noti-chat && npm run build && npm run serve",
+    "start:posts": "cd posts && npm run build && npm run serve",
+    "start:user-info": "cd user-info && npm run build && npm run serve",
+    "start": "concurrently \"npm run start:home\" \"npm run start:noti-chat\" \"npm run start:posts\" \"npm run start:user-info\" \"npm run start:app-shell\""
+  }
+}

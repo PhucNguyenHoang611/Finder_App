@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -13,12 +14,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 import { Bell, BellDotIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useLazyQuery, useMutation } from "@apollo/client";
-import { GET_NOTIFY_WITH_FILTER } from "@/services/graphql/queries";
+import { useMutation } from "@apollo/client";
 import { MARK_NOTIFY_AS_READ } from "@/services/graphql/mutations";
-import { useAtomValue } from "jotai";
-import { signedInUserAtom } from "@/store";
+import { useEffect } from "react";
 
 const EmptyNotificationsList = () => {
   return (
@@ -145,76 +143,46 @@ const NotificationDropdownItem = ({
   );
 };
 
-const NotificationDropdown = () => {
-  const signedInUser = useAtomValue(signedInUserAtom);
-  const [isLoading, setIsLoading] = useState(false);
-  const [notifications, setNotifications] = useState<INotification[]>([]);
-
-  const [getAllNotifications] = useLazyQuery(GET_NOTIFY_WITH_FILTER, {
-    context: {
-      headers: {
-        Authorization: `Bearer ${signedInUser.accessToken}`
-      }
-    }
-  });
-
-  const handleGetAllNotifications = async () => {
-    setIsLoading(true);
-
-    try {
-      const { data } = await getAllNotifications({
-        variables: {
-          filters: {
-            page: 1,
-            pageSize: 4
-          }
-        },
-        fetchPolicy: "network-only"
-      });
-      const resultData = data.getNotifyWithFilter.data;
-
-      const nList: any[] = resultData.listData.map((item: any) => {
-        if (item.type === "NEW_COMMENT" || item.type === "REPLY_COMMENT") {
-          return {
-            id: item.id,
-            commentId: item.commentId,
-            content: item.content,
-            isRead: item.isRead,
-            parentCommentId: item.parentCommentId,
-            postId: item.postId,
-            postTitle: item.postTitle,
-            senderAvatar: item.senderAvatar,
-            senderId: item.senderId,
-            senderName: item.senderName,
-            timestamp: new Date(item.timestamp),
-            type: item.type
-          };
-        } else {
-          return {
-            id: item.id,
-            approved: item.approved,
-            isRead: item.isRead,
-            postId: item.postId,
-            postTitle: item.postTitle,
-            timestamp: new Date(item.timestamp),
-            type: item.type
-          };
-        }
-      });
-
-      setNotifications(nList);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setIsLoading(false);
-  };
-
+const NotificationDropdown = ({
+  isLoading,
+  signedInUser,
+  notifications,
+  handleGetAllNotifications,
+  notifySocket
+}: NotificationDropdownProps) => {
   useEffect(() => {
     if (signedInUser.accessToken) {
       handleGetAllNotifications();
     }
-  }, []);
+
+    if (notifySocket) {
+      notifySocket.on(
+        "notifyComment",
+        async (_payload: NewCommentNotificationSocket) => {
+          console.log("New comment notification received");
+          handleGetAllNotifications();
+        }
+      );
+
+      // Listen to reply comment notification
+      notifySocket.on(
+        "notifyReplyComment",
+        async (_payload: ReplyCommentNotificationSocket) => {
+          console.log("Reply comment notification received");
+          handleGetAllNotifications();
+        }
+      );
+
+      // Listen to approve post notification
+      notifySocket.on(
+        "notifyApprovePost",
+        async (_payload: ApprovePostNotificationSocket) => {
+          console.log("Approve post notification received");
+          handleGetAllNotifications();
+        }
+      );
+    }
+  }, [notifySocket]);
 
   return (
     <DropdownMenu>

@@ -162,11 +162,13 @@ const NotificationCard = ({
       <CardContent className="md:w-1/3 w-full md:p-0 p-2 mt-0 flex md:flex-row md:justify-between justify-end items-center">
         <div className="flex gap-1 justify-center items-center">
           <AccessTimeOutlinedIcon className="w-2 h-2" />
-          <p className="md:text-base text-sm">
+          <p className="md:text-sm text-xs">
             {notification.timestamp.toLocaleDateString("vi-VN", {
               year: "numeric",
               month: "2-digit",
-              day: "2-digit"
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit"
             })}
           </p>
         </div>

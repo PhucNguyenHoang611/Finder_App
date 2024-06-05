@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,7 @@ import { signedInUserAtomWithPersistence } from "@/store";
 import { MARK_NOTIFY_AS_READ } from "@/services/graphql/mutations";
 import ReactPagination from "@/components/ReactPagination";
 
-const UnreadNotificationTab = () => {
+const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
   const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
@@ -57,8 +58,12 @@ const UnreadNotificationTab = () => {
     }
   });
 
-  const handleGetAllNotifications = async (p: number, pSize: number) => {
-    setIsLoading(true);
+  const handleGetAllNotifications = async (
+    p: number,
+    pSize: number,
+    load: boolean
+  ) => {
+    if (load) setIsLoading(true);
 
     try {
       const { data } = await getAllNotifications({
@@ -67,7 +72,8 @@ const UnreadNotificationTab = () => {
             page: p,
             pageSize: pSize
           }
-        }
+        },
+        fetchPolicy: "network-only"
       });
       const resultData = data.getNotifyWithFilter.data;
 
@@ -108,7 +114,7 @@ const UnreadNotificationTab = () => {
       console.log(error);
     }
 
-    setIsLoading(false);
+    if (load) setIsLoading(false);
   };
 
   const handleSelectAll = () => {
@@ -127,20 +133,44 @@ const UnreadNotificationTab = () => {
         }
       });
 
-      const updatedNotifications = notifications.filter(
-        (n) => !selectedNotifications.includes(n.id)
-      );
-
-      setNotifications(updatedNotifications);
       setSelectedNotifications([]);
+      handleGetAllNotifications(page, pageSize, false);
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    handleGetAllNotifications(page, pageSize);
+    handleGetAllNotifications(page, pageSize, true);
   }, [page, pageSize]);
+
+  useEffect(() => {
+    if (notifySocket) {
+      // Listen to new comment notification
+      notifySocket.on(
+        "notifyComment",
+        async (_payload: NewCommentNotificationSocket) => {
+          handleGetAllNotifications(page, pageSize, false);
+        }
+      );
+
+      // Listen to reply comment notification
+      notifySocket.on(
+        "notifyReplyComment",
+        async (_payload: ReplyCommentNotificationSocket) => {
+          handleGetAllNotifications(page, pageSize, false);
+        }
+      );
+
+      // Listen to approve post notification
+      notifySocket.on(
+        "notifyApprovePost",
+        async (_payload: ApprovePostNotificationSocket) => {
+          handleGetAllNotifications(page, pageSize, false);
+        }
+      );
+    }
+  }, [notifySocket]);
 
   return (
     <div className="flex flex-col justify-center gap-4">
@@ -210,3 +240,8 @@ const UnreadNotificationTab = () => {
 };
 
 export default UnreadNotificationTab;
+
+// const updatedNotifications = notifications.filter(
+//   (n) => !selectedNotifications.includes(n.id)
+// );
+// setNotifications(updatedNotifications);

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Label } from "@/components/ui/label";
@@ -11,9 +12,6 @@ import {
   SelectValue
 } from "@/components/ui/select";
 
-// import { Input } from "@/components/ui/input";
-// import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-
 import MarkChatReadOutlinedIcon from "@mui/icons-material/MarkChatReadOutlined";
 import NotificationList from "@/components/Notification/NotificationList";
 import { useEffect, useState } from "react";
@@ -24,7 +22,7 @@ import { signedInUserAtomWithPersistence } from "@/store";
 import { MARK_NOTIFY_AS_READ } from "@/services/graphql/mutations";
 import ReactPagination from "@/components/ReactPagination";
 
-const AllNotificationTab = () => {
+const AllNotificationTab = ({ notifySocket }: NotificationTabProps) => {
   const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
@@ -44,11 +42,6 @@ const AllNotificationTab = () => {
     setPage(1);
   };
 
-  // const [searchValue, setSearchValue] = useState("");
-  // const [tempNotifications, setTempNotifications] = useState<INotification[]>(
-  //   []
-  // );
-
   const [getAllNotifications] = useLazyQuery(GET_NOTIFY_WITH_FILTER, {
     context: {
       headers: {
@@ -65,8 +58,12 @@ const AllNotificationTab = () => {
     }
   });
 
-  const handleGetAllNotifications = async (p: number, pSize: number) => {
-    setIsLoading(true);
+  const handleGetAllNotifications = async (
+    p: number,
+    pSize: number,
+    load: boolean
+  ) => {
+    if (load) setIsLoading(true);
 
     try {
       const { data } = await getAllNotifications({
@@ -75,7 +72,8 @@ const AllNotificationTab = () => {
             page: p,
             pageSize: pSize
           }
-        }
+        },
+        fetchPolicy: "network-only"
       });
       const resultData = data.getNotifyWithFilter.data;
 
@@ -110,12 +108,11 @@ const AllNotificationTab = () => {
 
       setNotifications(nList);
       setTotalNotifications(resultData.totalCount);
-      // setTempNotifications(nList);
     } catch (error) {
       console.log(error);
     }
 
-    setIsLoading(false);
+    if (load) setIsLoading(false);
   };
 
   const handleSelectAll = () => {
@@ -134,42 +131,44 @@ const AllNotificationTab = () => {
         }
       });
 
-      const updatedNotifications = notifications.map((n) => {
-        if (selectedNotifications.includes(n.id)) {
-          return { ...n, isRead: true };
-        }
-        return n;
-      });
-
-      setNotifications(updatedNotifications);
       setSelectedNotifications([]);
+      handleGetAllNotifications(page, pageSize, false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  // const handleSearch = () => {
-  //   if (searchValue.trim() !== "") {
-  //     const filteredNotifications = notifications.filter((n) => {
-  //       if (n.type === "NEW_COMMENT" || n.type === "REPLY_COMMENT") {
-  //         return (
-  //           n.postTitle.toLowerCase().includes(searchValue.toLowerCase()) ||
-  //           n.senderName.toLowerCase().includes(searchValue.toLowerCase())
-  //         );
-  //       } else {
-  //         return n.postTitle.toLowerCase().includes(searchValue.toLowerCase());
-  //       }
-  //     });
-
-  //     setNotifications(filteredNotifications);
-  //   } else {
-  //     setNotifications(tempNotifications);
-  //   }
-  // };
+  useEffect(() => {
+    handleGetAllNotifications(page, pageSize, true);
+  }, [page, pageSize]);
 
   useEffect(() => {
-    handleGetAllNotifications(page, pageSize);
-  }, [page, pageSize]);
+    if (notifySocket) {
+      // Listen to new comment notification
+      notifySocket.on(
+        "notifyComment",
+        async (_payload: NewCommentNotificationSocket) => {
+          handleGetAllNotifications(page, pageSize, false);
+        }
+      );
+
+      // Listen to reply comment notification
+      notifySocket.on(
+        "notifyReplyComment",
+        async (_payload: ReplyCommentNotificationSocket) => {
+          handleGetAllNotifications(page, pageSize, false);
+        }
+      );
+
+      // Listen to approve post notification
+      notifySocket.on(
+        "notifyApprovePost",
+        async (_payload: ApprovePostNotificationSocket) => {
+          handleGetAllNotifications(page, pageSize, false);
+        }
+      );
+    }
+  }, [notifySocket]);
 
   return (
     <div className="flex flex-col justify-center gap-4">
@@ -194,21 +193,6 @@ const AllNotificationTab = () => {
           </Button>
         )}
       </div>
-
-      {/* <div className="w-full flex sm:justify-end items-center">
-        <div className="flex lg:w-[30%] md:w-[40%] sm:w-[50%] w-full justify-between items-center border-2 border-slate-200 rounded-xl px-2">
-          <Input
-            type="text"
-            placeholder="Tìm kiếm thông báo..."
-            className="border-none"
-            value={searchValue}
-            onChange={(e) => {
-              setSearchValue(e.target.value);
-            }}
-          />
-          <SearchOutlinedIcon className="text-slate-400" />
-        </div>
-      </div> */}
 
       <NotificationList
         signedInUser={signedInUser}
@@ -254,3 +238,55 @@ const AllNotificationTab = () => {
 };
 
 export default AllNotificationTab;
+
+// import { Input } from "@/components/ui/input";
+// import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+
+// const [searchValue, setSearchValue] = useState("");
+// const [tempNotifications, setTempNotifications] = useState<INotification[]>(
+//   []
+// );
+
+// const updatedNotifications = notifications.map((n) => {
+//   if (selectedNotifications.includes(n.id)) {
+//     return { ...n, isRead: true };
+//   }
+//   return n;
+// });
+// setNotifications(updatedNotifications);
+
+// const handleSearch = () => {
+//   if (searchValue.trim() !== "") {
+//     const filteredNotifications = notifications.filter((n) => {
+//       if (n.type === "NEW_COMMENT" || n.type === "REPLY_COMMENT") {
+//         return (
+//           n.postTitle.toLowerCase().includes(searchValue.toLowerCase()) ||
+//           n.senderName.toLowerCase().includes(searchValue.toLowerCase())
+//         );
+//       } else {
+//         return n.postTitle.toLowerCase().includes(searchValue.toLowerCase());
+//       }
+//     });
+
+//     setNotifications(filteredNotifications);
+//   } else {
+//     setNotifications(tempNotifications);
+//   }
+// };
+
+{
+  /* <div className="w-full flex sm:justify-end items-center">
+        <div className="flex lg:w-[30%] md:w-[40%] sm:w-[50%] w-full justify-between items-center border-2 border-slate-200 rounded-xl px-2">
+          <Input
+            type="text"
+            placeholder="Tìm kiếm thông báo..."
+            className="border-none"
+            value={searchValue}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+            }}
+          />
+          <SearchOutlinedIcon className="text-slate-400" />
+        </div>
+      </div> */
+}

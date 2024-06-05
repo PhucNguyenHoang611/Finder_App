@@ -1,18 +1,14 @@
+import { formatTimeToString } from "@/utils/dateFormat";
 import IncomingMessage from "./IncomingMessage";
 import Message from "./Message";
+import { subHours } from "date-fns";
 
 const ChatSection = ({ signedInUser, chatSection }: ChatSectionProps) => {
   return (
     <>
       <div className="w-full flex justify-center items-center">
         <div className="rounded-xl bg-gray-300 text-white text-xs font-medium px-4 py-1">
-          {chatSection.createdDate.toLocaleDateString("vi-VN", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit"
-          })}
+          {formatTimeToString(subHours(chatSection.createdDate, 7))}
         </div>
       </div>
       {chatSection.clusMessages.map((cm: ClusMessage, index: number) => (

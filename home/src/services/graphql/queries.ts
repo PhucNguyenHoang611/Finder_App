@@ -6,6 +6,7 @@ export const GET_MY_PROFILE = gql`
       status
       statusCode
       data {
+        id
         email
         phone
         displayName

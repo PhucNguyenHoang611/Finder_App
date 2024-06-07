@@ -26,7 +26,8 @@ export default defineConfig({
         "./Header": "./src/components/nav/Header.tsx",
         "./store": "./src/store.ts",
         "./apiConfig": "./src/config/api.ts",
-        "./authMiddleware": "./src/middlewares/auth.ts"
+        "./authMiddleware": "./src/middlewares/auth.ts",
+        "./Toaster": "./src/components/ui/sonner.tsx"
       },
       shared: [
         "react",

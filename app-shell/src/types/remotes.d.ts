@@ -11,6 +11,7 @@ declare module "homeApp/ScamWarning";
 declare module "homeApp/store";
 declare module "homeApp/apiConfig";
 declare module "homeApp/authMiddleware";
+declare module "homeApp/Toaster";
 // auth (not use)
 declare module "authApp/Auth";
 // userInfo

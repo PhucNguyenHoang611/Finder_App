@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Header from "./home/Header";
+import { Toaster } from "homeApp/Toaster";
 
 const RootPage = () => {
   return (
@@ -9,6 +10,8 @@ const RootPage = () => {
           <Header />
         </div>
         <Outlet />
+
+        <Toaster richColors closeButton className="font-montserrat" />
       </div>
     </>
   );

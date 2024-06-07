@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +13,10 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { AuthenticateService } from "@/services/api";
+import { useState } from "react";
+import Spinner from "@/components/Spinner";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   email: z
@@ -28,6 +33,7 @@ const formSchema = z.object({
 });
 
 const ResetPassword = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,8 +41,30 @@ const ResetPassword = () => {
     }
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Reset Password:", values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
+    try {
+      await AuthenticateService.authControllerForgotPassword(
+        import.meta.env.VITE_APP_ORIGIN,
+        {
+          email: values.email
+        }
+      );
+
+      toast.success(
+        "Vui lòng kiểm tra email để hoàn tất quá trình reset mật khẩu"
+      );
+    } catch (error: any) {
+      const errorCode = error.body.error.code;
+      if (errorCode === "NOT_FOUND") {
+        form.setError("email", {
+          message: "Email này chưa được đăng ký"
+        });
+      }
+    }
+
+    setIsLoading(false);
   }
 
   return (
@@ -64,7 +92,11 @@ const ResetPassword = () => {
                   )}
                 />
 
-                <Button type="submit" className="w-full mt-6 rounded-full">
+                <Button
+                  type="submit"
+                  className="w-full mt-6 rounded-full flex gap-1"
+                >
+                  {isLoading && <Spinner />}
                   Đặt lại mật khẩu
                 </Button>
 

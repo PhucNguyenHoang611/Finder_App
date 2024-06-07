@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
@@ -5,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -20,31 +21,40 @@ import { z } from "zod";
 
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { setAPIBaseUrl, setJWT } from "@/config/api";
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
+import { useEffect, useState } from "react";
+import { AuthenticateService } from "@/services/api";
+import Spinner from "@/components/Spinner";
 
 const formSchema = z.object({
   passwordForm: z
     .object({
       currentPassword: z.string().min(1, {
-        message: "Mật khẩu không được để trống",
+        message: "Mật khẩu không được để trống"
       }),
       newPassword: z
         .string()
         .min(6, {
-          message: "Mật khẩu mới không được ngắn hơn 6 ký tự",
+          message: "Mật khẩu mới không được ngắn hơn 6 ký tự"
         })
         .max(14, {
-          message: "Mật khẩu mới không được dài quá 14 ký tự",
+          message: "Mật khẩu mới không được dài quá 14 ký tự"
         }),
-      confirmPassword: z.string(),
+      confirmPassword: z.string()
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
       message: "Mật khẩu xác nhận không khớp",
-      path: ["confirmPassword"],
-    }),
+      path: ["confirmPassword"]
+    })
 });
 
 const ChangePassword = () => {
+  setAPIBaseUrl();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
 
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,18 +63,41 @@ const ChangePassword = () => {
       passwordForm: {
         currentPassword: "",
         newPassword: "",
-        confirmPassword: "",
-      },
-    },
+        confirmPassword: ""
+      }
+    }
   });
 
   // Submit handler
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
 
-    toast.success("Đổi mật khẩu thành công");
-    navigate("/user-info");
+    try {
+      await AuthenticateService.authControllerChangePassword({
+        password: values.passwordForm.currentPassword,
+        newPassword: values.passwordForm.newPassword
+      });
+
+      toast.success("Đổi mật khẩu thành công");
+      navigate("/user-info");
+    } catch (error: any) {
+      const errorCode = error.body.error.code;
+
+      if (errorCode === "PASSWORD_NOT_MATCH") {
+        form.setError("passwordForm.currentPassword", {
+          message: "Mật khẩu hiện tại không đúng"
+        });
+      }
+    }
+
+    setIsLoading(false);
   }
+
+  useEffect(() => {
+    if (signedInUser.accessToken) {
+      setJWT(signedInUser.accessToken);
+    }
+  }, [signedInUser]);
 
   return (
     <div className="w-full h-max">
@@ -139,7 +172,8 @@ const ChangePassword = () => {
               />
 
               <Button type="submit" className={cn("rounded-xl my-2")}>
-                <KeyOutlinedIcon className="mr-2" /> Đổi mật khẩu
+                {isLoading ? <Spinner /> : <KeyOutlinedIcon className="mr-2" />}
+                Đổi mật khẩu
               </Button>
             </form>
           </Form>

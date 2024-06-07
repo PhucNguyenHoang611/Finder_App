@@ -5,6 +5,9 @@ import UserInfo from "@/pages/UserInfo";
 import Signin from "homeApp/Signin";
 import Signup from "homeApp/Signup";
 import ResetPassword from "homeApp/ResetPassword";
+import ResetPasswordConfirm from "homeApp/ResetPasswordConfirm";
+import AboutUs from "@/pages/home/AboutUs";
+import ScamWarning from "@/pages/home/ScamWarning";
 import { useSignedInUserAtom } from "homeApp/store";
 import { setAPIBaseUrl } from "homeApp/apiConfig";
 import { signInValidate } from "homeApp/authMiddleware";
@@ -41,6 +44,14 @@ const router = createBrowserRouter([
           {
             path: "/result-list",
             element: <PostResultList />
+          },
+          {
+            path: "/about-us",
+            element: <AboutUs />
+          },
+          {
+            path: "/scam-warning",
+            element: <ScamWarning />
           },
           {
             path: "/news",
@@ -81,8 +92,12 @@ const router = createBrowserRouter([
         element: <Signup />
       },
       {
-        path: "/reset-password",
+        path: "/forgot-password",
         element: <ResetPassword />
+      },
+      {
+        path: "/reset-password/:token",
+        element: <ResetPasswordConfirm />
       }
     ]
   }

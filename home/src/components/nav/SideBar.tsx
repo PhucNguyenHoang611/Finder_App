@@ -6,7 +6,6 @@ import { useLazyQuery } from "@apollo/client";
 import { useAtomValue } from "jotai";
 import {
   Bell,
-  Bug,
   Dog,
   HandHeart,
   PersonStanding,
@@ -145,10 +144,22 @@ const SideBar = () => {
         </li>
         <hr className="text-black border my-2" />
         <li>
-          <Link to={"/scam"}>
+          <Link to={"/about-us"}>
             <div
               className={`${
-                location.pathname === "/scam" ? "bg-gray-300" : ""
+                location.pathname === "/about-us" ? "bg-gray-300" : ""
+              } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+            >
+              <UsersRound className="text-black" />
+              Giới thiệu Finder
+            </div>
+          </Link>
+        </li>
+        <li>
+          <Link to={"/scam-warning"}>
+            <div
+              className={`${
+                location.pathname === "/scam-warning" ? "bg-gray-300" : ""
               } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
             >
               <PhoneOff className="text-black" />
@@ -156,19 +167,7 @@ const SideBar = () => {
             </div>
           </Link>
         </li>
-        <li>
-          <Link to={"/aboutus"}>
-            <div
-              className={`${
-                location.pathname === "/aboutus" ? "bg-gray-300" : ""
-              } p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
-            >
-              <UsersRound className="text-black" />
-              Giới thiệu
-            </div>
-          </Link>
-        </li>
-        <li>
+        {/* <li>
           <Link to={"/contact"}>
             <div
               className={`${
@@ -179,7 +178,7 @@ const SideBar = () => {
               Liên hệ chúng tôi
             </div>
           </Link>
-        </li>
+        </li> */}
 
         {signedInUser.email && (
           <>

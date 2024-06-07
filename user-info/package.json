@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "serve": "vite preview --port 5003 --strictPort"
+    "serve": "vite preview --port 5003 --strictPort",
+    "api:generate": "openapi -i http://localhost:5001/api-json -o src/services/api --client axios --indent 2"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
@@ -30,6 +31,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@reduxjs/toolkit": "^2.2.3",
+    "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -63,6 +65,8 @@
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
+    "openapi-typescript": "^6.7.6",
+    "openapi-typescript-codegen": "^0.29.0",
     "postcss": "^8.4.38",
     "sass": "^1.76.0",
     "tailwindcss": "^3.4.3",

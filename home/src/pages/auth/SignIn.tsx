@@ -221,7 +221,7 @@ const SignIn = () => {
                 Quên mật khẩu? &nbsp;
                 <Link
                   className="hover:cursor-pointer font-bold"
-                  to={"/reset-password"}
+                  to={"/forgot-password"}
                 >
                   Đặt lại mật khẩu
                 </Link>

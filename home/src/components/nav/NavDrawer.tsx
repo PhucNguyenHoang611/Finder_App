@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 
 import {
   Bell,
-  Bug,
   Dog,
   HandHeart,
   PersonStanding,
@@ -171,18 +170,6 @@ const NavDrawer = () => {
           </li>
           <hr className="text-black border my-2" />
           <li>
-            <Link to={"/scam"}>
-              <div
-                className={`${
-                  location.pathname === "/scam" ? "bg-gray-300" : ""
-                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
-              >
-                <PhoneOff className="text-black" />
-                Cảnh báo lừa đảo
-              </div>
-            </Link>
-          </li>
-          <li>
             <Link to={"/about-us"}>
               <div
                 className={`${
@@ -190,11 +177,23 @@ const NavDrawer = () => {
                 } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
               >
                 <UsersRound className="text-black" />
-                Giới thiệu
+                Giới thiệu Finder
               </div>
             </Link>
           </li>
           <li>
+            <Link to={"/scam-warning"}>
+              <div
+                className={`${
+                  location.pathname === "/scam-warning" ? "bg-gray-300" : ""
+                } sm:text-md text-sm p-2 font-semibold flex gap-2 w-full hover:bg-appbg-2 border border-transparent rounded-xl text-black`}
+              >
+                <PhoneOff className="text-black" />
+                Cảnh báo lừa đảo
+              </div>
+            </Link>
+          </li>
+          {/* <li>
             <Link to={"/contact"}>
               <div
                 className={`${
@@ -205,7 +204,7 @@ const NavDrawer = () => {
                 Liên hệ chúng tôi
               </div>
             </Link>
-          </li>
+          </li> */}
 
           {signedInUser.email && (
             <>

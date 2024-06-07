@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import SideNav from "@/components/SideNav";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -23,9 +23,9 @@ const RootPage = () => {
           <div className="flex gap-1">
             <AlertDescription>Cảnh báo</AlertDescription>
             <AlertDescription>
-              <a href="#" className="underline font-medium">
+              <Link to="/scam-warning" className="underline font-medium">
                 lừa đảo
-              </a>
+              </Link>
             </AlertDescription>
           </div>
         </Alert>

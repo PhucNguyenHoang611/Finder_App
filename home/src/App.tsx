@@ -15,6 +15,9 @@ import "jotai-devtools/styles.css";
 import { useSignedInUserAtom } from "./store";
 import { signInValidate } from "./middlewares/auth";
 import { useEffect } from "react";
+import ResetPasswordConfirm from "@/pages/auth/ResetPasswordConfirm";
+import AboutUs from "@/pages/AboutUs";
+import ScamWarning from "@/pages/ScamWarning";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +32,14 @@ const router = createBrowserRouter([
           {
             element: <Home />,
             index: true
+          },
+          {
+            path: "about-us",
+            element: <AboutUs />
+          },
+          {
+            path: "scam-warning",
+            element: <ScamWarning />
           }
         ]
       },
@@ -41,8 +52,12 @@ const router = createBrowserRouter([
         element: <SignUp />
       },
       {
-        path: "reset-password",
+        path: "forgot-password",
         element: <ResetPassword />
+      },
+      {
+        path: "reset-password/:token",
+        element: <ResetPasswordConfirm />
       }
     ]
   }

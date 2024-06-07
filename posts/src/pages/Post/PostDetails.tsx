@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
 import PostCard from "@/components/Post/Card/PostCard";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { GET_POST_BY_ID } from "@/services/graphql/queries";
@@ -83,9 +83,9 @@ const PostDetails = () => {
         <div className="flex gap-1">
           <AlertDescription>Cảnh báo</AlertDescription>
           <AlertDescription>
-            <a href="#" className="underline font-medium">
+            <Link to="/scam-warning" className="underline font-medium">
               lừa đảo
-            </a>
+            </Link>
           </AlertDescription>
         </div>
       </Alert>

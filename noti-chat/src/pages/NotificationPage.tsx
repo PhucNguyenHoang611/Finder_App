@@ -2,6 +2,7 @@ import NotificationTabs from "@/components/Notification/NotificationTabs";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
 import WarningAmberOutlinedIcon from "@mui/icons-material/WarningAmberOutlined";
+import { Link } from "react-router-dom";
 
 const Notification = () => {
   return (
@@ -15,9 +16,9 @@ const Notification = () => {
         <div className="flex gap-1">
           <AlertDescription>Cảnh báo</AlertDescription>
           <AlertDescription>
-            <a href="#" className="underline font-medium">
+            <Link to="/scam-warning" className="underline font-medium">
               lừa đảo
-            </a>
+            </Link>
           </AlertDescription>
         </div>
       </Alert>

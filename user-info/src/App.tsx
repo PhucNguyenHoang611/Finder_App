@@ -16,26 +16,26 @@ const router = createBrowserRouter([
     children: [
       {
         path: "user-info",
-        element: <UserInfo />,
+        element: <UserInfo />
       },
       {
         path: "my-posts",
-        element: <MyPosts />,
+        element: <MyPosts />
       },
       {
         path: "update-info",
-        element: <UpdateInfo />,
+        element: <UpdateInfo />
       },
       {
         path: "register-newsletter",
-        element: <RegisterNewsletter />,
+        element: <RegisterNewsletter />
       },
       {
         path: "change-password",
-        element: <ChangePassword />,
-      },
-    ],
-  },
+        element: <ChangePassword />
+      }
+    ]
+  }
 ]);
 
 function App() {

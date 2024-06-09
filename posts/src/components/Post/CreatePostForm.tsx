@@ -61,9 +61,14 @@ const formSchema = z.object({
     .max(1000, {
       message: "Nội dung không được dài quá 1000 ký tự"
     }),
-  itemType: z.string({
-    required_error: "Danh mục không được để trống"
-  }),
+  itemType: z
+    .string()
+    .min(1, {
+      message: "Danh mục không được để trống"
+    })
+    .max(1000, {
+      message: "Danh mục không được dài quá 1000 ký tự"
+    }),
   contactPhone: z.string().min(1, {
     message: "Thông tin liên lạc không được để trống"
   }),

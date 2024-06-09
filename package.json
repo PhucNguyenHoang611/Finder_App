@@ -8,6 +8,12 @@
     "start:noti-chat": "cd noti-chat && npm install && npm run build && npm run serve",
     "start:posts": "cd posts && npm install && npm run build && npm run serve",
     "start:user-info": "cd user-info && npm install && npm run build && npm run serve",
-    "start": "concurrently \"npm run start:home\" \"npm run start:noti-chat\" \"npm run start:posts\" \"npm run start:user-info\" \"npm run start:app-shell\""
+    "start": "concurrently \"npm run start:home\" \"npm run start:noti-chat\" \"npm run start:posts\" \"npm run start:user-info\" \"npm run start:app-shell\"",
+    "quick-start:app-shell": "cd app-shell && npm run dev",
+    "quick-start:home": "cd home && npm run serve",
+    "quick-start:noti-chat": "cd noti-chat && npm run serve",
+    "quick-start:posts": "cd posts && npm run serve",
+    "quick-start:user-info": "cd user-info && npm run serve",
+    "quick-start": "concurrently \"npm run quick-start:home\" \"npm run quick-start:noti-chat\" \"npm run quick-start:posts\" \"npm run quick-start:user-info\" \"npm run quick-start:app-shell\""
   }
 }

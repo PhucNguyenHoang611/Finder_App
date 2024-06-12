@@ -30,6 +30,16 @@ export const ADD_COMMENT = gql`
   }
 `;
 
+export const EDIT_COMMENT = gql`
+  mutation EditComment($commentId: Int!, $bodyReq: EditCommentInput!) {
+    editComment(commentId: $commentId, bodyReq: $bodyReq) {
+      status
+      statusCode
+      message
+    }
+  }
+`;
+
 export const DELETE_COMMENT = gql`
   mutation DeleteComment($commentId: Int!) {
     deleteComment(commentId: $commentId) {

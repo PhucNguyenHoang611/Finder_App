@@ -15,6 +15,7 @@ import {
   DialogClose
 } from "@/components/ui/dialog";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import BorderColorOutlinedIcon from "@mui/icons-material/BorderColorOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { useMutation } from "@apollo/client";
 import { DELETE_COMMENT } from "@/services/graphql/mutations";
@@ -24,7 +25,8 @@ import { useState } from "react";
 const CommentDropdownMenu = ({
   signedInUser,
   commentId,
-  getComments
+  getComments,
+  setIsEditing
 }: CommentDropdownProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [deleteComment] = useMutation(DELETE_COMMENT, {
@@ -57,6 +59,18 @@ const CommentDropdownMenu = ({
         <MoreVertOutlinedIcon sx={{ fontSize: 15, color: "gray" }} />
       </DropdownMenuTrigger>
       <DropdownMenuContent style={{ borderRadius: 10 }}>
+        <Button
+          variant="outline"
+          className="cursor-pointer border-none flex gap-2 w-full justify-start items-center"
+          onClick={() => {
+            setIsDropdownOpen(false);
+            setIsEditing(true);
+          }}
+        >
+          <BorderColorOutlinedIcon />
+          <p className="font-medium">Chỉnh sửa</p>
+        </Button>
+
         <Dialog>
           <DialogTrigger asChild>
             <Button

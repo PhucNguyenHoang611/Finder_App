@@ -12,8 +12,8 @@ import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined";
 import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 // import IconButton from "@mui/joy/IconButton";
-// import Face from "@mui/icons-material/Face";
 // import MoreHoriz from "@mui/icons-material/MoreHoriz";
+// import Face from "@mui/icons-material/Face";
 // import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 // import SendOutlined from "@mui/icons-material/SendOutlined";
 // import BookmarkBorderRoundedIcon from "@mui/icons-material/BookmarkBorderRounded";
@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils";
 import { formatDistanceToNow, subHours } from "date-fns";
 import { vi } from "date-fns/locale";
 import PostComments from "../Comment/PostComments";
+import CardActionDialog from "./CardActionDialog";
 
 export default function PostCard({ post }: PostCardProps) {
   const [api, setApi] = useState<CarouselApi>();
@@ -94,6 +95,8 @@ export default function PostCard({ post }: PostCardProps) {
             )}
           </Typography>
         </Box>
+
+        <CardActionDialog postId={post?.id} />
       </CardMUIContent>
 
       <CardMUIContent
@@ -258,7 +261,7 @@ export default function PostCard({ post }: PostCardProps) {
 >
   <MoreHoriz />
 </IconButton>
-
+  
 <IconButton variant="plain" color="neutral" size="sm">
   <FavoriteBorder />
 </IconButton>

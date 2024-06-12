@@ -49,7 +49,9 @@ const PostsList = () => {
   const getAllPosts = async () => {
     setIsLoading(true);
 
-    await getAllMyPosts()
+    await getAllMyPosts({
+      fetchPolicy: "network-only"
+    })
       .then((result) => {
         const resultData = result.data.getPostOfMe.data;
 
@@ -113,7 +115,9 @@ const PostsList = () => {
         postsList.map((item, index) => (
           <PostItemCard
             key={index}
+            signedInUser={signedInUser}
             post={item}
+            getAllPosts={getAllPosts}
             handleDeletePost={handleDeletePost}
           />
         ))}

@@ -8,7 +8,9 @@ interface MenuItemProps {
 }
 
 interface PostItemCardProps {
+  signedInUser: SignedInUser;
   post: PostWithFilter;
+  getAllPosts: () => Promise<void>;
   handleDeletePost: (id: number) => Promise<void>;
 }
 
@@ -31,6 +33,17 @@ interface CommentItemProps {
 
 interface PostDetailsProps {
   post: PostWithFilter;
+}
+
+interface UpdatePostDialogProps {
+  signedInUser: SignedInUser;
+  post: Post | null;
+  getAllPosts: () => Promise<void>;
+}
+
+interface ImageUploaderProps {
+  selectedFile: File | null;
+  setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 // Other Interfaces

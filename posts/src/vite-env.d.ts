@@ -23,6 +23,9 @@ interface PostItemCardProps {
 interface PostCardProps {
   post: Post | null;
 }
+interface CardActionDialogProps {
+  postId: number | undefined;
+}
 
 interface CommentItemProps {
   postId: number;
@@ -34,6 +37,7 @@ interface CommentDropdownProps {
   signedInUser: SignedInUser;
   commentId: number;
   getComments: (load: boolean) => Promise<void>;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 // Other Interfaces

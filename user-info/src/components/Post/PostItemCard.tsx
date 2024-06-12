@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Card,
   CardContent,
@@ -25,9 +26,59 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import RemoveRedEyeOutlinedIcon from "@mui/icons-material/RemoveRedEyeOutlined";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import PostDetailsDialog from "./PostDetailsDialog";
+import UpdatePostDialog from "./UpdatePostDialog";
+import { useLazyQuery } from "@apollo/client";
+import { GET_POST_BY_ID } from "@/services/graphql/queries";
+import { useEffect, useState } from "react";
 
-const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
+const PostItemCard = ({
+  signedInUser,
+  post,
+  getAllPosts,
+  handleDeletePost
+}: PostItemCardProps) => {
   const navigate = useNavigate();
+  const [getPostById] = useLazyQuery(GET_POST_BY_ID);
+  const [currentPost, setCurrentPost] = useState<Post | null>(null);
+
+  const getPostDetails = async () => {
+    try {
+      const result = await getPostById({
+        variables: {
+          id: post.id
+        },
+        fetchPolicy: "network-only"
+      });
+
+      const resultData = result.data.getPostById.data;
+      setCurrentPost({
+        id: resultData.id,
+        title: resultData.title,
+        location: resultData.location,
+        locationDetail: resultData.locationDetail,
+        postType: resultData.postType,
+        description: resultData.description,
+        contactPhone: resultData.contactPhone,
+        authorId: resultData.authorId,
+        authorAvatar: resultData.authorAvatar,
+        authorDisplayName: resultData.authorDisplayName,
+        images: resultData.images,
+        itemTypes: resultData.itemTypes,
+        createdDate: new Date(resultData.createdDate),
+        updatedDate: new Date(resultData.updatedDate),
+        viewCount: resultData.viewCount,
+        totalComments: resultData.totalComments
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (post.id) {
+      getPostDetails();
+    }
+  }, [post.id]);
 
   return (
     <Card
@@ -35,10 +86,18 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
         "w-full h-max rounded-xl flex sm:flex-row flex-col shadow-mdr relative"
       )}
     >
-      <div className="absolute top-3 right-3 cursor-pointer p-1 text-white rounded-full bg-red-500">
+      <div className="absolute top-3 right-3 flex justify-between items-center gap-2">
+        {currentPost && (
+          <UpdatePostDialog
+            signedInUser={signedInUser}
+            post={currentPost}
+            getAllPosts={getAllPosts}
+          />
+        )}
+
         <Dialog>
           <DialogTrigger asChild>
-            <DeleteOutlineOutlinedIcon />
+            <DeleteOutlineOutlinedIcon className="cursor-pointer p-1 text-white rounded-full bg-red-500" />
           </DialogTrigger>
           <DialogContent
             className="sm:max-w-[425px] bg-white"
@@ -138,7 +197,7 @@ const PostItemCard = ({ post, handleDeletePost }: PostItemCardProps) => {
         >
           <div className="flex justify-center items-center">
             <LocationOnOutlinedIcon />
-            <p className="font-medium text-right xl:text-base md:text-sm text-xs">
+            <p className="font-medium md:text-left text-right xl:text-base md:text-sm text-xs">
               {post.locationDetail
                 ? post.locationDetail
                 : "Khu vực chưa được cung cấp"}

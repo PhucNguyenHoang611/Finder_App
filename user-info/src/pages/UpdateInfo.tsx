@@ -155,7 +155,6 @@ const UpdateInfo = () => {
     }
 
     setIsLoading(true);
-    console.log(values.birthDate);
 
     await updateMyAccount({
       variables: {

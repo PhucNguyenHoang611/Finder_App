@@ -31,6 +31,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useMutation } from "@apollo/client";
+import { CREATE_POST_REPORT } from "@/services/graphql/mutations";
+import { useAtomValue } from "jotai";
+import { signedInUserAtomWithPersistence } from "@/store";
+import Spinner from "@/components/Spinner";
 
 const FormSchema = z.object({
   reason: z
@@ -44,6 +49,8 @@ const FormSchema = z.object({
 });
 
 const CardActionDialog = ({ postId }: CardActionDialogProps) => {
+  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  const [isLoading, setIsLoading] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -53,10 +60,26 @@ const CardActionDialog = ({ postId }: CardActionDialogProps) => {
     }
   });
 
+  const [createPostReport] = useMutation(CREATE_POST_REPORT, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
   async function handleReportPost(data: z.infer<typeof FormSchema>) {
+    setIsLoading(true);
+
     try {
-      console.log(postId);
-      console.log(data);
+      await createPostReport({
+        variables: {
+          bodyReq: {
+            postId: postId,
+            reportContent: data.reason
+          }
+        }
+      });
       setIsDialogOpen(false);
       setIsDropdownOpen(false);
 
@@ -64,6 +87,8 @@ const CardActionDialog = ({ postId }: CardActionDialogProps) => {
     } catch (error) {
       console.log(error);
     }
+
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -124,6 +149,7 @@ const CardActionDialog = ({ postId }: CardActionDialogProps) => {
                 />
                 <div className="w-full flex justify-end">
                   <Button type="submit" className="rounded">
+                    {isLoading && <Spinner />}
                     Xác nhận
                   </Button>
                 </div>

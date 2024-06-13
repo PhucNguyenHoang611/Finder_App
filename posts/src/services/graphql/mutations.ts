@@ -59,3 +59,13 @@ export const REPLY_COMMENT = gql`
     }
   }
 `;
+
+export const CREATE_POST_REPORT = gql`
+  mutation CreatePostReport($bodyReq: CreatePostReportInput!) {
+    createPostReport(bodyReq: $bodyReq) {
+      status
+      statusCode
+      message
+    }
+  }
+`;

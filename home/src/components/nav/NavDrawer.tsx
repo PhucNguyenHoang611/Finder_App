@@ -31,6 +31,7 @@ import { RESET } from "jotai/utils";
 import { useEffect, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { GET_NUMBER_OF_NOTIFY_UNREAD } from "@/services/graphql/queries";
+import io, { Socket } from "socket.io-client";
 
 const NavDrawer = () => {
   const navigate = useNavigate();
@@ -70,6 +71,43 @@ const NavDrawer = () => {
   useEffect(() => {
     if (signedInUser.accessToken) {
       handleGetNumberOfNotifyUnRead();
+
+      const socket: Socket = io(import.meta.env.VITE_SOCKET_NOTIFY_URL, {
+        transports: ["websocket"]
+      });
+
+      // Register user to Socket Server
+      socket.emit("register", signedInUser.id.toString());
+
+      socket.on(
+        "notifyComment",
+        async (_payload: NewCommentNotificationSocket) => {
+          console.log("New comment notification received from sidebar");
+          handleGetNumberOfNotifyUnRead();
+        }
+      );
+
+      // Listen to reply comment notification
+      socket.on(
+        "notifyReplyComment",
+        async (_payload: ReplyCommentNotificationSocket) => {
+          console.log("Reply comment notification received from sidebar");
+          handleGetNumberOfNotifyUnRead();
+        }
+      );
+
+      // Listen to approve post notification
+      socket.on(
+        "notifyApprovePost",
+        async (_payload: ApprovePostNotificationSocket) => {
+          console.log("Approve post notification received from sidebar");
+          handleGetNumberOfNotifyUnRead();
+        }
+      );
+
+      return () => {
+        socket.disconnect();
+      };
     }
   }, []);
 

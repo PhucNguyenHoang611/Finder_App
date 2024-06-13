@@ -21,12 +21,13 @@ interface NotificationDropdownProps {
   isLoading: boolean;
   signedInUser: SignedInUser;
   notifications: INotification[];
-  handleGetAllNotifications: () => Promise<void>;
+  handleGetAllNotifications: (load: boolean) => Promise<void>;
   notifySocket: Socket | null;
 }
 interface NotificationDropdownItemProps {
   signedInUser: SignedInUser;
   notification: INotification;
+  handleGetAllNotifications: (load: boolean) => Promise<void>;
 }
 
 // Other Interfaces

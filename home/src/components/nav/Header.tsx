@@ -24,15 +24,13 @@ const Header = () => {
   const [getAllNotifications] = useLazyQuery(GET_NOTIFY_WITH_FILTER, {
     context: {
       headers: {
-        // Authorization:
-        //   "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcxNzUyOTc2MywiZXhwIjoxNzE3NTMzMzYzfQ.IEnmwWqJLFV1J-1sfxjOQgNE910DUek8_Jxtq6tfu5A"
         Authorization: `Bearer ${signedInUser.accessToken}`
       }
     }
   });
 
-  const handleGetAllNotifications = async () => {
-    setIsLoading(true);
+  const handleGetAllNotifications = async (load: boolean) => {
+    if (load) setIsLoading(true);
 
     try {
       const { data } = await getAllNotifications({
@@ -80,7 +78,7 @@ const Header = () => {
       console.log(error);
     }
 
-    setIsLoading(false);
+    if (load) setIsLoading(false);
   };
 
   useEffect(() => {

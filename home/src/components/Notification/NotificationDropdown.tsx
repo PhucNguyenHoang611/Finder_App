@@ -30,7 +30,8 @@ const EmptyNotificationsList = () => {
 
 const NotificationDropdownItem = ({
   signedInUser,
-  notification
+  notification,
+  handleGetAllNotifications
 }: NotificationDropdownItemProps) => {
   const navigate = useNavigate();
 
@@ -54,6 +55,8 @@ const NotificationDropdownItem = ({
         console.log(error);
       }
     }
+
+    handleGetAllNotifications(false);
 
     if (
       notification.type === "NEW_COMMENT" ||
@@ -152,7 +155,7 @@ const NotificationDropdown = ({
 }: NotificationDropdownProps) => {
   useEffect(() => {
     if (signedInUser.accessToken) {
-      handleGetAllNotifications();
+      handleGetAllNotifications(true);
     }
 
     if (notifySocket) {
@@ -160,7 +163,7 @@ const NotificationDropdown = ({
         "notifyComment",
         async (_payload: NewCommentNotificationSocket) => {
           console.log("New comment notification received");
-          handleGetAllNotifications();
+          handleGetAllNotifications(false);
         }
       );
 
@@ -169,7 +172,7 @@ const NotificationDropdown = ({
         "notifyReplyComment",
         async (_payload: ReplyCommentNotificationSocket) => {
           console.log("Reply comment notification received");
-          handleGetAllNotifications();
+          handleGetAllNotifications(false);
         }
       );
 
@@ -178,7 +181,7 @@ const NotificationDropdown = ({
         "notifyApprovePost",
         async (_payload: ApprovePostNotificationSocket) => {
           console.log("Approve post notification received");
-          handleGetAllNotifications();
+          handleGetAllNotifications(false);
         }
       );
     }
@@ -204,6 +207,7 @@ const NotificationDropdown = ({
               key={index}
               signedInUser={signedInUser}
               notification={item}
+              handleGetAllNotifications={handleGetAllNotifications}
             />
           ))}
 

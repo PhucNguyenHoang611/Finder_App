@@ -6,7 +6,7 @@ const RootPage = () => {
   return (
     <>
       <div className="flex flex-col justify-start items-start">
-        <div className="pb-14">
+        <div className="pb-14 z-10">
           <Header />
         </div>
         <Outlet />

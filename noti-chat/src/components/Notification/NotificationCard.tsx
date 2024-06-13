@@ -46,7 +46,7 @@ const NotificationCard = ({
     ) {
       navigate(`/post-details/${notification.postId}`);
     } else {
-      navigate(`/my-posts/${notification.postId}`);
+      navigate(`/my-posts`);
     }
   };
 

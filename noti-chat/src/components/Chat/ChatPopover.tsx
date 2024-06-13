@@ -72,7 +72,6 @@ const ChatPopover = () => {
       ) {
         setHasMoreSection(false);
         setIsLoading(false);
-        return;
       } else setHasMoreSection(true);
 
       const csList: ChatSection[] = resultData.map((cs: ChatSection) => {

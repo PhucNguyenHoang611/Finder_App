@@ -3,13 +3,13 @@
 
 // Props Interface
 interface ImageUploaderProps {
-  selectedFile: File | null;
-  setSelectedFile: React.Dispatch<React.SetStateAction<File | null>>;
+  selectedFile: File[];
+  setSelectedFile: React.Dispatch<React.SetStateAction<File[]>>;
 }
 interface PreviewPostProps {
   author: SignedInUser;
   post: any;
-  image: File | null;
+  image: File[];
   itemTypes: ItemType[];
 }
 

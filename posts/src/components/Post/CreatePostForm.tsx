@@ -103,7 +103,7 @@ const CreatePostForm = () => {
   const [getAllItemTypes] = useLazyQuery(GET_ITEM_TYPE_WITH_FILTER);
 
   // Images
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File[]>([]);
 
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({
@@ -166,26 +166,27 @@ const CreatePostForm = () => {
 
     setIsLoading(true);
 
-    const requestBody = selectedFile
-      ? {
-          title: values.title,
-          location: values.city,
-          locationDetail: `${wardVal}, ${districtVal}, ${values.city}`,
-          postType: values.postType,
-          contactPhone: values.contactPhone,
-          description: values.description,
-          itemTypeIds: [Number(values.itemType)],
-          images: [selectedFile]
-        }
-      : {
-          title: values.title,
-          location: values.city,
-          locationDetail: `${wardVal}, ${districtVal}, ${values.city}`,
-          postType: values.postType,
-          contactPhone: values.contactPhone,
-          description: values.description,
-          itemTypeIds: [Number(values.itemType)]
-        };
+    const requestBody =
+      selectedFile.length > 0
+        ? {
+            title: values.title,
+            location: values.city,
+            locationDetail: `${wardVal}, ${districtVal}, ${values.city}`,
+            postType: values.postType,
+            contactPhone: values.contactPhone,
+            description: values.description,
+            itemTypeIds: [Number(values.itemType)],
+            images: [...selectedFile]
+          }
+        : {
+            title: values.title,
+            location: values.city,
+            locationDetail: `${wardVal}, ${districtVal}, ${values.city}`,
+            postType: values.postType,
+            contactPhone: values.contactPhone,
+            description: values.description,
+            itemTypeIds: [Number(values.itemType)]
+          };
 
     await createPost({
       variables: {

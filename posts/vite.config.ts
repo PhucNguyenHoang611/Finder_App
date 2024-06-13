@@ -15,7 +15,8 @@ export default defineConfig({
         "./PostDetails": "./src/pages/Post/PostDetails.tsx",
         "./PostResultList": "./src/pages/Post/PostResultList.tsx",
         "./NewsPage": "./src/pages/News/NewsPage.tsx",
-        "./Bootstrap": "./src/Bootstrap.tsx"
+        "./Bootstrap": "./src/Bootstrap.tsx",
+        "./apolloConfig": "./src/config/apollo.ts"
       },
       shared: [
         "react",

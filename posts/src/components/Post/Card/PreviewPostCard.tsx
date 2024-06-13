@@ -34,7 +34,7 @@ export default function PreviewPostCard({
   image,
   itemTypes
 }: PreviewPostProps) {
-  const images: any[] = image ? [image] : [];
+  const images: File[] = image;
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);

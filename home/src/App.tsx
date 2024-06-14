@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import ResetPasswordConfirm from "@/pages/auth/ResetPasswordConfirm";
 import AboutUs from "@/pages/AboutUs";
 import ScamWarning from "@/pages/ScamWarning";
+import ForbiddenPage from "@/pages/ForbiddenPage";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
         element: <ResetPasswordConfirm />
       }
     ]
+  },
+  {
+    path: "forbidden",
+    element: <ForbiddenPage />
   }
 ]);
 

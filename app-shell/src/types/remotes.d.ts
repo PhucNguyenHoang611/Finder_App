@@ -8,6 +8,7 @@ declare module "homeApp/ResetPassword";
 declare module "homeApp/ResetPasswordConfirm";
 declare module "homeApp/AboutUs";
 declare module "homeApp/ScamWarning";
+declare module "homeApp/Forbidden";
 declare module "homeApp/store";
 declare module "homeApp/apiConfig";
 declare module "homeApp/authMiddleware";

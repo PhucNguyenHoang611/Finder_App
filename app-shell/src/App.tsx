@@ -14,6 +14,7 @@ import { signInValidate } from "homeApp/authMiddleware";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootPage from "./pages/RootPage";
 import ErrorPage from "./pages/ErrorPage";
+import ForbiddenPage from "./pages/ForbiddenPage";
 import CreatePost from "./pages/posts/CreatePost";
 import PostDetails from "./pages/posts/PostDetails";
 import PostResultList from "./pages/posts/PostResultList";
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
         element: <ResetPasswordConfirm />
       }
     ]
+  },
+  {
+    path: "/forbidden",
+    element: <ForbiddenPage />
   }
 ]);
 

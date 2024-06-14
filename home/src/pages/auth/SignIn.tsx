@@ -107,6 +107,8 @@ const SignIn = () => {
           type: "manual",
           message: "Mật khẩu không đúng"
         });
+      } else if (errorCode === "FORBIDDEN") {
+        navigate("/forbidden");
       }
     }
 

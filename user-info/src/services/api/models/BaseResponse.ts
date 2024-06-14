@@ -8,4 +8,3 @@ export type BaseResponse = {
   data: Record<string, any>;
   message: string;
 };
-

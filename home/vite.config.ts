@@ -22,6 +22,7 @@ export default defineConfig({
         "./ResetPasswordConfirm": "./src/pages/auth/ResetPasswordConfirm.tsx",
         "./AboutUs": "./src/pages/AboutUs.tsx",
         "./ScamWarning": "./src/pages/ScamWarning.tsx",
+        "./Forbidden": "./src/pages/ForbiddenPage.tsx",
         "./Sidebar": "./src/components/nav/Sidebar.tsx",
         "./Header": "./src/components/nav/Header.tsx",
         "./store": "./src/store.ts",

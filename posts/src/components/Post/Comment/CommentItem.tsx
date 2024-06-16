@@ -127,7 +127,7 @@ const CommentItem = ({
       </Box>
 
       <div className="flex flex-col">
-        <div className="w-max flex flex-col pl-4 pr-8 py-2 bg-slate-100 rounded-xl relative">
+        <div className="w-auto flex flex-col pl-4 pr-8 py-2 bg-slate-100 rounded-xl relative">
           {comment?.senderId === signedInUser.id && (
             <div className="absolute top-0 right-0 pr-1">
               <CommentDropdownMenu

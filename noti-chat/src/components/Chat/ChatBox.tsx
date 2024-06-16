@@ -114,6 +114,7 @@ const ChatBox = ({
 
       setMessageValue("");
       getDetailConversation();
+      handleUpdateLastSeen();
 
       checkIfAtBottom();
       scrollToBottom();

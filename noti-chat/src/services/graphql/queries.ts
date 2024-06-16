@@ -15,6 +15,19 @@ export const GET_NOTIFY_WITH_FILTER = gql`
   }
 `;
 
+export const GET_NUMBER_OF_NOTIFY_UNREAD = gql`
+  query GetNumberOfNotifyUnread {
+    getNumberOfNotifyUnRead {
+      status
+      statusCode
+      data {
+        unRead
+      }
+      message
+    }
+  }
+`;
+
 // Chat
 export const GET_USER_CONVERSATIONS = gql`
   query GetUserConversations($filters: FilterConversationInput) {

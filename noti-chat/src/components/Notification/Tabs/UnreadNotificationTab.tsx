@@ -16,7 +16,10 @@ import MarkChatReadOutlinedIcon from "@mui/icons-material/MarkChatReadOutlined";
 import NotificationList from "@/components/Notification/NotificationList";
 import { useEffect, useState } from "react";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { GET_NOTIFY_WITH_FILTER } from "@/services/graphql/queries";
+import {
+  GET_NOTIFY_WITH_FILTER,
+  GET_NUMBER_OF_NOTIFY_UNREAD
+} from "@/services/graphql/queries";
 import { useAtomValue } from "jotai";
 import { signedInUserAtomWithPersistence } from "@/store";
 import { MARK_NOTIFY_AS_READ } from "@/services/graphql/mutations";
@@ -32,6 +35,7 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalNotifications, setTotalNotifications] = useState(0);
+  const [notifyUnRead, setNotifyUnRead] = useState(0);
 
   const handlePageChange = (page: number) => {
     setPage(page);
@@ -50,6 +54,14 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
     }
   });
 
+  const [getNumberOfNotifyUnRead] = useLazyQuery(GET_NUMBER_OF_NOTIFY_UNREAD, {
+    context: {
+      headers: {
+        Authorization: `Bearer ${signedInUser.accessToken}`
+      }
+    }
+  });
+
   const [markNotifyAsRead] = useMutation(MARK_NOTIFY_AS_READ, {
     context: {
       headers: {
@@ -57,6 +69,19 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
       }
     }
   });
+
+  const handleGetNumberOfNotifyUnRead = async () => {
+    try {
+      const { data } = await getNumberOfNotifyUnRead({
+        fetchPolicy: "network-only"
+      });
+      const resultData = data.getNumberOfNotifyUnRead.data;
+
+      setNotifyUnRead(resultData.unRead);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleGetAllNotifications = async (
     p: number,
@@ -135,6 +160,7 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
 
       setSelectedNotifications([]);
       handleGetAllNotifications(page, pageSize, false);
+      handleGetNumberOfNotifyUnRead();
     } catch (error) {
       console.log(error);
     }
@@ -142,6 +168,7 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
 
   useEffect(() => {
     handleGetAllNotifications(page, pageSize, true);
+    handleGetNumberOfNotifyUnRead();
   }, [page, pageSize]);
 
   useEffect(() => {
@@ -151,6 +178,7 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
         "notifyComment",
         async (_payload: NewCommentNotificationSocket) => {
           handleGetAllNotifications(page, pageSize, false);
+          handleGetNumberOfNotifyUnRead();
         }
       );
 
@@ -159,6 +187,7 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
         "notifyReplyComment",
         async (_payload: ReplyCommentNotificationSocket) => {
           handleGetAllNotifications(page, pageSize, false);
+          handleGetNumberOfNotifyUnRead();
         }
       );
 
@@ -167,6 +196,7 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
         "notifyApprovePost",
         async (_payload: ApprovePostNotificationSocket) => {
           handleGetAllNotifications(page, pageSize, false);
+          handleGetNumberOfNotifyUnRead();
         }
       );
     }
@@ -186,6 +216,15 @@ const UnreadNotificationTab = ({ notifySocket }: NotificationTabProps) => {
             onClick={handleSelectAll}
           />
           <Label htmlFor="select-all">Chọn tất cả</Label>
+          <div className="sm:pl-10 pl-2">
+            {notifyUnRead > 0 && (
+              <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full sm:p-2 p-4">
+                <p className="text-white font-semibold text-center sm:text-sm text-xs">
+                  {notifyUnRead} thông báo chưa đọc
+                </p>
+              </div>
+            )}
+          </div>
         </div>
 
         {selectedNotifications.length > 0 && (

@@ -235,7 +235,7 @@ const SideBar = () => {
                   </div>
 
                   {notifyUnRead > 0 && (
-                    <div className="w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
+                    <div className="hidden w-auto h-6 flex justify-center items-center bg-red-500 rounded-full p-2">
                       <p className="text-white font-bold text-center">
                         {notifyUnRead}
                       </p>

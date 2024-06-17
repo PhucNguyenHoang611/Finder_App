@@ -33,8 +33,8 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useMutation } from "@apollo/client";
 import { CREATE_POST_REPORT } from "@/services/graphql/mutations";
-import { useAtomValue } from "jotai";
-import { signedInUserAtomWithPersistence } from "@/store";
+// import { useAtomValue } from "jotai";
+// import { signedInUserAtomWithPersistence } from "@/store";
 import Spinner from "@/components/Spinner";
 
 const FormSchema = z.object({
@@ -49,7 +49,8 @@ const FormSchema = z.object({
 });
 
 const CardActionDialog = ({ postId }: CardActionDialogProps) => {
-  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  // const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  const signedInUser = JSON.parse(localStorage.getItem("signedInUser") || "{}");
   const [isLoading, setIsLoading] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);

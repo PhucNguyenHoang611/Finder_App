@@ -107,7 +107,7 @@ const UserInfo = () => {
 
           <Button
             className={cn("rounded-xl")}
-            onClick={() => navigate("/user/update-info")}
+            onClick={() => navigate("/update-info")}
           >
             <Pencil2Icon className="mr-2 w-6 h-6" /> Chỉnh sửa
           </Button>

@@ -12,7 +12,7 @@ export default function ImageCard({ post }: ImageCardProps) {
     <div className="rounded-[8px] overflow-hidden shadow-md">
       <div className="w-full flex justify-center items-center lg:[200px] md:h-[180px] h-[160px] overflow-hidden">
         <img
-          className="w-full object-cover cursor-pointer"
+          className="w-full object-cover cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out"
           onClick={openDetailPage}
           src={
             post.filePath

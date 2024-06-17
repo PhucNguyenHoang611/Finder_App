@@ -20,13 +20,14 @@ import {
   GET_NOTIFY_WITH_FILTER,
   GET_NUMBER_OF_NOTIFY_UNREAD
 } from "@/services/graphql/queries";
-import { useAtomValue } from "jotai";
-import { signedInUserAtomWithPersistence } from "@/store";
+// import { useAtomValue } from "jotai";
+// import { signedInUserAtomWithPersistence } from "@/store";
 import { MARK_NOTIFY_AS_READ } from "@/services/graphql/mutations";
 import ReactPagination from "@/components/ReactPagination";
 
 const AllNotificationTab = ({ notifySocket }: NotificationTabProps) => {
-  const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  // const signedInUser = useAtomValue(signedInUserAtomWithPersistence);
+  const signedInUser = JSON.parse(localStorage.getItem("signedInUser") || "{}");
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const [selectedNotifications, setSelectedNotifications] = useState<number[]>(

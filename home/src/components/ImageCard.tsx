@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { MapPinIcon } from "lucide-react";
+import { MapPinIcon, EyeIcon } from "lucide-react";
 
 export default function ImageCard({ post }: ImageCardProps) {
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function ImageCard({ post }: ImageCardProps) {
 
   return (
     <div className="rounded-[8px] overflow-hidden shadow-md">
-      <div className="w-full flex justify-center items-center lg:[200px] md:h-[180px] h-[160px] overflow-hidden">
+      <div className="w-full flex justify-center items-center lg:[200px] md:h-[180px] h-[160px] overflow-hidden relative">
         <img
           className="w-full object-cover cursor-pointer hover:scale-125 transition-transform duration-300 ease-in-out"
           onClick={openDetailPage}
@@ -21,15 +21,27 @@ export default function ImageCard({ post }: ImageCardProps) {
           }
           alt={post.fileName ? post.fileName : "no-image"}
         />
+
+        <span className="absolute py-0.5 flex items-center bottom-0 left-0 bg-orange-700 text-white text-nowrap inline-block min-[1800px]:text-sm text-xs italic font-semibold text-black min-[1024px]:px-2 max-[1024px]:px-4 w-max rounded-tr-xl">
+          <EyeIcon size={16} className="inline-block mr-1" />
+          {post.viewCount}
+        </span>
+        <span className="absolute py-0.5 bottom-0 right-0 bg-orange-700 text-white text-nowrap inline-block min-[1800px]:text-sm text-xs italic font-semibold text-black min-[1024px]:px-2 max-[1024px]:px-4 w-max rounded-tl-xl">
+          {post.totalComments} bình luận
+        </span>
       </div>
-      <div className="min-[1024px]:px-2 max-[1024px]:px-4 py-2">
+      <div className="min-[1024px]:px-2 max-[1024px]:px-4 pt-2">
         <div
           // min-[1024px]:text-md min-[640px]:text-base max-[640px]:text-lg
           className="font-semibold text-pretty min-[1800px]:text-base text-sm w-full cursor-pointer hover:text-gray-500"
           onClick={openDetailPage}
+          style={{
+            lineHeight: "1.5",
+            minHeight: "calc(4 * 1.5em)"
+          }}
         >
-          {post.title.length > 100
-            ? post.title.substring(0, 100) + "..."
+          {post.title.length > 80
+            ? post.title.substring(0, 80) + "..."
             : post.title}
         </div>
       </div>
